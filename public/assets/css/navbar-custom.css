@@ -1,0 +1,4 @@
+.navbar-gradient {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}

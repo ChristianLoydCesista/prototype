@@ -1,0 +1,351 @@
+/**
+ * Arteche Community Intelligence System (ACIS)
+ * Centralized Theme Design System
+ * 
+ * This file contains all CSS variables for consistent theming
+ * across the entire application.
+ */
+
+/* ============================================
+   COLOR PALETTE
+   ============================================ */
+
+/* Primary Colors - Navy/Blue Government Theme */
+:root {
+    /* Main Colors */
+    --primary: #0f2a44;
+    --primary-light: #1a3a5c;
+    --primary-dark: #071f33;
+    
+    /* Secondary Colors */
+    --secondary: #1f6aa5;
+    --secondary-light: #2d82bb;
+    --secondary-dark: #15527a;
+    
+    /* Accent */
+    --accent: #2dd4bf;
+    --accent-light: #5de0cf;
+    --accent-dark: #1fb3a3;
+    
+    /* Status Colors */
+    --success: #16a34a;
+    --success-light: #22c55e;
+    --success-dark: #15803d;
+    
+    --danger: #dc2626;
+    --danger-light: #ef4444;
+    --danger-dark: #b91c1c;
+    
+    --warning: #f59e0b;
+    --warning-light: #fbbf24;
+    --warning-dark: #d97706;
+    
+    --info: #0ea5e9;
+    --info-light: #38bdf8;
+    --info-dark: #0284c7;
+    
+    /* Neutral Colors */
+    --white: #ffffff;
+    --black: #000000;
+    
+    /* Background Colors */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --bg-tertiary: #e2e8f0;
+    --bg-card: #ffffff;
+    --bg-dark: #0f172a;
+    
+    /* Text Colors */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-tertiary: #94a3b8;
+    --text-light: #cbd5e1;
+    --text-inverse: #ffffff;
+    
+    /* Border Colors */
+    --border-color: #e2e8f0;
+    --border-light: #f1f5f9;
+    
+    /* Sidebar Colors */
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #cbd5e1;
+    --sidebar-active: #1e40af;
+    --sidebar-hover: #1e293b;
+    
+    /* Role Colors */
+    --role-super-admin: #1e40af;
+    --role-admin: #2563eb;
+    --role-staff: #16a34a;
+    --role-citizen: #7c3aed;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+:root {
+    /* Font Families */
+    --font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-family-heading: 'Segoe UI', 'Inter', system-ui, sans-serif;
+    --font-family-body: 'Segoe UI', 'Inter', system-ui, sans-serif;
+    --font-family-mono: 'Consolas', 'Monaco', monospace;
+    
+    /* Font Sizes */
+    --font-size-xs: 0.75rem;     /* 12px */
+    --font-size-sm: 0.875rem;    /* 14px */
+    --font-size-base: 1rem;       /* 16px */
+    --font-size-lg: 1.125rem;     /* 18px */
+    --font-size-xl: 1.25rem;      /* 20px */
+    --font-size-2xl: 1.5rem;      /* 24px */
+    --font-size-3xl: 1.875rem;    /* 30px */
+    --font-size-4xl: 2.25rem;     /* 36px */
+    --font-size-5xl: 3rem;        /* 48px */
+    
+    /* Font Weights */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    
+    /* Line Heights */
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+}
+
+/* ============================================
+   SPACING
+   ============================================ */
+
+:root {
+    --spacing-0: 0;
+    --spacing-1: 0.25rem;   /* 4px */
+    --spacing-2: 0.5rem;    /* 8px */
+    --spacing-3: 0.75rem;   /* 12px */
+    --spacing-4: 1rem;      /* 16px */
+    --spacing-5: 1.25rem;   /* 20px */
+    --spacing-6: 1.5rem;    /* 24px */
+    --spacing-8: 2rem;      /* 32px */
+    --spacing-10: 2.5rem;   /* 40px */
+    --spacing-12: 3rem;     /* 48px */
+    --spacing-16: 4rem;     /* 64px */
+}
+
+/* ============================================
+   BORDERS & RADIUS
+   ============================================ */
+
+:root {
+    /* Border Widths */
+    --border-width: 1px;
+    --border-width-2: 2px;
+    
+    /* Border Radius */
+    --radius-none: 0;
+    --radius-sm: 4px;
+    --radius: 8px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+}
+
+/* ============================================
+   SHADOWS
+   ============================================ */
+
+:root {
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Specific Shadows */
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-navbar: 0 4px 12px rgba(0, 0, 0, 0.04);
+    --shadow-dropdown: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   GRADIENTS
+   ============================================ */
+
+:root {
+    /* Primary Gradient - Navy to Blue */
+    --gradient-primary: linear-gradient(135deg, #0f2a44 0%, #1f6aa5 100%);
+    --gradient-primary-reverse: linear-gradient(135deg, #1f6aa5 0%, #0f2a44 100%);
+    
+    /* Secondary Gradient - Blue variants */
+    --gradient-secondary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    
+    /* Accent Gradient - Teal */
+    --gradient-accent: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    
+    /* Dark Theme Gradient */
+    --gradient-dark: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    
+    /* Hero Gradient */
+    --gradient-hero: linear-gradient(135deg, rgba(11, 31, 51, 0.75) 0%, rgba(31, 106, 165, 0.7) 100%);
+    
+    /* Success Gradient */
+    --gradient-success: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+    
+    /* Warning Gradient */
+    --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    
+    /* Danger Gradient */
+    --gradient-danger: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+:root {
+    /* Sidebar */
+    --sidebar-width: 250px;
+    --sidebar-width-collapsed: 70px;
+    --sidebar-transition: 0.3s ease;
+    
+    /* Navbar */
+    --navbar-height: 60px;
+    --navbar-transition: 0.3s ease;
+    
+    /* Container */
+    --container-max-width: 1280px;
+    --container-padding: 1.5rem;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ============================================
+   Z-INDEX
+   ============================================ */
+
+:root {
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
+}
+
+/* ============================================
+   ROLE BADGE COLORS
+   ============================================ */
+
+:root {
+    --badge-super-admin-bg: #1e40af;
+    --badge-super-admin-text: #ffffff;
+    --badge-admin-bg: #2563eb;
+    --badge-admin-text: #ffffff;
+    --badge-staff-bg: #16a34a;
+    --badge-staff-text: #ffffff;
+    --badge-citizen-bg: #7c3aed;
+    --badge-citizen-text: #ffffff;
+    --badge-active-bg: #16a34a;
+    --badge-inactive-bg: #64748b;
+}
+
+/* ============================================
+   RISK LEVEL COLORS
+   ============================================ */
+
+:root {
+    --risk-low: #10b981;
+    --risk-medium: #f59e0b;
+    --risk-high: #ef4444;
+    --risk-critical: #dc2626;
+}
+
+/* ============================================
+   TABLE STYLES
+   ============================================ */
+
+:root {
+    --table-header-bg: #f8fafc;
+    --table-stripe-bg: #f8fafc;
+    --table-hover-bg: #f1f5f9;
+    --table-border-color: #e2e8f0;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+:root {
+    --input-bg: #ffffff;
+    --input-border: #e2e8f0;
+    --input-focus-border: #1f6aa5;
+    --input-focus-shadow: rgba(31, 106, 165, 0.25);
+    --input-disabled-bg: #f1f5f9;
+    --input-disabled-color: #94a3b8;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+:root {
+    --btn-padding-y: 0.5rem;
+    --btn-padding-x: 1rem;
+    --btn-font-size: 0.875rem;
+    --btn-font-weight: 500;
+    --btn-border-radius: 8px;
+    --btn-transition: all 0.2s ease;
+}
+
+/* ============================================
+   CARD STYLES
+   ============================================ */
+
+:root {
+    --card-bg: #ffffff;
+    --card-border: 1px solid #e2e8f0;
+    --card-border-radius: 12px;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --card-padding: 1.5rem;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+:root {
+    --animate-fade-in: fadeIn 0.3s ease;
+    --animate-slide-in: slideIn 0.3s ease;
+    --animate-pulse: pulse 2s infinite;
+    --animate-spin: spin 1s linear infinite;
+}
+

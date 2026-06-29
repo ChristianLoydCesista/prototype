@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Barangay Certificate</title>
+
+    <style>
+        @page {
+            size: A4;
+            margin: 1in;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* WATERMARK SEAL */
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.07;
+            z-index: -1;
+        }
+
+        .watermark img {
+            width: 420px;
+        }
+
+        /* HEADER */
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .logo-left,
+        .logo-right {
+            width: 90px;
+        }
+
+        .logo-left img,
+        .logo-right img {
+            width: 90px;
+        }
+
+        .header-center {
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-center h3 {
+            font-size: 16px;
+        }
+
+        .header-center h2 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .header-center h1 {
+            font-size: 26px;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+
+        /* REGISTRY NUMBER */
+
+        .registry {
+            text-align: right;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* TITLE */
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        /* BODY */
+
+        .body-text {
+            text-align: justify;
+            margin-bottom: 25px;
+        }
+
+        /* INFO TABLE */
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .info-table th {
+            text-align: left;
+            width: 35%;
+            padding: 6px;
+        }
+
+        .info-table td {
+            padding: 6px;
+            border-bottom: 1px solid #000;
+        }
+
+        /* SIGNATURE */
+
+        .signature-section {
+            margin-top: 70px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature {
+            width: 30%;
+            text-align: center;
+        }
+
+        .signature-line {
+            border-top: 1px solid black;
+            margin-top: 60px;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+
+        /* QR VERIFICATION */
+
+        .verify {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .qr img {
+            width: 110px;
+        }
+
+        .verify-text {
+            font-size: 12px;
+        }
+
+        /* PRINT */
+
+        @media print {
+
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- WATERMARK -->
+    <div class="watermark">
+        <img src="/prototype/public/assets/img/bungto_han_arteche.png">
+    </div>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="logo-left">
+            <img src="/prototype/public/assets/img/philippines_seal.png">
+        </div>
+
+        <div class="header-center">
+
+            <h3>Republic of the Philippines</h3>
+            <h3>Province of Eastern Samar</h3>
+            <h2>Municipality of Arteche</h2>
+            <h3>Barangay [BARANGAY_NAME]</h3>
+
+            <h1>OFFICE OF THE BARANGAY CAPTAIN</h1>
+
+        </div>
+
+        <div class="logo-right">
+            <img src="/prototype/public/assets/img/bungto_han_arteche.png">
+        </div>
+
+    </div>
+
+
+    <!-- CERTIFICATE REGISTRY -->
+
+    <div class="registry">
+        Certificate Registry No: <strong>[REQUEST_NUMBER]</strong>
+    </div>
+
+
+    <!-- TITLE -->
+
+    <div class="title">
+        BARANGAY CERTIFICATION
+    </div>
+
+
+    <!-- BODY -->
+
+    <div class="body-text">
+
+        <p>TO WHOM IT MAY CONCERN:</p>
+
+        <br>
+
+        <p>
+            This is to certify that <strong>[FULL_NAME]</strong>,
+            [SEX], [CIVIL_STATUS], and a resident of
+            <strong>[ADDRESS], Barangay [BARANGAY_NAME],
+                Municipality of Arteche, Province of Eastern Samar</strong>,
+            is known to be a person of good moral character
+            and a bonafide resident of this barangay.
+        </p>
+
+        <br>
+
+        <p>
+            This certification is issued upon the request of the above-named person
+            for <strong>[PURPOSE]</strong> and for whatever legal purpose it may serve.
+        </p>
+
+        <br>
+
+        <p>
+            Issued this <strong>[DATE_EXTENDED]</strong> at Barangay
+            <strong>[BARANGAY_NAME], Arteche, Eastern Samar.</strong>
+        </p>
+
+    </div>
+
+
+    <!-- INFORMATION TABLE -->
+
+    <table class="info-table">
+
+        <tr>
+            <th>Date Issued:</th>
+            <td>[DATE_ISSUED]</td>
+        </tr>
+
+        <tr>
+            <th>Household Head:</th>
+            <td>[HOUSEHOLD_HEAD]</td>
+        </tr>
+
+        <tr>
+            <th>Household Size:</th>
+            <td>[HOUSEHOLD_SIZE]</td>
+        </tr>
+
+        <tr>
+            <th>Monthly Income:</th>
+            <td>₱[MONTHLY_INCOME]</td>
+        </tr>
+
+    </table>
+
+
+    <!-- SIGNATURES -->
+
+    <div class="signature-section">
+
+        <div class="signature">
+            <div class="signature-line">[BARANGAY_CAPTAIN_NAME]</div>
+            Barangay Captain
+        </div>
+
+        <div class="signature">
+            <div class="signature-line">[SECRETARY_NAME]</div>
+            Barangay Secretary
+        </div>
+
+        <div class="signature">
+            <div class="signature-line">[TREASURER_NAME]</div>
+            Barangay Treasurer
+        </div>
+
+    </div>
+
+
+    <!-- QR VERIFICATION -->
+
+    <div class="verify">
+
+        <div class="qr">
+            <img src="/prototype/public/qrcodes/[REQUEST_NUMBER].png">
+        </div>
+
+        <div class="verify-text">
+            This certificate may be verified online.<br>
+            Scan the QR Code or visit:<br>
+            <strong>https://arteche-cis.gov.ph/verify/[REQUEST_NUMBER]</strong>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div style="text-align:right;font-size:12px;">
+        <em>Not valid without the official Barangay Seal</em>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,815 @@
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[UNCAUGHT EXCEPTION] The number of elements in the type definition string must match the number of bind variables in C:\xampp1\htdocs\prototype\app\admin\shared\survey.php:351
+#0 C:\xampp1\htdocs\prototype\app\admin\shared\survey.php(351): mysqli_stmt->bind_param('sississiidsssss...', 'Will be auto-ge...', 6, 'Cesista Christi...', '09103323380', 20, 'Male', 'Single', 9, 10000, 1111.1111111111, 'Self-Employed', 'No', 'Concrete', 'Level I (Point ...', 'Water-sealed', 'Employed', 'No', 'No', 4, 12.2941122, 125.3569651, 'admin', '2026-03-10', '', 'Beri', '2026-03-10', 0)
+#1 {main}
+[PHP ERROR] Undefined array key "account_status" in C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php:111
+[PHP ERROR] Undefined array key "account_status" in C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php:111
+[UNCAUGHT EXCEPTION] Unknown column 'cr.household_id' in 'where clause' in C:\xampp1\htdocs\prototype\app\admin\shared\view_household.php:27
+#0 C:\xampp1\htdocs\prototype\app\admin\shared\view_household.php(27): mysqli->prepare('\r\n        SELEC...')
+#1 {main}
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $barangays in C:\xampp1\htdocs\prototype\app\citizen\citizen_portal.php:343
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_portal.php:343
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined array key "account_status" in C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php:245
+[PHP ERROR] Undefined array key "account_status" in C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php:245
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined array key "account_status" in C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php:245
+[PHP ERROR] Undefined array key "account_status" in C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php:245
+[UNCAUGHT EXCEPTION] Unknown column 'is_active' in 'field list' in C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php:68
+#0 C:\xampp1\htdocs\prototype\app\admin\super_admin\users.php(68): mysqli->prepare('\r\n            U...')
+#1 {main}
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp1\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp1\htdocs\prototype\app\shared\logout.php:12
+[UNCAUGHT EXCEPTION] Unknown column 'is_active' in 'field list' in C:\xampp\htdocs\prototype\app\admin\super_admin\users.php:68
+#0 C:\xampp\htdocs\prototype\app\admin\super_admin\users.php(68): mysqli->prepare('\r\n            U...')
+#1 {main}
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[UNCAUGHT EXCEPTION] The number of elements in the type definition string must match the number of bind variables in C:\xampp\htdocs\prototype\app\admin\shared\survey.php:261
+#0 C:\xampp\htdocs\prototype\app\admin\shared\survey.php(261): mysqli_stmt->bind_param('sssissiddssssss...', 'CEN-20260216-17...', 'Juan', '09234567898', 45, 'Male', 'Married', 8, 8000, 1000, 'Others', 'Yes', 'Concrete', 'Level II (Commu...', 'Water-sealed', 'Self-Employed', 'No', 'No', 0, 12.269365, 125.3717, 'admin', '2026-02-16', '', 'Central', '2026-02-16', 15, 22)
+#1 {main}
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[UNCAUGHT EXCEPTION] Unknown column 'is_active' in 'field list' in C:\xampp\htdocs\prototype\app\admin\super_admin\users.php:68
+#0 C:\xampp\htdocs\prototype\app\admin\super_admin\users.php(68): mysqli->prepare('\r\n            U...')
+#1 {main}
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[UNCAUGHT EXCEPTION] Unknown column 'cr.barangay_id' in 'on clause' in C:\xampp\htdocs\prototype\app\citizen\my_request.php:65
+#0 C:\xampp\htdocs\prototype\app\citizen\my_request.php(65): mysqli->prepare('\r\n    SELECT \r\n...')
+#1 {main}
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[UNCAUGHT EXCEPTION] Duplicate entry 'REQ-20260313-000004-' for key 'request_number' in C:\xampp\htdocs\prototype\app\citizen\request_document.php:131
+#0 C:\xampp\htdocs\prototype\app\citizen\request_document.php(131): mysqli_stmt->execute()
+#1 {main}
+[UNCAUGHT EXCEPTION] Duplicate entry 'REQ-20260313-000004-' for key 'request_number' in C:\xampp\htdocs\prototype\app\citizen\request_document.php:131
+#0 C:\xampp\htdocs\prototype\app\citizen\request_document.php(131): mysqli_stmt->execute()
+#1 {main}
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[UNCAUGHT EXCEPTION] Unknown column 'c.sex' in 'field list' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'c.household_id' in 'on clause' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'c.sex' in 'field list' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'c.sex' in 'field list' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'c.household_id' in 'on clause' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'c.household_id' in 'on clause' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'c.household_id' in 'on clause' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'cr.household_id' in 'on clause' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'cr.household_id' in 'on clause' in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:31
+#0 C:\xampp\htdocs\prototype\app\admin\generate_pdf.php(31): mysqli->prepare('\r\n    SELECT cr...')
+#1 {main}
+[PHP ERROR] file_get_contents(C:\xampp\htdocs\prototype\app\admin/../templates/indigency_certificate.html): Failed to open stream: No such file or directory in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:66
+[PHP ERROR] Undefined array key "risk_score" in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:95
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[UNCAUGHT EXCEPTION] Duplicate entry 'REQ-20260313-000004-' for key 'request_number' in C:\xampp\htdocs\prototype\app\citizen\request_document.php:131
+#0 C:\xampp\htdocs\prototype\app\citizen\request_document.php(131): mysqli_stmt->execute()
+#1 {main}
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] require_once(../../vendor/dompdf/autoload.inc.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:144
+[UNCAUGHT EXCEPTION] Failed opening required '../../vendor/dompdf/autoload.inc.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:144
+#0 {main}
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1 in C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php:918
+#0 C:\xampp\htdocs\prototype\app\admin\shared\document_requests.php(918): mysqli->query('SELECT COUNT(*)...')
+#1 {main}
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $where_h in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:45
+[PHP ERROR] Undefined variable $where_h in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:46
+[UNCAUGHT EXCEPTION] Unknown column 'r.barangay_id' in 'where clause' in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:52
+#0 C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php(52): mysqli->prepare('SELECT status, ...')
+#1 {main}
+[PHP ERROR] Undefined variable $where_h in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:45
+[PHP ERROR] Undefined variable $where_h in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:46
+[UNCAUGHT EXCEPTION] You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '? AND ? GROUP BY month ORDER BY month DESC LIMIT 12' at line 1 in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:75
+#0 C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php(75): mysqli->query('SELECT DATE_FOR...')
+#1 {main}
+[PHP ERROR] Undefined variable $where_h in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:45
+[PHP ERROR] Undefined variable $where_h in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:46
+[UNCAUGHT EXCEPTION] Unknown column 'r.barangay_id' in 'where clause' in C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php:52
+#0 C:\xampp\htdocs\prototype\app\admin\super_admin\reports.php(52): mysqli->prepare('SELECT status, ...')
+#1 {main}
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1670
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1676
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1688
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1688
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1670
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1676
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1688
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1688
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1671
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1677
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1689
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1689
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1671
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1677
+[PHP ERROR] Undefined variable $color in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1689
+[PHP ERROR] Undefined variable $score in C:\xampp\htdocs\prototype\app\admin\shared\dashboard.php:1689
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] Undefined variable $documentTypes in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] foreach() argument must be of type array|object, null given in C:\xampp\htdocs\prototype\app\citizen\citizen_dashboard.php:915
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[UNCAUGHT EXCEPTION] Unknown column 'barangay' in 'field list' in C:\xampp\htdocs\prototype\app\citizen\citizen_profile.php:280
+#0 C:\xampp\htdocs\prototype\app\citizen\citizen_profile.php(280): mysqli->prepare('\r\n             ...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Table 'barangay_ci_system.notifications' doesn't exist in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:75
+#0 C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php(75): mysqli->prepare('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Table 'barangay_ci_system.notifications' doesn't exist in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:75
+#0 C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php(75): mysqli->prepare('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Table 'barangay_ci_system.notifications' doesn't exist in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:75
+#0 C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php(75): mysqli->prepare('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Table 'barangay_ci_system.notifications' doesn't exist in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:75
+#0 C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php(75): mysqli->prepare('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Table 'barangay_ci_system.notifications' doesn't exist in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:75
+#0 C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php(75): mysqli->prepare('SELECT COUNT(*)...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Table 'barangay_ci_system.notifications' doesn't exist in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:75
+#0 C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php(75): mysqli->prepare('SELECT COUNT(*)...')
+#1 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[PHP ERROR] Undefined variable $citizen in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Trying to access array offset on value of type null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:64
+[PHP ERROR] Undefined variable $db in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+[UNCAUGHT EXCEPTION] Call to a member function prepare() on null in C:\xampp\htdocs\prototype\app\citizen\citizen_notification.php:74
+#0 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'dt.icon_class' in 'field list' in C:\xampp\htdocs\prototype\app\citizen\my_request.php:80
+#0 C:\xampp\htdocs\prototype\app\citizen\my_request.php(80): mysqli->prepare('\r\n    SELECT \r\n...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'dt.color' in 'field list' in C:\xampp\htdocs\prototype\app\citizen\my_request.php:79
+#0 C:\xampp\htdocs\prototype\app\citizen\my_request.php(79): mysqli->prepare('\r\n    SELECT \r\n...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'dt.color' in 'field list' in C:\xampp\htdocs\prototype\app\citizen\my_request.php:79
+#0 C:\xampp\htdocs\prototype\app\citizen\my_request.php(79): mysqli->prepare('\r\n    SELECT \r\n...')
+#1 {main}
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[PHP ERROR] Undefined array key "remarks" in C:\xampp\htdocs\prototype\app\citizen\my_request.php:637
+[UNCAUGHT EXCEPTION] Unknown column 'dt.icon_class' in 'field list' in C:\xampp\htdocs\prototype\app\citizen\my_request.php:80
+#0 C:\xampp\htdocs\prototype\app\citizen\my_request.php(80): mysqli->prepare('\r\n    SELECT \r\n...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'dt.icon_class' in 'field list' in C:\xampp\htdocs\prototype\app\citizen\my_request.php:80
+#0 C:\xampp\htdocs\prototype\app\citizen\my_request.php(80): mysqli->prepare('\r\n    SELECT \r\n...')
+#1 {main}
+[UNCAUGHT EXCEPTION] Unknown column 'dt.icon_class' in 'field list' in C:\xampp\htdocs\prototype\app\citizen\my_request.php:80
+#0 C:\xampp\htdocs\prototype\app\citizen\my_request.php(80): mysqli->prepare('\r\n    SELECT \r\n...')
+#1 {main}
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
