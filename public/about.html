@@ -1,327 +1,340 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About | Arteche · Ready to Serve | Community Intelligence</title>
 
-    <!-- Bootstrap 5 + icons -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | Arteche · Ready to Serve | Community Intelligence</title>
 
-    <style>
-      :root {
-        --primary: #0f2a44; /* deep navy */
-        --secondary: #1f6aa5; /* strong blue */
-        --accent: #2dd4bf; /* fresh teal */
-        --light-bg: #f4f7fb;
-        --border-light: #e9edf2;
-        --stat-red: #c92a2a;
-        --stat-white: #ffffff;
-      }
+  <!-- Bootstrap 5 + icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
 
-      body {
-        font-family: "Segoe UI", Roboto, system-ui, sans-serif;
-        background-color: var(--light-bg);
-        color: #1e2f4e;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
+  <style>
+    :root {
+      --primary: #0f2a44;
+      /* deep navy */
+      --secondary: #1f6aa5;
+      /* strong blue */
+      --accent: #2dd4bf;
+      /* fresh teal */
+      --light-bg: #f4f7fb;
+      --border-light: #e9edf2;
+      --stat-red: #c92a2a;
+      --stat-white: #ffffff;
+    }
 
-      /* Navbar – deep navy */
-      .navbar {
-        background: #0b1f33;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        padding: 0.7rem 0;
-      }
-      .navbar-brand {
-        font-weight: 700;
-        letter-spacing: -0.3px;
-      }
-      .navbar-brand i {
-        color: #ff6b6b;
-      }
+    body {
+      font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+      background-color: var(--light-bg);
+      color: #1e2f4e;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-      /* Redesigned content sections matching index style guides */
-      .about-container {
-        background: white;
-        border-radius: 24px;
-        padding: 2.5rem 2rem;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.02);
-        border: 1px solid white;
-        margin-bottom: 2rem;
-      }
+    /* Navbar – deep navy */
+    .navbar {
+      background: #0b1f33;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      padding: 0.7rem 0;
+    }
 
-      .section-title-redesigned {
-        font-weight: 700;
-        color: #07273c;
-        border-left: 6px solid #c92a2a;
-        padding-left: 1.1rem;
-        margin: 0 0 1.5rem 0;
-        font-size: 1.8rem;
-      }
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
 
-      .feature-item {
-        padding: 1rem 0.5rem;
-        border-bottom: 1px dashed #dee5ed;
-      }
-      .feature-item:last-child {
-        border-bottom: none;
-      }
-      .feature-title {
-        font-weight: 700;
-        color: #0e3a5c;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .feature-title i {
-        color: var(--secondary);
-        font-size: 1.4rem;
-        width: 24px;
-      }
-      .feature-desc {
-        color: #4c617b;
-        font-size: 0.95rem;
-        margin-left: 36px;
-        margin-top: 0.1rem;
-      }
+    .navbar-brand i {
+      color: #ff6b6b;
+    }
 
-      .info-block {
-        background: #fafcfd;
-        border-radius: 18px;
-        padding: 1.5rem;
-        border: 1px solid #dae2ed;
-        height: 100%;
-      }
+    /* Redesigned content sections matching index style guides */
+    .about-container {
+      background: white;
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.02);
+      border: 1px solid white;
+      margin-bottom: 2rem;
+    }
 
-      .btn-outline-merah {
-        border: 1.5px solid #b52b2b;
-        color: #b52b2b;
-        border-radius: 40px;
-        padding: 0.5rem 2rem;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: all 0.2s ease;
-      }
-      .btn-outline-merah:hover {
-        background: #b52b2b;
-        color: white;
-      }
+    .section-title-redesigned {
+      font-weight: 700;
+      color: #07273c;
+      border-left: 6px solid #c92a2a;
+      padding-left: 1.1rem;
+      margin: 0 0 1.5rem 0;
+      font-size: 1.8rem;
+    }
 
-      .survey-badge {
-        background: #2dd4bf;
-        color: #011c1c;
-        border-radius: 30px;
-        padding: 0.4rem 1.5rem;
-        font-weight: 600;
-      }
+    .feature-item {
+      padding: 1rem 0.5rem;
+      border-bottom: 1px dashed #dee5ed;
+    }
 
-      .footer {
-        background: #0a1e2c;
-        color: #b6ccda;
-        padding: 2.8rem 0 2rem;
-        margin-top: auto; /* Sticky layout technique */
-        border-top: 5px solid #9f2c2c;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- NAVBAR WITH MATCHING GLASSMORPHISM -->
-    <nav
-      class="navbar navbar-expand-lg navbar-dark sticky-top"
-      style="
+    .feature-item:last-child {
+      border-bottom: none;
+    }
+
+    .feature-title {
+      font-weight: 700;
+      color: #0e3a5c;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-title i {
+      color: var(--secondary);
+      font-size: 1.4rem;
+      width: 24px;
+    }
+
+    .feature-desc {
+      color: #4c617b;
+      font-size: 0.95rem;
+      margin-left: 36px;
+      margin-top: 0.1rem;
+    }
+
+    .info-block {
+      background: #fafcfd;
+      border-radius: 18px;
+      padding: 1.5rem;
+      border: 1px solid #dae2ed;
+      height: 100%;
+    }
+
+    .btn-outline-merah {
+      border: 1.5px solid #b52b2b;
+      color: #b52b2b;
+      border-radius: 40px;
+      padding: 0.5rem 2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline-merah:hover {
+      background: #b52b2b;
+      color: white;
+    }
+
+    .survey-badge {
+      background: #2dd4bf;
+      color: #011c1c;
+      border-radius: 30px;
+      padding: 0.4rem 1.5rem;
+      font-weight: 600;
+    }
+
+    .footer {
+      background: #0a1e2c;
+      color: #b6ccda;
+      padding: 2.8rem 0 2rem;
+      margin-top: auto;
+      /* Sticky layout technique */
+      border-top: 5px solid #9f2c2c;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR WITH MATCHING GLASSMORPHISM -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="
         background: rgba(11, 31, 51, 0.75);
         backdrop-filter: blur(12px) saturate(180%);
         -webkit-backdrop-filter: blur(12px) saturate(180%);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      "
-    >
-      <div class="container">
-        <a class="navbar-brand" href="index.php">
-          <i class="bi bi-flag-fill me-1" style="color: #ffb4b4"></i>
-          AR<span style="color: #ffd966">TECHE</span> · CIS
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="mainNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../app/shared/components/map.php">Map</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn" href="on_boarding.html">Login</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- === MAIN ABOUT INTERFACE CONTENT === -->
-    <div class="container my-5">
-      <div class="row">
-        <div class="col-lg-10 mx-auto">
-          
-          <div class="about-container">
-            <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2">
-              <h1 class="section-title-redesigned mb-0">
-                About the Community Intelligence System
-              </h1>
-              <span class="survey-badge">
-                <i class="bi bi-shield-check-fill me-1"></i> Official Platform
-              </span>
-            </div>
-
-            <!-- Overview and Mission Row Elements -->
-            <div class="row g-4 mb-5">
-              <div class="col-md-6">
-                <div class="info-block">
-                  <h4 class="fw-bold text-primary mb-3">
-                    <i class="bi bi-info-circle-fill text-secondary me-2"></i>System Overview
-                  </h4>
-                  <p class="text-secondary leading-relaxed mb-0">
-                    The Arteche Community Intelligence System (CIS) is a comprehensive data platform engineered to streamline local governance and public services across all 27 barangays of the Municipality of Arteche, Eastern Samar.
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-block">
-                  <h4 class="fw-bold text-primary mb-3">
-                    <i class="bi bi-bullseye text-danger me-2"></i>Our Mission
-                  </h4>
-                  <p class="text-secondary leading-relaxed mb-0">
-                    To empower municipal and barangay leadership with high-fidelity, data-driven insights, maximize resource optimization, accelerate document service execution, and lower vulnerabilities via precise poverty targeting.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Operational Feature Matrices -->
-            <h4 class="fw-bold text-primary mb-3">
-              <i class="bi bi-sliders me-2 text-secondary"></i>Core Architecture & Capabilities
-            </h4>
-            <div class="row g-2 mb-5">
-              <div class="col-md-6">
-                <div class="feature-item">
-                  <div class="feature-title">
-                    <i class="bi bi-clipboard-data-fill"></i> Household Management
-                  </div>
-                  <div class="feature-desc">Comprehensive structural survey metrics with integrated vulnerability algorithms.</div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-title">
-                    <i class="bi bi-map-fill"></i> Advanced GIS Visualization
-                  </div>
-                  <div class="feature-desc">Dynamic spatial heatmaps indicating real-time resource allocations and risk trends.</div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-title">
-                    <i class="bi bi-file-earmark-text-fill"></i> Digital Certificate Handling
-                  </div>
-                  <div class="feature-desc">Paperless filing pipelines for fast-track processing of clearances and local indigency papers.</div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="feature-item">
-                  <div class="feature-title">
-                    <i class="bi bi-activity"></i> Risk Analysis Protocols
-                  </div>
-                  <div class="feature-desc">Automated mathematical scaling flags highly critical situations for instant state aid.</div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-title">
-                    <i class="bi bi-cpu-fill"></i> Consolidated Framework
-                  </div>
-                  <div class="feature-desc">Unified database ecosystems syncing performance indices across all 27 distinct sectors.</div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-title">
-                    <i class="bi bi-phone-fill"></i> Citizen-Centric Accessibility
-                  </div>
-                  <div class="feature-desc">Accessible layouts designed to bridge localized infrastructure networks seamlessly.</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Data Privacy Safehaven Frame -->
-            <div class="p-4 rounded-4" style="background: #fff5f5; border: 1px solid #ffcccc;">
-              <h5 class="fw-bold text-danger mb-2">
-                <i class="bi bi-shield-fill-check me-2"></i>Statutory Privacy Framework Compliance
-              </h5>
-              <p class="small mb-0 text-dark" style="opacity: 0.85;">
-                This system operates in absolute conformity with the <strong>Data Privacy Act of 2012 (Republic Act No. 10173)</strong> of the Philippines. Protected metrics logged under census workflows are gathered exclusively for legitimate government profiling, hazard identification, and responsive social infrastructure enhancements.
-              </p>
-            </div>
-
-            <!-- Backwards Navigation Trigger -->
-            <div class="text-center mt-5">
-              <a href="index.php" class="btn btn-outline-merah">
-                <i class="bi bi-arrow-left me-2"></i>Return to Home Base
-              </a>
-            </div>
-
-          </div>
-
-        </div>
+      ">
+    <div class="container">
+      <a class="navbar-brand" href="index.php">
+        <i class="bi bi-flag-fill me-1" style="color: #ffb4b4"></i>
+        AR<span style="color: #ffd966">TECHE</span> · CIS
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../app/shared/components/map.php">Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn" href="on_boarding.html">Login</a>
+          </li>
+        </ul>
       </div>
     </div>
+  </nav>
 
-    <!-- === FOOTER === -->
-    <footer class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <h5 style="color: white">
-              <i class="bi bi-flag-fill me-2" style="color: #ffaaaa"></i>
-              Arteche Community Intelligence System
+  <!-- === MAIN ABOUT INTERFACE CONTENT === -->
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+
+        <div class="about-container">
+          <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2">
+            <h1 class="section-title-redesigned mb-0">
+              About the Community Intelligence System
+            </h1>
+            <span class="survey-badge">
+              <i class="bi bi-shield-check-fill me-1"></i> Official Platform
+            </span>
+          </div>
+
+          <!-- Overview and Mission Row Elements -->
+          <div class="row g-4 mb-5">
+            <div class="col-md-6">
+              <div class="info-block">
+                <h4 class="fw-bold text-primary mb-3">
+                  <i class="bi bi-info-circle-fill text-secondary me-2"></i>System Overview
+                </h4>
+                <p class="text-secondary leading-relaxed mb-0">
+                  The Arteche Community Intelligence System (CIS) is a comprehensive data platform engineered to
+                  streamline local governance and public services across all 27 barangays of the Municipality of
+                  Arteche, Eastern Samar.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-block">
+                <h4 class="fw-bold text-primary mb-3">
+                  <i class="bi bi-bullseye text-danger me-2"></i>Our Mission
+                </h4>
+                <p class="text-secondary leading-relaxed mb-0">
+                  To empower municipal and barangay leadership with high-fidelity, data-driven insights, maximize
+                  resource optimization, accelerate document service execution, and lower vulnerabilities via precise
+                  poverty targeting.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operational Feature Matrices -->
+          <h4 class="fw-bold text-primary mb-3">
+            <i class="bi bi-sliders me-2 text-secondary"></i>Core Architecture & Capabilities
+          </h4>
+          <div class="row g-2 mb-5">
+            <div class="col-md-6">
+              <div class="feature-item">
+                <div class="feature-title">
+                  <i class="bi bi-clipboard-data-fill"></i> Household Management
+                </div>
+                <div class="feature-desc">Comprehensive structural survey metrics with integrated vulnerability
+                  algorithms.</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-title">
+                  <i class="bi bi-map-fill"></i> Advanced GIS Visualization
+                </div>
+                <div class="feature-desc">Dynamic spatial heatmaps indicating real-time resource allocations and risk
+                  trends.</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-title">
+                  <i class="bi bi-file-earmark-text-fill"></i> Digital Certificate Handling
+                </div>
+                <div class="feature-desc">Paperless filing pipelines for fast-track processing of clearances and local
+                  indigency papers.</div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="feature-item">
+                <div class="feature-title">
+                  <i class="bi bi-activity"></i> Risk Analysis Protocols
+                </div>
+                <div class="feature-desc">Automated mathematical scaling flags highly critical situations for instant
+                  state aid.</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-title">
+                  <i class="bi bi-cpu-fill"></i> Consolidated Framework
+                </div>
+                <div class="feature-desc">Unified database ecosystems syncing performance indices across all 27 distinct
+                  sectors.</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-title">
+                  <i class="bi bi-phone-fill"></i> Citizen-Centric Accessibility
+                </div>
+                <div class="feature-desc">Accessible layouts designed to bridge localized infrastructure networks
+                  seamlessly.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Privacy Safehaven Frame -->
+          <div class="p-4 rounded-4" style="background: #fff5f5; border: 1px solid #ffcccc;">
+            <h5 class="fw-bold text-danger mb-2">
+              <i class="bi bi-shield-fill-check me-2"></i>Statutory Privacy Framework Compliance
             </h5>
-            <p style="color: #aac7db">
-              Serving all barangays of Arteche, Eastern Samar. Committed to 
-              responsive and transparent governance.<br />
-              All data protected under the Data Privacy Act of 2012 (RA 10173).
+            <p class="small mb-0 text-dark" style="opacity: 0.85;">
+              This system operates in absolute conformity with the <strong>Data Privacy Act of 2012 (Republic Act No.
+                10173)</strong> of the Philippines. Protected metrics logged under census workflows are gathered
+              exclusively for legitimate government profiling, hazard identification, and responsive social
+              infrastructure enhancements.
             </p>
           </div>
-          <div class="col-md-4 text-md-end">
-            <i class="bi bi-telephone me-2"></i> 055-321-7890<br />
-            <i class="bi bi-envelope me-2"></i> cis@arteche.gov.ph<br />
-            <span class="badge bg-light text-dark mt-2">#ArtecheCares</span>
+
+          <!-- Backwards Navigation Trigger -->
+          <div class="text-center mt-5">
+            <a href="index.html" class="btn btn-outline-merah">
+              <i class="bi bi-arrow-left me-2"></i>Return to Home Base
+            </a>
           </div>
+
         </div>
-        <hr class="mt-4" style="border-color: #3d637b" />
-        <div class="text-center pt-3">
-          <p class="mb-0">
-            © 2026 Municipality of Arteche – Community Intelligence System. All
-            rights reserved.
+
+      </div>
+    </div>
+  </div>
+
+  <!-- === FOOTER === -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <h5 style="color: white">
+            <i class="bi bi-flag-fill me-2" style="color: #ffaaaa"></i>
+            Arteche Community Intelligence System
+          </h5>
+          <p style="color: #aac7db">
+            Serving all barangays of Arteche, Eastern Samar. Committed to
+            responsive and transparent governance.<br />
+            All data protected under the Data Privacy Act of 2012 (RA 10173).
           </p>
-          <p class="small mt-2">
-            <i class="bi bi-geo-alt-fill text-danger"></i> Arteche, Eastern Samar, Philippines
-          </p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <i class="bi bi-telephone me-2"></i> 055-321-7890<br />
+          <i class="bi bi-envelope me-2"></i> cis@arteche.gov.ph<br />
+          <span class="badge bg-light text-dark mt-2">#ArtecheCares</span>
         </div>
       </div>
-    </footer>
+      <hr class="mt-4" style="border-color: #3d637b" />
+      <div class="text-center pt-3">
+        <p class="mb-0">
+          © 2026 Municipality of Arteche – Community Intelligence System. All
+          rights reserved.
+        </p>
+        <p class="small mt-2">
+          <i class="bi bi-geo-alt-fill text-danger"></i> Arteche, Eastern Samar, Philippines
+        </p>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Bootstrap Bundle JS Asset -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <!-- Bootstrap Bundle JS Asset -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

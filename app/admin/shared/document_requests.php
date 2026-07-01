@@ -720,8 +720,9 @@ if ($barangay_filter) {
                                 class="badge bg-info ms-1"><?= htmlspecialchars($current_barangay_name ?: 'Barangay Admin') ?></span>
                         <?php endif; ?>
                     </span>
-                    <a class="nav-item nav-link text-white" href="logout.php">
-                        <i class="bi bi-box-arrow-right"></i> Logout
+                    <a class="nav-item nav-link text-white"
+                        href="../../shared/logout.php">
+                        Logout
                     </a>
                 </div>
             </div>
@@ -915,14 +916,14 @@ if ($barangay_filter) {
 
         <!-- Requests Table -->
         <div class="table-container">
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                 <div>
                     <h5 class="mb-0">
                         <i class="bi bi-list-check"></i> Document Requests
                         <span class="badge bg-secondary ms-2"><?= count($requests) ?> records</span>
                     </h5>
                     <?php
-$submitted_count = 0;
+                    $submitted_count = 0;
                     if ($admin_barangay_id) {
                         $stmt = $conn->prepare("SELECT COUNT(*) as cnt FROM citizen_requests cr JOIN citizens c ON cr.citizen_id = c.id WHERE cr.status = 'Submitted' AND c.barangay_id = ?");
                         $stmt->bind_param("i", $admin_barangay_id);
@@ -949,15 +950,17 @@ $submitted_count = 0;
             </div>
 
             <script>
-            function markAllViewed() {
-                if (confirm('Mark all new Submitted requests as Under Review / Viewed? This will clear the navbar badge.')) {
-                    fetch('', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        body: 'action=mark_all_viewed&csrf=<?= $_SESSION['csrf'] ?? '' ?>'
-                    }).then(r => r.text()).then(() => location.reload());
+                function markAllViewed() {
+                    if (confirm('Mark all new Submitted requests as Under Review / Viewed? This will clear the navbar badge.')) {
+                        fetch('', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: 'action=mark_all_viewed&csrf=<?= $_SESSION['csrf'] ?? '' ?>'
+                        }).then(r => r.text()).then(() => location.reload());
+                    }
                 }
-            }
             </script>
 
             <?php if (empty($requests)): ?>
@@ -991,7 +994,7 @@ $submitted_count = 0;
                                 } elseif ($days_pending > 3 && $req['status'] == 'Submitted') {
                                     $row_class = 'priority-medium';
                                 }
-                                ?>
+                            ?>
                                 <tr class="<?= $row_class ?>">
                                     <td>
                                         <code><?= htmlspecialchars($req['request_number'] ?? 'N/A') ?></code>
@@ -1259,7 +1262,9 @@ $submitted_count = 0;
             }
 
             const csvContent = csv.join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const blob = new Blob([csvContent], {
+                type: 'text/csv'
+            });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -1269,7 +1274,7 @@ $submitted_count = 0;
         }
 
         // Auto-hide alerts after 5 seconds
-        setTimeout(function () {
+        setTimeout(function() {
             let alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 let bsAlert = new bootstrap.Alert(alert);

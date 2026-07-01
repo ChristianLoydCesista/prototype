@@ -10,22 +10,26 @@ require_once __DIR__ . '/config/constants.php';
 
 // setup base paths/urls
 if (!defined('BASE_PATH')) {
-    define('BASE_PATH', realpath(__DIR__ . '/../..'));
+    //define('BASE_PATH', realpath(__DIR__ . '/../..'));
+    define('BASE_PATH', dirname(__DIR__, 2));
 }
 
 if (!defined('BASE_URL')) {
     $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $script = dirname($_SERVER['PHP_SELF']);
-    $script = rtrim($script, '/\\');
+    //$script = dirname($_SERVER['PHP_SELF']);
+    $script = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
     define('BASE_URL', $scheme . '://' . $host . $script . '/');
 }
 
 // ensure log directory exists
 if (!defined('LOG_PATH')) {
-    define('LOG_PATH', BASE_PATH . '/logs');
+    //define('LOG_PATH', BASE_PATH . '/logs');
+    define('LOG_PATH', dirname(__DIR__, 2) . '/logs');
     if (!is_dir(LOG_PATH)) {
-        @mkdir(LOG_PATH, 0777, true);
+        if (!@mkdir(LOG_PATH, 0755, true)) {
+            error_log("Failed to create log directory: " . LOG_PATH);
+        }
     }
 }
 
@@ -49,12 +53,6 @@ set_exception_handler(function ($e) {
 });
 
 // ---------------------------------------------------------------------------
-// session management (wrapping existing Session class)
-// ---------------------------------------------------------------------------
-require_once __DIR__ . '/includes/Session.php';
-$session = new Session();   // starts session and handles regeneration
-
-// ---------------------------------------------------------------------------
 // database helper
 // ---------------------------------------------------------------------------
 require_once __DIR__ . '/config/database.php';
@@ -62,10 +60,20 @@ require_once __DIR__ . '/config/database.php';
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // ---------------------------------------------------------------------------
+// session management (wrapping existing Session class)
+// ---------------------------------------------------------------------------
+require_once __DIR__ . '/includes/Session.php';
+$session = new Session();   // starts session and handles regeneration
+
+// ---------------------------------------------------------------------------
 // common utilities
 // ---------------------------------------------------------------------------
 require_once __DIR__ . '/includes/Auth.php';
-require_once __DIR__ . '/../admin/utils/risk_score.php';
+//require_once __DIR__ . '/../admin/utils/risk_score.php';
+$riskFile = __DIR__ . '/../admin/utils/risk_score.php';
+if (file_exists($riskFile)) {
+    require_once $riskFile;
+}
 
 // ---------------------------------------------------------------------------
 // CSRF helpers
@@ -106,13 +114,24 @@ spl_autoload_register(function ($class) {
 // ---------------------------------------------------------------------------
 
 // make $conn and $auth available without re-declaring each file
-$conn = getDB();
-$auth = new Auth();
+try {
+    $conn = getDB();
+} catch (Exception $e) {
+    error_log("DB Init Failed: " . $e->getMessage());
+    die("System temporarily unavailable.");
+}
+
+try {
+   $auth = new Auth();
+} catch (Exception $e) {
+    error_log("AUTH Init Failed: " . $e->getMessage());
+    die("System temporarily unavailable.");
+}
+
 
 // convenience wrappers for session data
-function current_user() {
+function current_user()
+{
     global $session;
     return $session;
 }
-
-?>

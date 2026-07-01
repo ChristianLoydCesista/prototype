@@ -12,5 +12,5 @@ session_destroy();
 session_destroy();
 
 // Redirect to login page
-header("Location: ../../public/index.html");
+header("Location: " . SITE_URL . "public/index.html");
 exit;

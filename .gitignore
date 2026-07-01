@@ -1,6 +1,20 @@
 # IDE
 .vscode/
 
+# Database dumps
+*.sql
+*.sqlite
+*.db
+
+# Environment config (VERY IMPORTANT)
+.env
+
+# Logs
+*.log
+
+# Vendor (if using composer)
+vendor/
+
 # OS
 .DS_Store
 Thumbs.db

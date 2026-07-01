@@ -7,7 +7,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
 }
 
 $file = isset($_GET['file']) ? htmlspecialchars($_GET['file']) : 'N/A';
-$download_url = '/prototype/public/uploads/documents/' . $file;
+$download_url = SITE_URL . 'public/uploads/documents/' . rawurlencode($file);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,9 +43,7 @@ $download_url = '/prototype/public/uploads/documents/' . $file;
         </div>
         
         <div class="d-grid gap-3 col-8 mx-auto">
-            <a href="shared/document_requests.php" class="btn-back">
-                <i class="bi bi-arrow-left me-2"></i> Back to Requests
-            </a>
+            <a href="shared/document_requests.php" class="btn btn-secondary btn-back">Back to Requests</a>
         </div>
         
         <div class="mt-5 pt-4 border-top">
