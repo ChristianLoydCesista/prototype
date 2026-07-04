@@ -9,11 +9,24 @@
 # Environment config (VERY IMPORTANT)
 .env
 
-# Logs
-*.log
-
 # Vendor (if using composer)
 vendor/
+
+# backups
+backup_database/
+database/backups/
+*.sql
+
+# logs
+logs/
+
+# uploads (CRITICAL)
+public/uploads/
+
+# config local files
+config/constants.php
+config/database.php
+app/shared/config/environment.php
 
 # OS
 .DS_Store

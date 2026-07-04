@@ -3,6 +3,22 @@
 // Centralised initialization for the CIS application.
 
 // ---------------------------------------------------------------------------
+// 1. Security Overrides
+// ---------------------------------------------------------------------------
+// Force errors to be hidden from the browser and stricly logged to a file.
+ini_set('display_errors', '0');
+ini_set('display_startup_errors', 0);
+error_reporting(E_ALL);
+
+// Enforce Strict, secure session parameters globally
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_samesite', 'Strict');
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    ini_set('session.cookie_secure', 1);
+}
+
+// ---------------------------------------------------------------------------
 // environment & configuration
 // ---------------------------------------------------------------------------
 // load constants (DB credentials, SITE_URL, etc.)
@@ -10,21 +26,18 @@ require_once __DIR__ . '/config/constants.php';
 
 // setup base paths/urls
 if (!defined('BASE_PATH')) {
-    //define('BASE_PATH', realpath(__DIR__ . '/../..'));
     define('BASE_PATH', dirname(__DIR__, 2));
 }
 
 if (!defined('BASE_URL')) {
     $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    //$script = dirname($_SERVER['PHP_SELF']);
     $script = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
     define('BASE_URL', $scheme . '://' . $host . $script . '/');
 }
 
 // ensure log directory exists
 if (!defined('LOG_PATH')) {
-    //define('LOG_PATH', BASE_PATH . '/logs');
     define('LOG_PATH', dirname(__DIR__, 2) . '/logs');
     if (!is_dir(LOG_PATH)) {
         if (!@mkdir(LOG_PATH, 0755, true)) {
@@ -37,19 +50,28 @@ if (!defined('LOG_PATH')) {
 // error/exception handling
 // ---------------------------------------------------------------------------
 set_error_handler(function ($severity, $message, $file, $line) {
-    $msg = "[PHP ERROR] $message in $file:$line";
+    // Only log the error, Never echo it in production
+    $msg = "[" . date('Y-m-d H:i:s') . "] [PHP ERROR] $message in $file:$line";
     error_log($msg . "\n", 3, LOG_PATH . '/errors.log');
-    if (ini_get('display_errors')) {
-        echo "<b>Error:</b> $message in $file:$line";
-    }
+    
+    // Convert errors to exceptions for graceful handling
+    throw new ErrorException($message, 0, $severity, $file, $line);
 });
 
 set_exception_handler(function ($e) {
-    $msg = "[UNCAUGHT EXCEPTION] " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine() . "\n" . $e->getTraceAsString();
+    /*$msg = "[UNCAUGHT EXCEPTION] " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine() . "\n" . $e->getTraceAsString();
     error_log($msg . "\n", 3, LOG_PATH . '/errors.log');
     if (ini_get('display_errors')) {
         echo "<b>Exception:</b> " . htmlspecialchars($e->getMessage());
+    }*/
+    $msg = "[" . date('Y-m-d H:i:s') . "] [EXCEPTION] " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine();
+    error_log($msg . "\n", 3, LOG_PATH . '/errors.log');
+    
+    // Display a generic, safe fail message to the user
+    if (!headers_sent()) {
+        header("HTTP/1.1 500 Internal Server Error");
     }
+    die("A system error occurred. Please try again later.");
 });
 
 // ---------------------------------------------------------------------------
@@ -69,7 +91,6 @@ $session = new Session();   // starts session and handles regeneration
 // common utilities
 // ---------------------------------------------------------------------------
 require_once __DIR__ . '/includes/Auth.php';
-//require_once __DIR__ . '/../admin/utils/risk_score.php';
 $riskFile = __DIR__ . '/../admin/utils/risk_score.php';
 if (file_exists($riskFile)) {
     require_once $riskFile;

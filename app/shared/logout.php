@@ -4,13 +4,9 @@ require_once __DIR__ . '/bootstrap.php';
 
 global $session;
 
-// vendor code doesn't provide a logout method, so destroy manually
-$_SESSION = [];
-session_destroy();
+// User the custom, secure logout method
+$session->logout();
 
-// Destroy the session
-session_destroy();
-
-// Redirect to login page
+// Redirect usign the dynamically generated Base URL
 header("Location: " . SITE_URL . "public/index.html");
 exit;
