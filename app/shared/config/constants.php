@@ -2,8 +2,21 @@
 // config/constants.php
 
 // Site Information
+// Development
+define('BASE_PATH', '/prototype/');
+// Production
+// define('BASE_PATH', '/');
+
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    ? 'https://'
+    : 'http://';
+
+define(
+    'SITE_URL',
+    $protocol . $_SERVER['HTTP_HOST'] . BASE_PATH
+);
+
 define('SITE_NAME', 'Arteche Citizen Portal');
-define('SITE_URL', 'http://localhost/prototype/');
 define('SITE_EMAIL', 'citizen@arteche.gov.ph');
 
 // Email/SMTP Configuration
@@ -45,11 +58,13 @@ define('PASSWORD_COST', 12); // Bcrypt cost factor
 define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
 define('ALLOWED_FILE_TYPES', 'jpg,jpeg,png,pdf,doc,docx');
 
-// Database settings
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'barangay_ci_system');
+// ==========================
+// DATABASE CONFIG (HOSTING SAFE)
+// ==========================
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: 'barangay_ci_system');
 
 // Risk score thresholds
 define('RISK_LOW_MAX', 30);
@@ -87,4 +102,3 @@ $paymentColors = [
     'Free' => 'info',
     'Waived' => 'secondary'
 ];
-?>

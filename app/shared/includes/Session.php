@@ -1,20 +1,53 @@
 <?php
-// includes/Session.php
 class Session
 {
+
+    // Define a fallback timeout just in case global constant are not set or missing
+    private const DEFAULT_SESSION_TIMEOUT = 1800; // 30 minutes
 
     public function __construct()
     {
         if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+            session_start([
+                'use_strict_mode' => 1,
+                'cookie_httponly' => 1,
+                'cookie_samesite' => 1
+            ]);
         }
 
-        // Regenerate session ID periodically for security
+        $this->enforceSecurityProtocols();
+
+        /* Regenerate session ID periodically for security
         if (!isset($_SESSION['created'])) {
             $_SESSION['created'] = time();
         } else if (time() - $_SESSION['created'] > 1800) {
             session_regenerate_id(true);
             $_SESSION['created'] = time();
+        }*/
+    }
+
+    // ============================================
+    // HANDLE SESSION REGISTRATION AND SECURITY
+    // ============================================
+    private function enforceSecurityProtocols() {
+        $currentTime = time();
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+
+        // Browser Fingerprinting (Anti-Hijacking)
+        if (!isset($_SESSION['user_agent'])) {
+            $_SESSION['user_agent'] = $userAgent;
+        } elseif ($_SESSION['user_agent'] !== $userAgent) {
+            // if the browser changes mid-session, destroy it immediately
+            $this->destroy();
+            return;
+        }
+
+        // Periodic Session Regeneration
+        if (!isset($_SESSION['created'])) {
+            $_SESSION['created'] = $currentTime;
+        } else if ($currentTime - $_SESSION['created'] > self::DEFAULT_SESSION_TIMEOUT) {
+            session_regenerate_id(true);
+            $_SESSION['created'] = $currentTime;
         }
     }
 
@@ -41,8 +74,7 @@ class Session
         $_SESSION['last_activity'] = time();
 
         // Clear any staff session if exists
-        unset($_SESSION['user_logged_in']);
-        unset($_SESSION['user']);
+        unset($_SESSION['user_logged_in'], $_SESSION['user']);
     }
 
     // Check if citizen is logged in
@@ -50,7 +82,9 @@ class Session
     {
         if (isset($_SESSION['citizen_logged_in']) && $_SESSION['citizen_logged_in'] === true) {
             // Check session timeout
-            if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > SESSION_TIMEOUT)) {
+            $timeout = defined('SESSION_TIMEOUT') ? SESSION_TIMEOUT : self::DEFAULT_SESSION_TIMEOUT;
+
+            if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
                 $this->logout();
                 return false;
             }
@@ -62,15 +96,14 @@ class Session
     }
 
     // Get citizen data
-    public function getCitizen()
+    public function getCitizen(): ?array
     {
-        return isset($_SESSION['citizen']) ? $_SESSION['citizen'] : null;
+        return $_SESSION['citizen'] ?? null;
     }
 
-    // Get citizen ID
-    public function getCitizenId()
+   public function getCitizenId(): ?int
     {
-        return isset($_SESSION['citizen']['id']) ? $_SESSION['citizen']['id'] : null;
+        return $_SESSION['citizen']['id'] ?? null;
     }
 
     // ============================================
@@ -94,8 +127,7 @@ class Session
         $_SESSION['last_activity'] = time();
 
         // Clear any citizen session if exists
-        unset($_SESSION['citizen_logged_in']);
-        unset($_SESSION['citizen']);
+        unset($_SESSION['citizen_logged_in'], $_SESSION['citizen']);
     }
 
     // Check if staff is logged in
@@ -103,7 +135,9 @@ class Session
     {
         if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
             // Check session timeout
-            if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > SESSION_TIMEOUT)) {
+            $timeout = defined('SESSION_TIMEOUT') ? SESSION_TIMEOUT : self::DEFAULT_SESSION_TIMEOUT;
+            
+            if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
                 $this->logout();
                 return false;
             }
@@ -115,31 +149,31 @@ class Session
     }
 
     // Get staff data
-    public function getStaff()
+    public function getStaff(): ?array
     {
         return isset($_SESSION['user']) ? $_SESSION['user'] : null;
     }
 
     // Get staff ID
-    public function getStaffId()
+    public function getStaffId(): ?int
     {
-        return isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : null;
+        return $_SESSION['user']['id'] ?? null;
     }
 
     // Get staff role
-    public function getStaffRole()
+    public function getStaffRole(): ?string
     {
-        return isset($_SESSION['user_type']) ? $_SESSION['user_type'] : null;
+        return $_SESSION['user_type'] ?? null;
     }
 
     // Check if user is super admin
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
         return $this->isStaffLoggedIn() && $_SESSION['user_type'] === 'super_admin';
     }
 
     // Check if user is barangay admin
-    public function isBarangayAdmin()
+    public function isBarangayAdmin(): bool
     {
         return $this->isStaffLoggedIn() && $_SESSION['user_type'] === 'barangay_admin';
     }
@@ -155,18 +189,18 @@ class Session
     }
 
     // Get user type
-    public function getUserType()
+    public function getUserType(): ?string
     {
         if ($this->isCitizenLoggedIn()) {
             return 'citizen';
         } elseif ($this->isStaffLoggedIn()) {
-            return $_SESSION['user_type'];
+            return $_SESSION['user_type'] ?? null;
         }
         return null;
     }
 
     // Get user's barangay ID (works for both citizen and staff)
-    public function getBarangayId()
+    public function getBarangayId(): ?int
     {
         if ($this->isCitizenLoggedIn()) {
             return $this->getCitizen()['barangay_id'] ?? null;
@@ -177,11 +211,11 @@ class Session
     }
 
     // Get user's name (works for both citizen and staff)
-    public function getUserName()
+    public function getUserName(): ?string
     {
         if ($this->isCitizenLoggedIn()) {
             $citizen = $this->getCitizen();
-            return $citizen['full_name'] ?? $citizen['first_name'] . ' ' . $citizen['last_name'];
+            return $citizen['full_name'] ?? ($citizen['first_name'] . ' ' . $citizen['last_name']);
         } elseif ($this->isStaffLoggedIn()) {
             $staff = $this->getStaff();
             return $staff['full_name'] ?? $staff['username'];
@@ -194,13 +228,13 @@ class Session
     // ============================================
 
     // Set flash message
-    public function setFlash($type, $message)
+    public function setFlash(string $type, string $message): void
     {
         $_SESSION['flash'][$type] = $message;
     }
 
     // Get flash message
-    public function getFlash($type)
+    public function getFlash(string $type): ?string
     {
         if (isset($_SESSION['flash'][$type])) {
             $message = $_SESSION['flash'][$type];
@@ -211,7 +245,7 @@ class Session
     }
 
     // Has flash message
-    public function hasFlash($type = null)
+   public function hasFlash(?string $type = null): bool
     {
         if ($type) {
             return isset($_SESSION['flash'][$type]);
@@ -220,13 +254,13 @@ class Session
     }
 
     // Set error
-    public function setError($error)
+    public function setError(string $error): void
     {
         $_SESSION['errors'][] = $error;
     }
 
     // Get errors
-    public function getErrors()
+    public function getErrors(): array
     {
         if (isset($_SESSION['errors'])) {
             $errors = $_SESSION['errors'];
@@ -237,7 +271,7 @@ class Session
     }
 
     // Has errors
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return !empty($_SESSION['errors']);
     }
@@ -247,42 +281,38 @@ class Session
     // ============================================
 
     // Regenerate session ID
-    public function regenerate()
+    public function regenerate(): void
     {
         session_regenerate_id(true);
         $_SESSION['created'] = time();
     }
 
     // Set session data
-    public function set($key, $value)
+    public function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;
     }
 
     // Get session data
-    public function get($key)
+   public function get(string $key): mixed
     {
-        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+        return $_SESSION[$key] ?? null;
     }
 
     // Remove session data
-    public function remove($key)
+    public function remove(string $key): void
     {
-        if (isset($_SESSION[$key])) {
-            unset($_SESSION[$key]);
-        }
+        unset($_SESSION[$key]);
     }
 
     // Logout
-    public function logout()
+    public function logout(): void
     {
-        // Store any redirect URL before clearing session
         $redirect_url = $_SESSION['redirect_url'] ?? null;
+        $flash = $_SESSION['flash'] ?? null; // Preserve flash messages across logout
 
-        // Unset all session variables
-        $_SESSION = array();
+        $_SESSION = [];
 
-        // Delete session cookie
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(
@@ -296,19 +326,25 @@ class Session
             );
         }
 
-        // Destroy session
         session_destroy();
-
-        // Start new session to store redirect if needed
         session_start();
+
         if ($redirect_url) {
             $_SESSION['redirect_url'] = $redirect_url;
+        }
+        if ($flash) {
+            $_SESSION['flash'] = $flash;
         }
     }
 
     // Destroy session completely
-    public function destroy()
+   public function destroy(): void
     {
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+        }
         session_destroy();
     }
 
@@ -317,13 +353,13 @@ class Session
     // ============================================
 
     // Set redirect URL
-    public function setRedirect($url)
+    public function setRedirect(string $url): void
     {
         $_SESSION['redirect_url'] = $url;
     }
 
     // Get and clear redirect URL
-    public function getRedirect()
+    public function getRedirect(): ?string
     {
         if (isset($_SESSION['redirect_url'])) {
             $url = $_SESSION['redirect_url'];
@@ -334,7 +370,7 @@ class Session
     }
 
     // Check if user has access to requested page
-    public function checkAccess($required_role = null, $redirect_url = 'index.php')
+    public function checkAccess(?string $required_role = null, string $redirect_url = 'index.php'): void
     {
         if (!$this->isLoggedIn()) {
             $this->setRedirect($_SERVER['REQUEST_URI']);
@@ -343,28 +379,30 @@ class Session
         }
 
         if ($required_role) {
-            $user_type = $this->getUserType();
+            $role_met = false;
+            $error_msg = '';
 
-            if ($required_role === 'citizen' && !$this->isCitizenLoggedIn()) {
-                $this->setFlash('error', 'Citizen access required');
-                header("Location: $redirect_url");
-                exit;
+            switch ($required_role) {
+                case 'citizen':
+                    $role_met = $this->isCitizenLoggedIn();
+                    $error_msg = 'Citizen access required';
+                    break;
+                case 'staff':
+                    $role_met = $this->isStaffLoggedIn();
+                    $error_msg = 'Staff access required';
+                    break;
+                case 'super_admin':
+                    $role_met = $this->isSuperAdmin();
+                    $error_msg = 'Super admin access required';
+                    break;
+                case 'barangay_admin':
+                    $role_met = $this->isBarangayAdmin();
+                    $error_msg = 'Barangay admin access required';
+                    break;
             }
 
-            if ($required_role === 'staff' && !$this->isStaffLoggedIn()) {
-                $this->setFlash('error', 'Staff access required');
-                header("Location: $redirect_url");
-                exit;
-            }
-
-            if ($required_role === 'super_admin' && !$this->isSuperAdmin()) {
-                $this->setFlash('error', 'Super admin access required');
-                header("Location: $redirect_url");
-                exit;
-            }
-
-            if ($required_role === 'barangay_admin' && !$this->isBarangayAdmin()) {
-                $this->setFlash('error', 'Barangay admin access required');
+            if (!$role_met) {
+                $this->setFlash('error', $error_msg);
                 header("Location: $redirect_url");
                 exit;
             }

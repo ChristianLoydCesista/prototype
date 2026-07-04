@@ -18,7 +18,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
     <div class="container-fluid px-4">
         <!-- Brand -->
-        <a class="navbar-brand fw-bold fs-4" href="../public/">
+        <a class="navbar-brand fw-bold fs-4" href="<?= SITE_URL ?>">
             <i class="bi bi-building-heart me-2"></i>
             Arteche CIS
         </a>
@@ -31,16 +31,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="../public/"><i class="bi bi-house-door"></i> Home</a>
+                    <a class="nav-link" href="<?= SITE_URL ?>"><i class="bi bi-house-door"></i> Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../app/citizen/citizen_portal.php"><i class="bi bi-person-badge"></i> Citizen Portal</a>
+                    <a class="nav-link" href="<?= SITE_URL ?>app/citizen/citizen_portal.php"><i class="bi bi-person-badge"></i> Citizen Portal</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../app/citizen/citizen_register_view.php"><i class="bi bi-person-plus"></i> Register</a>
+                    <a class="nav-link" href="<?= SITE_URL ?>app/citizen/citizen_register_view.php"><i class="bi bi-person-plus"></i> Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../app/citizen/citizen_login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    <a class="nav-link" href="<?= SITE_URL ?>app/citizen/citizen_login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a>
                 </li>
             </ul>
 
@@ -53,10 +53,10 @@
                             <?= htmlspecialchars($_SESSION['citizen']['first_name'] ?? 'Citizen') ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="../app/citizen/citizen_dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                            <li><a class="dropdown-item" href="../app/citizen/my_request.php"><i class="bi bi-files"></i> My Requests</a></li>
+                            <li><a class="dropdown-item" href="<?= SITE_URL ?>app/citizen/citizen_dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                            <li><a class="dropdown-item" href="<?= SITE_URL ?>app/citizen/my_request.php"><i class="bi bi-files"></i> My Requests</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="../app/shared/logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                            <li><a class="dropdown-item text-danger" href="<?= SITE_URL ?>app/shared/logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>

@@ -168,8 +168,8 @@ class Auth
         $stmt->close();
 
         // Send reset email (placeholder)
-        $resetLink = SITE_URL . "citizen_reset_password.php?token=" . $token;
-
+        // $resetLink = SITE_URL . "citizen_reset_password.php?token=" . $token;
+        $resetLink = rtrim(SITE_URL, '/') . '/citizen_forgot_password.php?token=' . urlencode($token);
         return $resetLink;
     }
 
@@ -651,10 +651,10 @@ class Auth
 
         // Get user name from registration data if available
         $name = $_SESSION['registration_first_name'] ?? 'Citizen';
-        
+
         // Send real verification email
         $result = $this->mailer->sendVerificationEmail($email, $name, $code);
-        
+
         // Log the email sending
         if ($result) {
             error_log("Email verification sent to: $email");
