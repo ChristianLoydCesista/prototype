@@ -166,3 +166,45 @@ Body:
 </body>
 </html>
 
+====================================================================
+Timestamp: 2026-06-30 02:50:32
+To: tantan@gmail.com
+Subject: Verify Your Arteche Citizen Account
+--------------------------------------------------------------------
+Body:
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verification</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background: #ffffff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden;">
+        <div style="background: linear-gradient(135deg, #0d6efd, #1f6aa5); color: white; padding: 30px; text-align: center;">
+            <h1 style="margin: 0;">Arteche Citizen Portal</h1>
+            <p>Email Verification</p>
+        </div>
+        <div style="padding: 30px;">
+            <h2>Hello, Citizen!</h2>
+            <p>Thank you for registering with the Arteche Citizen Portal. To complete your registration, please verify your email address by entering the code below:</p>
+            
+            <div style="background: #f8f9fa; border: 2px dashed #0d6efd; border-radius: 8px; padding: 20px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #0d6efd; margin: 20px 0;">
+                13CFB7
+            </div>
+            
+            <p><strong>This code will expire in 24 hours.</strong></p>
+            
+            <p>If you did not create an account, please ignore this email.</p>
+            
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+            
+            <p style="font-size: 14px; color: #6c757d;">
+                <strong>Note:</strong> This is an automated message. Please do not reply to this email.
+            </p>
+        </div>
+        <div style="background: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #6c757d;">
+            <p>&copy; 2026 Municipality of Arteche - Community Intelligence System</p>
+        </div>
+</body>
+</html>
+
