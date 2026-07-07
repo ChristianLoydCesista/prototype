@@ -813,3 +813,48 @@
 [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
 [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
 [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] file_put_contents(C:\xampp\htdocs\prototype\app\admin/../../public/http://localhost/public/uploads/documents/REQ-20260701-074355--barangay-clearance.pdf): Failed to open stream: No such file or directory in C:\xampp\htdocs\prototype\app\admin\generate_pdf.php:154
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[2026-07-04 07:55:14] [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[2026-07-04 07:55:14] [EXCEPTION] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[2026-07-04 07:55:56] [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[2026-07-04 07:55:56] [EXCEPTION] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[2026-07-04 08:23:24] [PHP ERROR] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:146
+[2026-07-04 08:23:24] [EXCEPTION] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:146
+[2026-07-04 08:23:50] [PHP ERROR] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:146
+[2026-07-04 08:23:50] [EXCEPTION] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:146
+[2026-07-04 08:23:51] [PHP ERROR] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:146
+[2026-07-04 08:23:51] [EXCEPTION] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:146
+[2026-07-04 08:24:26] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:24:26] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:24:33] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:24:33] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:24:37] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:24:37] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:26:37] [PHP ERROR] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:23
+[2026-07-04 08:26:37] [EXCEPTION] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:23
+[2026-07-04 08:26:45] [PHP ERROR] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:23
+[2026-07-04 08:26:45] [EXCEPTION] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:23
+[2026-07-04 08:27:26] [PHP ERROR] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:23
+[2026-07-04 08:27:26] [EXCEPTION] Undefined array key "csrf_token" in C:\xampp\htdocs\prototype\app\admin\admin_login.php:23
+[2026-07-04 08:27:56] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:27:56] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:27:58] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:27:58] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:28:00] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:28:00] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:28:02] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:28:02] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:29:07] [PHP ERROR] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 08:29:07] [EXCEPTION] ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\prototype\app\admin\admin_login.php:5
+[2026-07-04 14:35:54] [PHP ERROR] Undefined variable $pageTitle in C:\xampp\htdocs\prototype\app\citizen\citizen_portal.php:21
+[2026-07-04 14:35:54] [EXCEPTION] Undefined variable $pageTitle in C:\xampp\htdocs\prototype\app\citizen\citizen_portal.php:21

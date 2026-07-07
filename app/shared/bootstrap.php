@@ -53,7 +53,7 @@ set_error_handler(function ($severity, $message, $file, $line) {
     // Only log the error, Never echo it in production
     $msg = "[" . date('Y-m-d H:i:s') . "] [PHP ERROR] $message in $file:$line";
     error_log($msg . "\n", 3, LOG_PATH . '/errors.log');
-    
+
     // Convert errors to exceptions for graceful handling
     throw new ErrorException($message, 0, $severity, $file, $line);
 });
@@ -66,7 +66,7 @@ set_exception_handler(function ($e) {
     }*/
     $msg = "[" . date('Y-m-d H:i:s') . "] [EXCEPTION] " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine();
     error_log($msg . "\n", 3, LOG_PATH . '/errors.log');
-    
+
     // Display a generic, safe fail message to the user
     if (!headers_sent()) {
         header("HTTP/1.1 500 Internal Server Error");
@@ -143,10 +143,39 @@ try {
 }
 
 try {
-   $auth = new Auth();
+    $auth = new Auth();
 } catch (Exception $e) {
     error_log("AUTH Init Failed: " . $e->getMessage());
     die("System temporarily unavailable.");
+}
+
+try {
+    // Auto‑login via remember‑me cookie
+    if (!$session->isCitizenLoggedIn() && isset($_COOKIE['remember_token'])) {
+        $citizen = $auth->loginWithRememberToken($_COOKIE['remember_token']);
+        if ($citizen) {
+            $session->setCitizen($citizen);
+            // Rotate token for security
+            $newToken = $auth->rotateRememberToken($citizen['id']);
+            $isSecure = (defined('ENVIRONMENT') && ENVIRONMENT === 'production');
+            setcookie(
+                'remember_token',
+                $newToken,
+                time() + (30 * 24 * 60 * 60),
+                '/',
+                '',
+                $isSecure,
+                true
+            );
+        } else {
+            // Invalid token – delete cookie
+            setcookie('remember_token', '', time() - 3600, '/');
+        }
+    }
+} catch (Exception $e) {
+    error_log("Remember Token Login Failed: " . $e->getMessage());
+    // Optionally, delete the cookie to prevent repeated failures
+    setcookie('remember_token', '', time() - 3600, '/');
 }
 
 
