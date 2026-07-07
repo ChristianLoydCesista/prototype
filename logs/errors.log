@@ -813,3 +813,69 @@
 [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
 [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
 [PHP ERROR] session_destroy(): Trying to destroy uninitialized session in C:\xampp\htdocs\prototype\app\shared\logout.php:12
+[2026-07-07 09:22:37] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 09:22:37] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 09:22:46] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 09:22:46] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 09:22:48] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 09:22:48] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 09:40:33] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 09:40:33] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 09:43:00] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 09:43:00] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 09:54:14] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 09:54:14] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 10:23:14] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 10:23:14] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 10:23:23] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 10:23:23] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 10:23:43] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:147
+[2026-07-07 10:23:43] [EXCEPTION] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:147
+[2026-07-07 10:26:18] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 10:26:18] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 10:26:22] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 10:26:22] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-07 10:26:24] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 10:26:24] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-07 10:30:23] [EXCEPTION] Unknown column 'citizen_id' in 'field list' in C:\xampp_new\htdocs\prototype\app\citizen\citizen_profile.php:377
+[2026-07-07 11:43:42] [PHP ERROR] mysqli::__construct(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:25
+[2026-07-07 11:43:48] [PHP ERROR] mysqli::__construct(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:25
+[2026-07-07 11:43:57] [PHP ERROR] mysqli::__construct(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:25
+[2026-07-07 11:48:31] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 11:48:31] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 11:48:38] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 11:48:51] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 11:48:51] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 11:48:56] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 11:48:56] [EXCEPTION] Call to a member function prepare() on null in C:\xampp_new\htdocs\prototype\app\shared\includes\Auth.php:95
+[2026-07-07 12:34:40] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:34:49] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:34:53] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:51:06] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:51:10] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:51:27] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:51:27] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:51:30] [PHP ERROR] mysqli::real_connect(): php_network_getaddresses: getaddrinfo for sql306.infinityfree.com failed: No such host is known.  in C:\xampp_new\htdocs\prototype\app\shared\config\database.php:37
+[2026-07-07 12:51:30] [EXCEPTION] Call to a member function prepare() on null in C:\xampp_new\htdocs\prototype\app\shared\includes\Auth.php:95
+[2026-07-07 13:59:31] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 13:59:36] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 14:11:03] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 14:11:30] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 14:11:30] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 14:11:30] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 14:11:30] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 14:11:31] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:347
+[2026-07-07 14:14:19] [EXCEPTION] Unknown column 'dt.fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:290
+[2026-07-07 14:14:35] [EXCEPTION] Unknown column 'dt.fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:290
+[2026-07-07 14:17:57] [EXCEPTION] Unknown column 'fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\document_requests.php:348
+[2026-07-07 14:20:21] [EXCEPTION] Unknown column 'dt.fee' in 'field list' in C:\xampp_new\htdocs\prototype\app\admin\shared\get_request_details.php:19
+[2026-07-07 16:07:27] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:151
+[2026-07-07 16:07:28] [EXCEPTION] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:151
+[2026-07-07 16:07:34] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:151
+[2026-07-07 16:07:34] [EXCEPTION] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:151
+[2026-07-07 16:18:19] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
+[2026-07-07 19:09:03] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
+[2026-07-07 19:13:41] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
+[2026-07-07 19:16:39] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
+[2026-07-07 19:25:04] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
+[2026-07-07 19:25:46] [EXCEPTION] The PHP GD extension is required, but is not installed. in C:\xampp_new\htdocs\prototype\vendor\dompdf\dompdf\lib\Cpdf.php:6226
