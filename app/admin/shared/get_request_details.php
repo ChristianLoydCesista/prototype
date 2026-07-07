@@ -4,6 +4,29 @@ require_once __DIR__ . '/../../shared/bootstrap.php';
 require_once __DIR__ . '/../../shared/config/database.php';
 $conn = getDB();
 
+if (!$conn) {
+    http_response_code(500);
+    die('Database unavailable');
+}
+
+function getTableColumns($conn, $table)
+{
+    $columns = [];
+    $res = $conn->query("SHOW COLUMNS FROM `$table`");
+    if ($res) {
+        while ($row = $res->fetch_assoc()) {
+            $columns[] = $row['Field'];
+        }
+    }
+    return $columns;
+}
+
+$citizenRequestColumns = getTableColumns($conn, 'citizen_requests');
+$citizenColumns = getTableColumns($conn, 'citizens');
+$documentTypeColumns = getTableColumns($conn, 'document_types');
+$barangayColumns = getTableColumns($conn, 'barangays');
+$userColumns = getTableColumns($conn, 'users');
+
 // Authentication check
 if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
     http_response_code(403);
@@ -15,29 +38,62 @@ if (!$id) {
     die('Invalid request ID');
 }
 
-// Get request details
-$stmt = $conn->prepare("
-    SELECT 
-        cr.*,
-        CONCAT(c.first_name, ' ', c.last_name) as citizen_name,
-        c.email,
-        c.phone,
-        c.address,
-        c.birth_date,
-        b.name as barangay_name,
-        dt.name as document_name,
-        dt.description as document_description,
-        dt.requirements,
-        dt.processing_days,
-        dt.fee as document_fee,
-        reviewer.full_name as reviewed_by_name
-    FROM citizen_requests cr
-    JOIN citizens c ON cr.citizen_id = c.id
-    JOIN document_types dt ON cr.document_type_id = dt.id
-    LEFT JOIN barangays b ON c.barangay_id = b.id
-    LEFT JOIN users reviewer ON cr.reviewed_by = reviewer.id
-    WHERE cr.id = ?
-");
+$selectParts = [
+    'cr.id',
+    'cr.request_number',
+    'cr.citizen_id',
+    'cr.document_type_id',
+    'cr.purpose',
+    'cr.status',
+    'cr.fee',
+    'cr.payment_status',
+    'cr.submitted_at',
+    'cr.reviewed_by',
+    'cr.reviewed_at',
+    'cr.released_at',
+    'cr.completed_at',
+    'cr.rejection_reason',
+    'cr.notes',
+    'cr.document_path',
+    'cr.created_at',
+    (in_array('first_name', $citizenColumns) && in_array('last_name', $citizenColumns)) ? "TRIM(CONCAT_WS(' ', COALESCE(c.first_name, ''), COALESCE(c.last_name, ''))) AS citizen_name" : "'' AS citizen_name",
+    in_array('email', $citizenColumns) ? 'c.email' : "'' AS email",
+    in_array('phone', $citizenColumns) ? 'c.phone' : "'' AS phone",
+    in_array('address', $citizenColumns) ? 'c.address' : "'' AS address",
+    in_array('birth_date', $citizenColumns) ? 'c.birth_date' : 'NULL AS birth_date',
+    (in_array('name', $barangayColumns) && in_array('barangay_id', $citizenColumns)) ? 'b.name AS barangay_name' : "'' AS barangay_name",
+    in_array('name', $documentTypeColumns) ? 'dt.name AS document_name' : "'' AS document_name",
+    in_array('description', $documentTypeColumns) ? 'dt.description AS document_description' : "'' AS document_description",
+    in_array('requirements', $documentTypeColumns) ? 'dt.requirements' : "'' AS requirements",
+    in_array('processing_days', $documentTypeColumns) ? 'dt.processing_days' : 'NULL AS processing_days',
+    in_array('fee', $documentTypeColumns) ? 'dt.fee AS document_fee' : 'NULL AS document_fee',
+    (in_array('full_name', $userColumns) && in_array('reviewed_by', $citizenRequestColumns)) ? 'reviewer.full_name AS reviewed_by_name' : "'' AS reviewed_by_name"
+];
+
+$joins = [
+    'FROM citizen_requests cr',
+    'LEFT JOIN citizens c ON cr.citizen_id = c.id'
+];
+
+if (in_array('name', $documentTypeColumns) || in_array('description', $documentTypeColumns) || in_array('requirements', $documentTypeColumns) || in_array('processing_days', $documentTypeColumns) || in_array('fee', $documentTypeColumns)) {
+    $joins[] = 'LEFT JOIN document_types dt ON cr.document_type_id = dt.id';
+}
+
+if (in_array('name', $barangayColumns) && in_array('barangay_id', $citizenColumns)) {
+    $joins[] = 'LEFT JOIN barangays b ON c.barangay_id = b.id';
+}
+
+if (in_array('full_name', $userColumns) && in_array('reviewed_by', $citizenRequestColumns)) {
+    $joins[] = 'LEFT JOIN users reviewer ON cr.reviewed_by = reviewer.id';
+}
+
+$query = "SELECT " . implode(",\n", $selectParts) . "\n" . implode("\n", $joins) . "\nWHERE cr.id = ?";
+
+$stmt = $conn->prepare($query);
+if (!$stmt) {
+    http_response_code(500);
+    die('Unable to load request details.');
+}
 
 $stmt->bind_param("i", $id);
 $stmt->execute();
