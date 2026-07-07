@@ -30,10 +30,7 @@ if (!defined('BASE_PATH')) {
 }
 
 if (!defined('BASE_URL')) {
-    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $script = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
-    define('BASE_URL', $scheme . '://' . $host . $script . '/');
+    define('BASE_URL', rtrim(SITE_URL, '/') . '/');
 }
 
 // ensure log directory exists
@@ -53,7 +50,7 @@ set_error_handler(function ($severity, $message, $file, $line) {
     // Only log the error, Never echo it in production
     $msg = "[" . date('Y-m-d H:i:s') . "] [PHP ERROR] $message in $file:$line";
     error_log($msg . "\n", 3, LOG_PATH . '/errors.log');
-    
+
     // Convert errors to exceptions for graceful handling
     throw new ErrorException($message, 0, $severity, $file, $line);
 });
@@ -66,7 +63,7 @@ set_exception_handler(function ($e) {
     }*/
     $msg = "[" . date('Y-m-d H:i:s') . "] [EXCEPTION] " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine();
     error_log($msg . "\n", 3, LOG_PATH . '/errors.log');
-    
+
     // Display a generic, safe fail message to the user
     if (!headers_sent()) {
         header("HTTP/1.1 500 Internal Server Error");
@@ -135,18 +132,33 @@ spl_autoload_register(function ($class) {
 // ---------------------------------------------------------------------------
 
 // make $conn and $auth available without re-declaring each file
-try {
-    $conn = getDB();
-} catch (Exception $e) {
-    error_log("DB Init Failed: " . $e->getMessage());
-    die("System temporarily unavailable.");
-}
+$conn = null;
+$dbError = null;
 
 try {
-   $auth = new Auth();
+    $conn = getDB();
+    if (!$conn) {
+        throw new Exception(Database::getLastError() ?: 'Database connection unavailable.');
+    }
 } catch (Exception $e) {
-    error_log("AUTH Init Failed: " . $e->getMessage());
-    die("System temporarily unavailable.");
+    $dbError = $e->getMessage();
+    error_log("DB Init Failed: " . $dbError);
+    $_SESSION['db_error'] = $dbError;
+}
+
+$auth = null;
+if ($conn) {
+    try {
+        $auth = new Auth();
+    } catch (Exception $e) {
+        $dbError = $e->getMessage();
+        error_log("AUTH Init Failed: " . $dbError);
+        $_SESSION['db_error'] = $dbError;
+    }
+}
+
+if ($dbError) {
+    $_SESSION['db_error'] = $dbError;
 }
 
 
