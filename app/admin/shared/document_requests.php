@@ -203,7 +203,7 @@ $query = "
         cr.request_number,
         cr.status,
         cr.payment_status,
-        cr.fee,
+        cr.fee as fee,
         cr.submitted_at,
         cr.reviewed_at,
         cr.released_at,
@@ -312,10 +312,11 @@ $stats_query = "
         SUM(CASE WHEN payment_status = 'Pending' THEN 1 ELSE 0 END) as payment_pending,
         SUM(CASE WHEN payment_status = 'Paid' THEN 1 ELSE 0 END) as payment_paid,
         SUM(CASE WHEN payment_status = 'Waived' THEN 1 ELSE 0 END) as payment_waived,
-        SUM(fee) as total_fees,
-        SUM(CASE WHEN payment_status = 'Paid' THEN fee ELSE 0 END) as collected_fees
+        SUM(COALESCE(cr.fee, 0)) as total_fees,
+        SUM(CASE WHEN payment_status = 'Paid' THEN COALESCE(cr.fee, 0) ELSE 0 END) as collected_fees
     FROM citizen_requests cr
     JOIN citizens c ON cr.citizen_id = c.id
+    LEFT JOIN document_types dt ON cr.document_type_id = dt.id
     WHERE 1=1
 ";
 
@@ -344,7 +345,12 @@ if ($is_super_admin) {
 }
 
 // Get Document Types for Filter
-$document_types = $conn->query("SELECT id, name, fee FROM document_types WHERE is_active = 1 ORDER BY name")->fetch_all(MYSQLI_ASSOC);
+try {
+    $document_types = $conn->query("SELECT id, name FROM document_types ORDER BY name")->fetch_all(MYSQLI_ASSOC);
+} catch (Exception $e) {
+    error_log("Document type filter load failed: " . $e->getMessage());
+    $document_types = [];
+}
 
 // Get current barangay name for display
 $current_barangay_name = '';
