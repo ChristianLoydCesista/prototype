@@ -146,19 +146,40 @@ try {
     $_SESSION['db_error'] = $dbError;
 }
 
-$auth = null;
-if ($conn) {
-    try {
-        $auth = new Auth();
-    } catch (Exception $e) {
-        $dbError = $e->getMessage();
-        error_log("AUTH Init Failed: " . $dbError);
-        $_SESSION['db_error'] = $dbError;
-    }
+try {
+    $auth = new Auth();
+} catch (Exception $e) {
+    error_log("AUTH Init Failed: " . $e->getMessage());
+    die("System temporarily unavailable.");
 }
 
-if ($dbError) {
-    $_SESSION['db_error'] = $dbError;
+try {
+    // Auto‑login via remember‑me cookie
+    if (!$session->isCitizenLoggedIn() && isset($_COOKIE['remember_token'])) {
+        $citizen = $auth->loginWithRememberToken($_COOKIE['remember_token']);
+        if ($citizen) {
+            $session->setCitizen($citizen);
+            // Rotate token for security
+            $newToken = $auth->rotateRememberToken($citizen['id']);
+            $isSecure = (defined('ENVIRONMENT') && ENVIRONMENT === 'production');
+            setcookie(
+                'remember_token',
+                $newToken,
+                time() + (30 * 24 * 60 * 60),
+                '/',
+                '',
+                $isSecure,
+                true
+            );
+        } else {
+            // Invalid token – delete cookie
+            setcookie('remember_token', '', time() - 3600, '/');
+        }
+    }
+} catch (Exception $e) {
+    error_log("Remember Token Login Failed: " . $e->getMessage());
+    // Optionally, delete the cookie to prevent repeated failures
+    setcookie('remember_token', '', time() - 3600, '/');
 }
 
 

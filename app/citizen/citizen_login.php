@@ -11,43 +11,63 @@ if ($session->isCitizenLoggedIn()) {
 
 $errors = [];
 
+//Store username to repopulate the form in case of error
+$submittedUsername = "";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // --- CSRF validation ---
+    if (!isset($_POST['csrf_token']) || !verify_csrf($_POST['csrf_token'])) {
+        $session->setFlash('error', 'Invalid request. Please try again.');
+        header("Location: citizen_portal.php");
+        exit;
+    }
+
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     $remember = isset($_POST['remember']);
 
-    // Validate inputs
+    // Store the submitted username to repopulate the form in case of error
+    $submittedUsername = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+
     if (empty($username) || empty($password)) {
         $session->setFlash('error', 'Please enter both username and password');
         header("Location: citizen_portal.php");
         exit;
     }
 
-    // Attempt login
     $citizen = $auth->login($username, $password);
 
     if ($citizen) {
-        // Set session
+        // Success - clear stored username
+        unset($_SESSION['login_username']);
         $session->setCitizen($citizen);
 
-        // Set remember me cookie if requested
         if ($remember) {
-            $token = bin2hex(random_bytes(32));
-            setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), '/');
-
-            // Store token in database (you'd need a remember_tokens table)
-            // For simplicity, we'll skip this for now
+            $token = $auth->createRememberToken($citizen['id']);
+            $isSecure = (ENVIRONMENT === 'production');
+            setcookie(
+                'remember_token',
+                $token,
+                time() + (30 * 24 * 60 * 60),
+                '/',
+                '',
+                $isSecure,
+                true
+            );
         }
 
-        // Redirect to dashboard
         $session->setFlash('success', 'Welcome back, ' . $citizen['first_name'] . '!');
         header("Location: citizen_dashboard.php");
         exit;
     } else {
+       
+        $submittedUsername = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+        // Failed login - store username for repopulation
+        $_SESSION['login_username'] = $username;
+
         $errors = $auth->getErrors();
-        foreach ($errors as $error) {
-            $session->setFlash('error', $error);
-        }
+        $errorMsg = !empty($errors) ? $errors[0] : 'Login failed. Please try again.';
+        $session->setFlash('error', $errorMsg);
         header("Location: citizen_portal.php");
         exit;
     }

@@ -3,13 +3,55 @@
 require_once '../shared/bootstrap.php';
 $auth = new Auth();
 
+// Auto-login via remember-me cookie
+if (!$session->isCitizenLoggedIn() && isset($_COOKIE['remember_token'])) {
+    $citizen = $auth->loginWithRememberToken($_COOKIE['remember_token']);
+    if ($citizen) {
+        $session->setCitizen($citizen);
+        // Rotate token for security
+        $newToken = $auth->rotateRememberToken($citizen['id']);
+        $isSecure = (defined('ENVIRONMENT') && ENVIRONMENT === 'production');
+        setcookie(
+            'remember_token',
+            $newToken,
+            time() + (30 * 24 * 60 * 60),
+            '/',
+            '',
+            $isSecure,
+            true
+        );
+        header("Location: citizen_dashboard.php");
+        exit;
+    } else {
+        // Invalid token – delete cookie
+        setcookie('remember_token', '', time() - 3600, '/');
+    }
+}
+
 // Redirect if already logged in
 if ($session->isCitizenLoggedIn()) {
     header("Location: citizen_dashboard.php");
     exit;
 }
 
+// =============================================
+// ✅ RETRIEVE FLASH MESSAGES
+// =============================================
+$errorMessage = $session->getFlash('error');      // Gets and removes error flash
+$successMessage = $session->getFlash('success');  // Gets and removes success flash
+
+// =============================================
+// ✅ RETRIEVE SUBMITTED USERNAME (if any)
+// =============================================
+$loginUsername = $_SESSION['login_username'] ?? '';
+unset($_SESSION['login_username']); // Clear after use
+
+// =============================================
+// ✅ REMEMBER ME PREFERENCE
+// =============================================
+$rememberChecked = $_COOKIE['remember_me_preference'] ?? false;
 $pageTitle = "Login - Arteche Citizen Portal";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +98,7 @@ $pageTitle = "Login - Arteche Citizen Portal";
         /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, rgba(11, 31, 51, 0.8) 0%, rgba(31, 106, 165, 0.75) 100%),
-                        url("../../public/assets/img/bungto_han_arteche.png") center center/cover no-repeat;
+                url("../../public/assets/img/bungto_han_arteche.png") center center/cover no-repeat;
             padding: 4rem 0 3rem;
             border-bottom: 6px solid #c92a2a;
         }
@@ -83,14 +125,16 @@ $pageTitle = "Login - Arteche Citizen Portal";
         }
 
         /* Form Controls */
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border: 1.5px solid #e9edf2;
             border-radius: 10px;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 4px rgba(31, 106, 165, 0.1);
         }
@@ -145,6 +189,7 @@ $pageTitle = "Login - Arteche Citizen Portal";
             .hero-title {
                 font-size: 1.8rem;
             }
+
             .auth-card {
                 margin: 1rem;
                 margin-top: -1rem;
@@ -192,33 +237,48 @@ $pageTitle = "Login - Arteche Citizen Portal";
                             <p class="text-muted mb-0">Sign in to your account</p>
                         </div>
 
-                        <?php if ($session->hasFlash('error')): ?>
-                            <div class="alert alert-danger alert-dismissible fade show">
-                                <?= $session->getFlash('error') ?>
+                        <!-- Flash Messages -->
+                        <?php if ($errorMessage): ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <?= htmlspecialchars($errorMessage) ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($session->hasFlash('success')): ?>
-                            <div class="alert alert-success alert-dismissible fade show">
-                                <?= $session->getFlash('success') ?>
+                        <?php if ($successMessage): ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                <?= htmlspecialchars($successMessage) ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>
 
                         <form action="citizen_login.php" method="POST" id="loginForm">
+                            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                             <div class="mb-4">
                                 <label class="form-label">Email or Phone Number</label>
-                                <input type="text" name="username" class="form-control"
-                                    required placeholder="your@email.com or 09XXXXXXXXX">
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control <?= $errorMessage ? 'is-invalid' : '' ?>"
+                                    required
+                                    placeholder="your@email.com or 09XXXXXXXXX"
+                                    value="<?= htmlspecialchars($loginUsername) ?>"
+                                    autocomplete="username"
+                                    <?= empty($loginUsername) ? 'autofocus' : '' ?>>
                             </div>
 
                             <div class="mb-4">
                                 <label class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control" required>
-                                <div class="mt-2">
-                                    <a href="citizen_forgot_password.php" class="small">Forgot password?</a>
-                                </div>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control <?= $errorMessage ? 'is-invalid' : '' ?>"
+                                    required
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    <?= !empty($loginUsername) ? 'autofocus' : '' ?>>
                             </div>
 
                             <div class="mb-4 form-check">
@@ -257,7 +317,7 @@ $pageTitle = "Login - Arteche Citizen Portal";
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small>
-                        <i class="bi bi-question-circle me-1"></i> Need help? 
+                        <i class="bi bi-question-circle me-1"></i> Need help?
                         <a href="mailto:cis@arteche.gov.ph">Contact Support</a>
                     </small>
                 </div>
@@ -269,4 +329,3 @@ $pageTitle = "Login - Arteche Citizen Portal";
 </body>
 
 </html>
-
