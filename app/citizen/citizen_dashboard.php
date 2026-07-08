@@ -28,27 +28,52 @@ function getRequestStats($db, $citizenId)
 {
     try {
         $stmt = $db->prepare("
-            SELECT 
-                COUNT(*) as total,
-                SUM(CASE WHEN status IN ('Pending', 'Submitted', 'Under Review') THEN 1 ELSE 0 END) as pending,
-                SUM(CASE WHEN status = 'Approved' THEN 1 ELSE 0 END) as approved,
-                SUM(CASE WHEN status = 'Rejected' THEN 1 ELSE 0 END) as rejected,
-                SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END) as completed
-            FROM citizen_requests 
-            WHERE citizen_id = ?
+            SELECT
+    COUNT(*) AS total,
+
+    COALESCE(
+        SUM(CASE
+            WHEN status IN ('Pending','Submitted','Under Review')
+            THEN 1 ELSE 0
+        END),
+    0) AS pending,
+
+    COALESCE(
+        SUM(CASE
+            WHEN status='Approved'
+            THEN 1 ELSE 0
+        END),
+    0) AS approved,
+
+    COALESCE(
+        SUM(CASE
+            WHEN status='Rejected'
+            THEN 1 ELSE 0
+        END),
+    0) AS rejected,
+
+    COALESCE(
+        SUM(CASE
+            WHEN status='Completed'
+            THEN 1 ELSE 0
+        END),
+    0) AS completed
+
+FROM citizen_requests
+WHERE citizen_id = ?
         ");
         $stmt->bind_param("i", $citizenId);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        return array_merge([
-            'total' => 0,
-            'pending' => 0,
-            'approved' => 0,
-            'rejected' => 0,
-            'completed' => 0
-        ], $result ?? []);
+        return [
+            'total'      => (int)($result['total'] ?? 0),
+            'pending'    => (int)($result['pending'] ?? 0),
+            'approved'   => (int)($result['approved'] ?? 0),
+            'rejected'   => (int)($result['rejected'] ?? 0),
+            'completed'  => (int)($result['completed'] ?? 0),
+        ];
     } catch (Exception $e) {
         error_log("Error fetching request stats: " . $e->getMessage());
         return ['total' => 0, 'pending' => 0, 'approved' => 0, 'rejected' => 0, 'completed' => 0];
@@ -307,7 +332,7 @@ function calculateProfileCompletion($data)
                 <div class="dropdown">
                     <button class="btn btn-link text-dark p-0 d-flex align-items-center gap-2" type="button"
                         data-bs-toggle="dropdown">
-                       
+
                         <i class="bi bi-person-circle fs-4"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -364,7 +389,9 @@ function calculateProfileCompletion($data)
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
                                     <p class="text-muted mb-1 small">Total Requests</p>
-                                    <h2 class="mb-0 fw-bold"><?= number_format($requestStats['total']) ?></h2>
+                                    <h2 class="mb-0 fw-bold">
+                                        <?= number_format((int)($requestStats['total'] ?? 0)) ?>
+                                    </h2>
                                 </div>
                                 <div class="stat-icon bg-primary bg-opacity-10 text-primary">
                                     <i class="bi bi-files"></i>
@@ -379,7 +406,9 @@ function calculateProfileCompletion($data)
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
                                     <p class="text-muted mb-1 small">In Progress</p>
-                                    <h2 class="mb-0 fw-bold"><?= number_format($requestStats['pending']) ?></h2>
+                                    <h2 class="mb-0 fw-bold">
+                                        <?= number_format((int)($requestStats['pending'] ?? 0)) ?>
+                                    </h2>
                                 </div>
                                 <div class="stat-icon bg-warning bg-opacity-10 text-warning">
                                     <i class="bi bi-hourglass-split"></i>
@@ -454,7 +483,7 @@ function calculateProfileCompletion($data)
                                             'Ready for Pickup' => ['class' => 'bg-primary text-white', 'icon' => 'box-seam']
                                         ];
                                         $config = $statusConfig[$request['status']] ?? ['class' => 'bg-secondary text-white', 'icon' => 'file-text'];
-                                        ?>
+                                    ?>
                                         <div class="request-item list-group-item list-group-item-action border-0 px-0 py-3"
                                             onclick="location.href='request_details.php?id=<?= $request['id'] ?>'">
                                             <div class="d-flex justify-content-between align-items-start">
@@ -552,7 +581,9 @@ function calculateProfileCompletion($data)
                                                     <?= htmlspecialchars($doc['name']) ?>
                                                 </div>
                                                 <small class="text-muted">
-                                                    <?= ($doc['processing_fee'] ?? 0) > 0 ? '₱' . number_format($doc['processing_fee'], 2) : 'Free' ?>
+                                                    <?= (($doc['processing_fee'] ?? 0) > 0)
+                                                        ? '₱' . number_format((float)($doc['processing_fee'] ?? 0), 2)
+                                                        : 'Free' ?>
                                                 </small>
                                             </div>
                                         </a>
@@ -625,7 +656,9 @@ function calculateProfileCompletion($data)
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({ id: announcementId })
+                            body: JSON.stringify({
+                                id: announcementId
+                            })
                         });
 
                         // Update UI
@@ -675,7 +708,9 @@ function calculateProfileCompletion($data)
                 // Only refresh if page is visible
                 if (!document.hidden) {
                     fetch(window.location.href, {
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
                     }).then(response => {
                         if (response.ok) {
                             // Update specific elements without full page reload
@@ -689,11 +724,13 @@ function calculateProfileCompletion($data)
 
         // Add smooth scroll behavior
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
