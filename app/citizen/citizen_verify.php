@@ -42,10 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verification_code']))
         $session->setCitizen($citizen);
         $session->setFlash('success', 'Account verified successfully!');
 
-        header("Location: citizen_dashboard.php");
+        header("Location: citizen_login.php");
         exit;
     } else {
-        $session->setFlash('error', 'Invalid verification code');
+        $errors = $auth->getErrors();
+        $session->setFlash('error', $errors[0] ?? 'Invalid verification code');
     }
 }
 ?>
@@ -350,7 +351,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verification_code']))
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Auto-fill demo code if available
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const firstInput = document.querySelector('.input-code');
             if (firstInput) {
                 firstInput.focus();
@@ -437,7 +438,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verification_code']))
         }
 
         // Form submission
-        document.getElementById('verificationForm').addEventListener('submit', function (e) {
+        document.getElementById('verificationForm').addEventListener('submit', function(e) {
             const fullCode = document.getElementById('fullCode').value;
             if (fullCode.length !== 6) {
                 e.preventDefault();

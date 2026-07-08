@@ -879,3 +879,13 @@
 [2026-07-07 19:16:39] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
 [2026-07-07 19:25:04] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
 [2026-07-07 19:25:46] [EXCEPTION] The PHP GD extension is required, but is not installed. in C:\xampp_new\htdocs\prototype\vendor\dompdf\dompdf\lib\Cpdf.php:6226
+[2026-07-08 09:57:05] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-08 09:57:05] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-08 10:06:38] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-08 10:06:38] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-08 10:06:40] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-08 10:06:40] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\citizen_dashboard.php:382
+[2026-07-08 10:11:15] [PHP ERROR] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-08 10:11:15] [EXCEPTION] number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp_new\htdocs\prototype\app\citizen\my_request.php:252
+[2026-07-08 10:11:46] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
+[2026-07-08 20:36:38] [PHP ERROR] Undefined array key "fee" in C:\xampp_new\htdocs\prototype\app\citizen\request_document.php:197
