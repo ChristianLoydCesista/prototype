@@ -6,6 +6,13 @@ require_once '../shared/bootstrap.php';
 $session = new Session();
 $auth = new Auth();
 
+function saveOldInput()
+{
+    $old = $_POST;
+    unset($old['password'], $old['confirm_password']);
+    $_SESSION['old'] = $old;
+}
+
 // Redirect if already logged in
 if ($session->isCitizenLoggedIn()) {
     header("Location: citizen_dashboard.php");
@@ -27,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'address' => $_POST['address'] ?? '',
         'barangay_id' => $_POST['barangay_id'] ?? ''
     ];
-    
+
     // Validate required fields
     $required = ['email', 'phone', 'password', 'confirm_password', 'first_name', 'last_name', 'birth_date', 'address', 'barangay_id'];
     $missing = [];
@@ -36,8 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $missing[] = $field;
         }
     }
-    
+
     if (!empty($missing)) {
+        saveOldInput();
         $session->setFlash('error', 'All required fields must be filled. Missing: ' . implode(', ', $missing));
         header("Location: citizen_register_view.php");
         exit;
@@ -45,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate password match
     if ($data['password'] !== $data['confirm_password']) {
+        saveOldInput();
         $session->setFlash('error', 'Passwords do not match.');
         header("Location: citizen_register_view.php");
         exit;
@@ -54,10 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $citizenId = $auth->register($data);
 
     if ($citizenId) {
+        unset($_SESSION['old']);
         // Store email and phone in session for verification page
         $_SESSION['verification_email'] = $data['email'];
         $_SESSION['verification_phone'] = $data['phone'];
-        
+
         // Store name for email template
         $_SESSION['registration_first_name'] = $data['first_name'];
 
@@ -68,10 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: citizen_verify.php");
         exit;
     } else {
+        saveOldInput();
         $errors = $auth->getErrors();
-        foreach ($errors as $error) {
-            $session->setFlash('error', $error);
-        }
+        $session->setFlash('error', implode('<br>', $errors));
         header("Location: citizen_register_view.php");
         exit;
     }
