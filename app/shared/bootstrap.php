@@ -30,10 +30,7 @@ if (!defined('BASE_PATH')) {
 }
 
 if (!defined('BASE_URL')) {
-    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $script = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
-    define('BASE_URL', $scheme . '://' . $host . $script . '/');
+    define('BASE_URL', rtrim(SITE_URL, '/') . '/');
 }
 
 // ensure log directory exists
@@ -135,11 +132,18 @@ spl_autoload_register(function ($class) {
 // ---------------------------------------------------------------------------
 
 // make $conn and $auth available without re-declaring each file
+$conn = null;
+$dbError = null;
+
 try {
     $conn = getDB();
+    if (!$conn) {
+        throw new Exception(Database::getLastError() ?: 'Database connection unavailable.');
+    }
 } catch (Exception $e) {
-    error_log("DB Init Failed: " . $e->getMessage());
-    die("System temporarily unavailable.");
+    $dbError = $e->getMessage();
+    error_log("DB Init Failed: " . $dbError);
+    $_SESSION['db_error'] = $dbError;
 }
 
 try {

@@ -2,20 +2,35 @@
 // config/constants.php
 
 // Site Information
-// Development
-define('BASE_PATH', '/prototype/');
-// Production
-// define('BASE_PATH', '/');
+$projectRoot = dirname(__DIR__, 3);
+$documentRoot = isset($_SERVER['DOCUMENT_ROOT'])
+    ? rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT']) ?: $_SERVER['DOCUMENT_ROOT']), '/')
+    : '';
+
+$projectRootReal = rtrim(str_replace('\\', '/', realpath($projectRoot) ?: $projectRoot), '/');
+
+if (!defined('BASE_PATH')) {
+    $relativePath = '';
+
+    if ($documentRoot && $projectRootReal && strpos($projectRootReal, $documentRoot) === 0) {
+        $relativePath = substr($projectRootReal, strlen($documentRoot));
+    }
+
+    $relativePath = '/' . trim($relativePath, '/');
+    if ($relativePath === '/') {
+        $relativePath = '/';
+    } else {
+        $relativePath .= '/';
+    }
+
+    define('BASE_PATH', $relativePath);
+}
 
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
     ? 'https://'
     : 'http://';
 
-define(
-    'SITE_URL',
-    $protocol . $_SERVER['HTTP_HOST'] . BASE_PATH
-);
-
+define('SITE_URL', $protocol . ($_SERVER['HTTP_HOST'] ?? 'localhost') . BASE_PATH);
 define('SITE_NAME', 'Arteche Citizen Portal');
 define('SITE_EMAIL', 'citizen@arteche.gov.ph');
 
@@ -34,14 +49,22 @@ define('SMTP_ENCRYPTION', 'tls');
 define('FROM_EMAIL', 'noreply@arteche.gov.ph');
 define('FROM_NAME', 'Arteche Citizen Portal');
 
-// File paths - Use __DIR__ for reliable relative paths
-define('UPLOAD_PATH', __DIR__ . '/../../public/uploads/');
-define('DOCUMENT_PATH', __DIR__ . '/../../public/uploads/documents/');
-define('PROFILE_PATH', __DIR__ . '/../../public/uploads/profiles/');
+// File paths - resolve from the actual project root for hosting environments
+$projectRootAbsolute = $projectRootReal ?: $projectRoot;
+
+define('UPLOAD_PATH', $projectRootAbsolute . '/public/uploads/');
+define('DOCUMENT_PATH', $projectRootAbsolute . '/public/uploads/documents/');
+define('PROFILE_PATH', $projectRootAbsolute . '/public/uploads/profiles/');
 
 // URL paths for web access
-define('UPLOAD_URL', 'uploads/');
-define('ASSETS_URL', 'assets/');
+define('UPLOAD_URL', rtrim(BASE_PATH, '/') . '/public/uploads/');
+define('ASSETS_URL', rtrim(BASE_PATH, '/') . '/public/assets/');
+
+foreach ([UPLOAD_PATH, DOCUMENT_PATH, PROFILE_PATH] as $dir) {
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0755, true);
+    }
+}
 
 // System Constants
 define('SYSTEM_NAME', 'Arteche Community Intelligence System');
@@ -59,12 +82,23 @@ define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
 define('ALLOWED_FILE_TYPES', 'jpg,jpeg,png,pdf,doc,docx');
 
 // ==========================
-// DATABASE CONFIG (HOSTING SAFE)
+// DATABASE CONFIG (AUTO-LOCAL/PRODUCTION)
 // ==========================
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_NAME', getenv('DB_NAME') ?: 'barangay_ci_system');
+$isLocalhost = isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false;
+$isLocalFile = isset($_SERVER['SERVER_ADDR']) && $_SERVER['SERVER_ADDR'] === '127.0.0.1';
+$isLocalEnvironment = $isLocalhost || $isLocalFile || (php_sapi_name() === 'cli' && !getenv('DB_HOST'));
+
+if ($isLocalEnvironment) {
+    define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    define('DB_USER', getenv('DB_USER') ?: 'root');
+    define('DB_PASS', getenv('DB_PASS') ?: '');
+    define('DB_NAME', getenv('DB_NAME') ?: 'barangay_ci_system');
+} else {
+    define('DB_HOST', getenv('DB_HOST') ?: 'sql306.infinityfree.com');
+    define('DB_USER', getenv('DB_USER') ?: 'if0_42353709');
+    define('DB_PASS', getenv('DB_PASS') ?: '6GbzqbCGseL');
+    define('DB_NAME', getenv('DB_NAME') ?: 'if0_42353709_barangay_ci_system');
+}
 
 // ==========================
 // ENVIRONMENT DETECTION (for secure cookies and HTTPS enforcement)

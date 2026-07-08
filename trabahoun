@@ -2,7 +2,8 @@
 1. Am submission form
 2. an Heatmap katapos han geotagging
 3. File Structure, Magulo pa medjo okay naman
-4. pag tuhay han onboarding han user kulang nala han pag sara if user or admin or citizen ----------- ----------- -----------
+4. pag tuhay han onboarding han user kulang nala han pag sara if user or admin or citizen ---------------------------------
+
 5. Pag tuhay han pag redirect to the corresponding geolocation
 6. Pag request han documents
 7. Pag manage han citizens
@@ -18,7 +19,7 @@
 19. Pag tuhay han registration han user, dapat it pag verify hit user is naka base han data han system. Dri hiya makakapag request if diri hiya verified han system anay, makaka login an user pero dri hiya puwede mag request hin document
 20. Pag remove han announcement functionality for the admins
 
-21. Pag complete han mga missing nga features ---------------
+21. Pag complete han mga missing nga features 
 
 <------------------------------- URGENT ------------------------------------->
 1. Pag tuhay han file structure
@@ -30,9 +31,6 @@
 2. Pag update han erd for the announcements
 3. Pag tuhay han flowchart - diagrams_backup(3).xml
 
-
-
-
 -- Page update han data han barangays goods
 -- update han date ngan online queues goods 
 -- update an header han maps page, dapat working na done
@@ -40,3 +38,10 @@
 -- dapat maging accurate anay an mga informations
 
 
+
+
+// MUST BE DONE NOW
+1. Upload an mga files ngan folders ha Infinity
+2. Once working, Ig fix an needed 
+3. Ig check an mga refinement nga needed talaga
+4. Then refine incrementally
