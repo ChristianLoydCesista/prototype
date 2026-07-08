@@ -8,6 +8,9 @@
 
 # Environment config (VERY IMPORTANT)
 .env
+/vendor/
+/logs/
+/public/uploads/
 
 # Vendor (if using composer)
 vendor/
