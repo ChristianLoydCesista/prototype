@@ -29,54 +29,54 @@ function getRequestStats($db, $citizenId)
     try {
         $stmt = $db->prepare("
             SELECT
-    COUNT(*) AS total,
+                COUNT(*) AS total,
 
-    COALESCE(
-        SUM(CASE
-            WHEN status IN ('Pending','Submitted','Under Review')
-            THEN 1 ELSE 0
-        END),
-    0) AS pending,
+                COALESCE(SUM(CASE
+                    WHEN status IN ('Pending', 'Submitted', 'Under Review', 'Approved')
+                    THEN 1 ELSE 0
+                END), 0) AS pending,
 
-    COALESCE(
-        SUM(CASE
-            WHEN status='Approved'
-            THEN 1 ELSE 0
-        END),
-    0) AS approved,
+                COALESCE(SUM(CASE
+                    WHEN status = 'Ready for Pickup'
+                    THEN 1 ELSE 0
+                END), 0) AS ready,
 
-    COALESCE(
-        SUM(CASE
-            WHEN status='Rejected'
-            THEN 1 ELSE 0
-        END),
-    0) AS rejected,
+                COALESCE(SUM(CASE
+                    WHEN status = 'Rejected'
+                    THEN 1 ELSE 0
+                END), 0) AS rejected,
 
-    COALESCE(
-        SUM(CASE
-            WHEN status='Completed'
-            THEN 1 ELSE 0
-        END),
-    0) AS completed
+                COALESCE(SUM(CASE
+                    WHEN status = 'Completed'
+                    THEN 1 ELSE 0
+                END), 0) AS completed
 
-FROM citizen_requests
-WHERE citizen_id = ?
+            FROM citizen_requests
+            WHERE citizen_id = ?
         ");
+
         $stmt->bind_param("i", $citizenId);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
         return [
-            'total'      => (int)($result['total'] ?? 0),
-            'pending'    => (int)($result['pending'] ?? 0),
-            'approved'   => (int)($result['approved'] ?? 0),
-            'rejected'   => (int)($result['rejected'] ?? 0),
-            'completed'  => (int)($result['completed'] ?? 0),
+            'total'     => (int)($result['total'] ?? 0),
+            'pending'   => (int)($result['pending'] ?? 0),
+            'ready'     => (int)($result['ready'] ?? 0),
+            'rejected'  => (int)($result['rejected'] ?? 0),
+            'completed' => (int)($result['completed'] ?? 0),
         ];
     } catch (Exception $e) {
         error_log("Error fetching request stats: " . $e->getMessage());
-        return ['total' => 0, 'pending' => 0, 'approved' => 0, 'rejected' => 0, 'completed' => 0];
+
+        return [
+            'total' => 0,
+            'pending' => 0,
+            'ready' => 0,
+            'rejected' => 0,
+            'completed' => 0
+        ];
     }
 }
 
@@ -291,7 +291,7 @@ function calculateProfileCompletion($data)
                     </div>
                 </a>
 
-                <a href="my_request.php?status=pending" class="cis-stat-card text-decoration-none text-dark">
+                <a href="my_request.php?status=Under Review" class="cis-stat-card text-decoration-none text-dark">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <small>In Progress</small>
@@ -303,14 +303,14 @@ function calculateProfileCompletion($data)
                     </div>
                 </a>
 
-                <a href="my_request.php?status=approved" class="cis-stat-card text-decoration-none text-dark">
+                <a href="my_request.php?status=Ready for Pickup" class="cis-stat-card text-decoration-none text-dark">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <small>Approved</small>
-                            <h2><?= number_format((int)($requestStats['approved'] ?? 0)) ?></h2>
+                            <small>Ready</small>
+                            <h2><?= number_format((int)($requestStats['ready'] ?? 0)) ?></h2>
                         </div>
                         <div class="cis-stat-icon">
-                            <i class="bi bi-check-circle"></i>
+                            <i class="bi bi-box-seam"></i>
                         </div>
                     </div>
                 </a>
