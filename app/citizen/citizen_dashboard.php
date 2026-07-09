@@ -193,559 +193,407 @@ function calculateProfileCompletion($data)
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <h4 class="mb-0">
-                <i class="bi bi-shield-check"></i> Arteche Portal
-            </h4>
-            <small class="text-white-50">Eastern Samar</small>
-        </div>
-
-        <div class="user-profile-sidebar">
-            <div class="avatar-circle">
-                <?php if (!empty($citizenData['avatar'])): ?>
-                    <img src="../public/uploads/avatars/<?= htmlspecialchars($citizenData['avatar']) ?>" alt="Profile"
-                        class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
-                <?php else: ?>
-                    <i class="bi bi-person-fill"></i>
-                <?php endif; ?>
-            </div>
-            <h6 class="mb-1"><?= htmlspecialchars($citizen['first_name'] . ' ' . $citizen['last_name']) ?></h6>
-            <small
-                class="text-white-50 opacity-75"><?= htmlspecialchars($citizenData['barangay_name'] ?? 'Arteche') ?></small>
-            <div class="mt-2">
-                <span class="badge bg-success bg-opacity-75">
-                    <i class="bi bi-check-circle-fill"></i> Verified
-                </span>
-            </div>
-        </div>
-
-        <div class="sidebar-menu">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="citizen_dashboard.php">
-                        <i class="bi bi-grid-1x2-fill"></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="request_document.php">
-                        <i class="bi bi-file-earmark-plus"></i> New Request
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="my_request.php">
-                        <i class="bi bi-files"></i> My Requests
-                        <?php if ($requestStats['pending'] > 0): ?>
-                            <span class="badge bg-warning float-end"><?= $requestStats['pending'] ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="citizen_profile.php">
-                        <i class="bi bi-person"></i> Profile Settings
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="citizen_notification.php">
-                        <i class="bi bi-bell"></i> Notifications
-                        <?php if ($unreadNotifications > 0): ?>
-                            <span class="badge bg-danger float-end"><?= $unreadNotifications ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
-                <li class="nav-item mt-4">
-                    <hr class="border-light opacity-25">
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="citizen_logout.php">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="position-absolute bottom-0 start-0 end-0 p-3 text-center">
-            <small class="text-white-50 opacity-50">© <?= date('Y') ?> LGU Arteche</small>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Top Navbar -->
-        <nav class="top-navbar px-4 d-flex align-items-center justify-content-between">
+    <header class="cis-topbar">
+        <div class="cis-shell d-flex align-items-center justify-content-between py-3">
             <div>
-                <button class="btn btn-link d-md-none text-dark p-0" type="button" onclick="toggleSidebar()">
-                    <i class="bi bi-list fs-3"></i>
-                </button>
+                <div class="cis-brand">
+                    <i class="bi bi-shield-check me-1"></i> Arteche Portal
+                </div>
+                <small class="text-muted">Citizen Dashboard</small>
             </div>
 
-            <div class="d-flex align-items-center gap-3">
-                <!-- Announcements Dropdown -->
-                <div class="dropdown">
-                    <button class="btn btn-link position-relative text-dark p-0" type="button"
-                        data-bs-toggle="dropdown">
-                        <i class="bi bi-megaphone fs-5"></i>
-                        <?php if (count($announcements) > 0 && !empty(array_filter($announcements, fn($a) => !$a['is_read']))): ?>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                style="font-size: 0.6rem;">
-                                <?= count(array_filter($announcements, fn($a) => !$a['is_read'])) ?>
-                            </span>
-                        <?php endif; ?>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end p-0" style="width: 320px;">
-                        <li class="px-3 py-2 bg-light">
-                            <strong>Announcements</strong>
-                        </li>
-                        <?php if (empty($announcements)): ?>
-                            <li class="px-3 py-3 text-center text-muted">
-                                <i class="bi bi-info-circle"></i> No new announcements
-                            </li>
-                        <?php else: ?>
-                            <?php foreach (array_slice($announcements, 0, 5) as $announcement): ?>
-                                <li>
-                                    <a class="dropdown-item announcement-item" href="#" data-id="<?= $announcement['id'] ?>">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <strong class="d-block"><?= htmlspecialchars($announcement['title']) ?></strong>
-                                                <small
-                                                    class="text-muted"><?= date('M d, Y', strtotime($announcement['published_at'])) ?></small>
-                                            </div>
-                                            <?php if (!$announcement['is_read']): ?>
-                                                <span class="badge bg-primary">New</span>
-                                            <?php endif; ?>
-                                        </div>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li class="text-center p-2">
-                                <a href="announcements.php" class="text-decoration-none small">View all announcements</a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="citizen_notifications.php" class="cis-icon-btn position-relative">
+                    <i class="bi bi-bell"></i>
+                    <?php if ($unreadNotifications > 0): ?>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <?= $unreadNotifications ?>
+                        </span>
+                    <?php endif; ?>
+                </a>
 
-                <!-- User Dropdown -->
-                <div class="dropdown">
-                    <button class="btn btn-link text-dark p-0 d-flex align-items-center gap-2" type="button"
-                        data-bs-toggle="dropdown">
-
-                        <i class="bi bi-person-circle fs-4"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="citizen_profile.php"><i class="bi bi-person me-2"></i>My
-                                Profile</a></li>
-                        <li><a class="dropdown-item" href="citizen_notifications.php"><i
-                                    class="bi bi-bell me-2"></i>Notifications</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="citizen_logout.php"><i
-                                    class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
-                    </ul>
-                </div>
+                <a href="citizen_profile.php" class="cis-icon-btn">
+                    <i class="bi bi-person-circle"></i>
+                </a>
             </div>
-        </nav>
+        </div>
+    </header>
 
-        <!-- Dashboard Content -->
-        <div class="container-fluid p-4">
-            <!-- Welcome Banner -->
-            <div class="welcome-card p-4 mb-4">
-                <div class="row align-items-center">
-                    <div class="col-md-8 text-light">
-                        <h1 class="display-6 fw-bold mb-2">
-                            Welcome back, <?= htmlspecialchars($citizen['first_name']) ?>! 👋
-                        </h1>
-                        <p class="mb-0 opacity-90">
-                            Track your document requests and stay updated with barangay announcements.
-                        </p>
+    <main class="cis-shell">
+        <!-- HERO -->
+        <section class="cis-hero mb-4">
+            <div class="position-relative">
+                <small class="opacity-75 d-block mb-2">
+                    <?= date('l, F d, Y') ?>
+                </small>
+
+                <h1 class="mb-2">
+                    Hi, <?= htmlspecialchars($citizen['first_name'] ?? 'Citizen') ?> 👋
+                </h1>
+
+                <p class="mb-4 opacity-75">
+                    Track your requests, view updates, and access barangay services.
+                </p>
+
+                <a href="request_document.php" class="btn btn-light fw-bold rounded-pill px-4 py-2">
+                    <i class="bi bi-plus-circle me-1"></i> New Request
+                </a>
+            </div>
+        </section>
+
+        <!-- PROFILE COMPLETION -->
+        <?php if ($profileCompletion < 100): ?>
+            <section class="cis-card p-3 mb-4">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="cis-stat-icon">
+                        <i class="bi bi-person-check"></i>
                     </div>
-                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                        <a href="request_document.php" class="btn btn-light btn-lg shadow-sm">
-                            <i class="bi bi-plus-circle"></i> New Request
+
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <strong>Complete your profile</strong>
+                            <span class="badge bg-primary"><?= $profileCompletion ?>%</span>
+                        </div>
+
+                        <div class="progress mb-2" style="height: 8px;">
+                            <div class="progress-bar" style="width: <?= $profileCompletion ?>%"></div>
+                        </div>
+
+                        <small class="text-muted d-block mb-2">
+                            Add missing details to make document requests easier.
+                        </small>
+
+                        <a href="citizen_profile.php" class="small fw-bold text-decoration-none">
+                            Update profile →
                         </a>
                     </div>
                 </div>
+            </section>
+        <?php endif; ?>
+
+        <!-- STATS -->
+        <section class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="cis-section-title">Request Overview</h2>
+                <a href="my_request.php" class="small fw-bold text-decoration-none">View all</a>
             </div>
 
-            <!-- Profile Completion Alert -->
-            <?php if ($profileCompletion < 100): ?>
-                <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
-                    <i class="bi bi-info-circle-fill me-2"></i>
-                    <strong>Complete your profile!</strong> Your profile is <?= $profileCompletion ?>% complete.
-                    <a href="citizen_profile.php" class="alert-link">Update now</a> to unlock all features.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
+            <div class="cis-stat-grid">
+                <a href="my_request.php" class="cis-stat-card text-decoration-none text-dark">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>Total</small>
+                            <h2><?= number_format((int)($requestStats['total'] ?? 0)) ?></h2>
+                        </div>
+                        <div class="cis-stat-icon">
+                            <i class="bi bi-files"></i>
+                        </div>
+                    </div>
+                </a>
 
-            <!-- Statistics Cards -->
-            <div class="row g-3 mb-4">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stat-card" onclick="location.href='my_request.php'">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="text-muted mb-1 small">Total Requests</p>
-                                    <h2 class="mb-0 fw-bold">
-                                        <?= number_format((int)($requestStats['total'] ?? 0)) ?>
-                                    </h2>
-                                </div>
-                                <div class="stat-icon bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-files"></i>
-                                </div>
-                            </div>
+                <a href="my_request.php?status=pending" class="cis-stat-card text-decoration-none text-dark">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>In Progress</small>
+                            <h2><?= number_format((int)($requestStats['pending'] ?? 0)) ?></h2>
+                        </div>
+                        <div class="cis-stat-icon">
+                            <i class="bi bi-hourglass-split"></i>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stat-card" onclick="location.href='my_request.php?status=pending'">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="text-muted mb-1 small">In Progress</p>
-                                    <h2 class="mb-0 fw-bold">
-                                        <?= number_format((int)($requestStats['pending'] ?? 0)) ?>
-                                    </h2>
-                                </div>
-                                <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                                    <i class="bi bi-hourglass-split"></i>
-                                </div>
-                            </div>
+                </a>
+
+                <a href="my_request.php?status=approved" class="cis-stat-card text-decoration-none text-dark">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>Approved</small>
+                            <h2><?= number_format((int)($requestStats['approved'] ?? 0)) ?></h2>
+                        </div>
+                        <div class="cis-stat-icon">
+                            <i class="bi bi-check-circle"></i>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stat-card" onclick="location.href='my_request.php?status=approved'">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="text-muted mb-1 small">Approved</p>
-                                    <h2 class="mb-0 fw-bold"><?= number_format($requestStats['approved']) ?></h2>
-                                </div>
-                                <div class="stat-icon bg-success bg-opacity-10 text-success">
-                                    <i class="bi bi-check-circle"></i>
-                                </div>
-                            </div>
+                </a>
+
+                <a href="my_request.php?status=completed" class="cis-stat-card text-decoration-none text-dark">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>Completed</small>
+                            <h2><?= number_format((int)($requestStats['completed'] ?? 0)) ?></h2>
+                        </div>
+                        <div class="cis-stat-icon">
+                            <i class="bi bi-trophy"></i>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="stat-card" onclick="location.href='my_request.php?status=completed'">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="text-muted mb-1 small">Completed</p>
-                                    <h2 class="mb-0 fw-bold"><?= number_format($requestStats['completed']) ?></h2>
-                                </div>
-                                <div class="stat-icon bg-info bg-opacity-10 text-info">
-                                    <i class="bi bi-trophy"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </a>
             </div>
+        </section>
 
-            <!-- Recent Requests & Quick Actions -->
-            <div class="row g-4">
-                <!-- Recent Requests Section -->
-                <div class="col-lg-8">
-                    <div class="card border-0 shadow-sm">
-                        <div
-                            class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 px-4">
-                            <h5 class="mb-0 fw-bold">
-                                <i class="bi bi-clock-history me-2 text-primary"></i>Recent Requests
-                            </h5>
-                            <a href="my_request.php" class="btn btn-sm btn-link text-decoration-none">View All →</a>
-                        </div>
-                        <div class="card-body px-4 pb-4">
-                            <?php if (empty($recentRequests)): ?>
-                                <div class="text-center py-5">
-                                    <i class="bi bi-inbox fs-1 text-muted"></i>
-                                    <h6 class="mt-3 text-muted">No requests yet</h6>
-                                    <p class="small text-muted mb-3">Start by requesting your first document</p>
-                                    <a href="request_document.php" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-plus-circle"></i> Make a Request
-                                    </a>
-                                </div>
-                            <?php else: ?>
-                                <div class="list-group list-group-flush">
-                                    <?php foreach ($recentRequests as $request):
-                                        $statusConfig = [
-                                            'Pending' => ['class' => 'bg-warning text-dark', 'icon' => 'hourglass-split'],
-                                            'Processing' => ['class' => 'bg-info text-white', 'icon' => 'gear'],
-                                            'Approved' => ['class' => 'bg-success text-white', 'icon' => 'check-circle'],
-                                            'Rejected' => ['class' => 'bg-danger text-white', 'icon' => 'x-circle'],
-                                            'Completed' => ['class' => 'bg-secondary text-white', 'icon' => 'check2-circle'],
-                                            'Ready for Pickup' => ['class' => 'bg-primary text-white', 'icon' => 'box-seam']
-                                        ];
-                                        $config = $statusConfig[$request['status']] ?? ['class' => 'bg-secondary text-white', 'icon' => 'file-text'];
-                                    ?>
-                                        <div class="request-item list-group-item list-group-item-action border-0 px-0 py-3"
-                                            onclick="location.href='request_details.php?id=<?= $request['id'] ?>'">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex align-items-center gap-2 mb-2">
-                                                        <i class="bi bi-file-text text-primary"></i>
-                                                        <strong><?= htmlspecialchars($request['document_name'] ?? $request['document_type'] ?? 'Document Request') ?></strong>
-                                                        <span class="status-badge <?= $config['class'] ?>">
-                                                            <i class="bi bi-<?= $config['icon'] ?> me-1"></i>
-                                                            <?= $request['status'] ?>
-                                                        </span>
-                                                    </div>
-                                                    <div class="small text-muted">
-                                                        <i class="bi bi-calendar3 me-1"></i>
-                                                        <?= date('M d, Y h:i A', strtotime($request['created_at'])) ?>
-                                                        <?php if (!empty($request['request_number'])): ?>
-                                                            • <i class="bi bi-hash"></i>
-                                                            <?= htmlspecialchars($request['request_number']) ?>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                                <i class="bi bi-chevron-right text-muted"></i>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+        <div class="cis-dashboard-grid">
+            <div>
+                <!-- Recent Requests here -->
+                <!-- RECENT REQUESTS -->
+                <section class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="cis-section-title">Recent Requests</h2>
+                        <a href="my_request.php" class="small fw-bold text-decoration-none">View all</a>
                     </div>
-                </div>
 
-                <!-- Right Sidebar -->
-                <div class="col-lg-4">
-                    <!-- Profile Completion Card -->
-                    <div class="profile-completion mb-4">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0 fw-bold">Profile Completion</h6>
-                            <span class="badge bg-primary"><?= $profileCompletion ?>%</span>
-                        </div>
-                        <div class="progress mb-2">
-                            <div class="progress-bar" style="width: <?= $profileCompletion ?>%"></div>
-                        </div>
-                        <?php if ($profileCompletion < 100): ?>
-                            <a href="citizen_profile.php" class="btn btn-sm btn-outline-primary w-100 mt-2">
-                                <i class="bi bi-pencil"></i> Complete Profile
+                    <?php if (empty($recentRequests)): ?>
+                        <div class="cis-card cis-empty">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            <strong>No requests yet</strong>
+                            <p class="small mb-3">Start by requesting your first barangay document.</p>
+                            <a href="request_document.php" class="btn btn-primary rounded-pill px-4">
+                                <i class="bi bi-plus-circle me-1"></i> Make a Request
                             </a>
-                        <?php endif; ?>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-transparent border-0 pt-4 px-4">
-                            <h5 class="mb-0 fw-bold">
-                                <i class="bi bi-lightning-charge me-2 text-warning"></i>Quick Actions
-                            </h5>
                         </div>
-                        <div class="card-body px-4 pb-4">
-                            <div class="d-grid gap-2">
-                                <a href="request_document.php" class="btn btn-primary">
-                                    <i class="bi bi-file-earmark-plus"></i> Request Document
-                                </a>
-                                <a href="citizen_profile.php" class="btn btn-outline-secondary">
-                                    <i class="bi bi-person-gear"></i> Update Profile
-                                </a>
-                                <a href="citizen_notifications.php" class="btn btn-outline-secondary position-relative">
-                                    <i class="bi bi-bell"></i> Notifications
-                                    <?php if ($unreadNotifications > 0): ?>
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                            <?= $unreadNotifications ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <?php else: ?>
+                        <div class="d-grid gap-3">
+                            <?php foreach ($recentRequests as $request): ?>
+                                <?php
+                                $statusConfig = [
+                                    'Pending' => ['class' => 'bg-warning text-dark', 'icon' => 'hourglass-split'],
+                                    'Submitted' => ['class' => 'bg-info text-dark', 'icon' => 'send'],
+                                    'Under Review' => ['class' => 'bg-info text-dark', 'icon' => 'search'],
+                                    'Approved' => ['class' => 'bg-success text-white', 'icon' => 'check-circle'],
+                                    'Rejected' => ['class' => 'bg-danger text-white', 'icon' => 'x-circle'],
+                                    'Ready for Pickup' => ['class' => 'bg-primary text-white', 'icon' => 'box-seam'],
+                                    'Completed' => ['class' => 'bg-secondary text-white', 'icon' => 'check2-circle'],
+                                    'Cancelled' => ['class' => 'bg-dark text-white', 'icon' => 'slash-circle'],
+                                ];
 
-                    <!-- Available Documents -->
-                    <?php if (!empty($documentTypes)): ?>
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-transparent border-0 pt-4 px-4">
-                                <h5 class="mb-0 fw-bold">
-                                    <i class="bi bi-file-text me-2 text-primary"></i>Available Documents
-                                </h5>
-                            </div>
-                            <div class="card-body px-4 pb-4">
-                                <div class="list-group list-group-flush">
-                                    <?php foreach (array_slice($documentTypes, 0, 4) as $doc): ?>
-                                        <a href="request_document.php?type=<?= $doc['id'] ?>"
-                                            class="list-group-item list-group-item-action border-0 px-0 py-2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <i class="bi <?= $doc['icon_class'] ?? 'bi-file-text' ?> me-2"
-                                                        style="color: <?= $doc['color'] ?? '#1e40af' ?>"></i>
-                                                    <?= htmlspecialchars($doc['name']) ?>
-                                                </div>
-                                                <small class="text-muted">
-                                                    <?= (($doc['processing_fee'] ?? 0) > 0)
-                                                        ? '₱' . number_format((float)($doc['processing_fee'] ?? 0), 2)
-                                                        : 'Free' ?>
-                                                </small>
+                                $config = $statusConfig[$request['status']] ?? [
+                                    'class' => 'bg-secondary text-white',
+                                    'icon' => 'file-text'
+                                ];
+                                ?>
+
+                                <a href="request_details.php?id=<?= (int)$request['id'] ?>" class="cis-request-item">
+                                    <div class="d-flex justify-content-between gap-3">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                                                <strong>
+                                                    <?= htmlspecialchars($request['document_name'] ?? 'Document Request') ?>
+                                                </strong>
+
+                                                <span class="cis-badge <?= $config['class'] ?>">
+                                                    <i class="bi bi-<?= $config['icon'] ?>"></i>
+                                                    <?= htmlspecialchars($request['status']) ?>
+                                                </span>
                                             </div>
-                                        </a>
-                                    <?php endforeach; ?>
-                                </div>
-                                <?php if (count($documentTypes) > 4): ?>
-                                    <div class="text-center mt-3">
-                                        <a href="request_document.php" class="btn btn-sm btn-link">View all documents →</a>
+
+                                            <div class="small text-muted">
+                                                <i class="bi bi-calendar3 me-1"></i>
+                                                <?= !empty($request['created_at']) ? date('M d, Y h:i A', strtotime($request['created_at'])) : 'No date' ?>
+                                            </div>
+
+                                            <?php if (!empty($request['request_number'])): ?>
+                                                <div class="small text-muted mt-1">
+                                                    <i class="bi bi-hash me-1"></i>
+                                                    <?= htmlspecialchars($request['request_number']) ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="text-muted">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
                                     </div>
-                                <?php endif; ?>
-                            </div>
+                                </a>
+                            <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
+                </section>
 
-    <!-- Toast Container for Notifications -->
-    <div class="toast-container"></div>
+                <!-- Announcements here -->
+                <!-- ANNOUNCEMENTS -->
+                <section class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="cis-section-title">Announcements</h2>
+                        <a href="announcements.php" class="small fw-bold text-decoration-none">View all</a>
+                    </div>
+
+                    <?php if (empty($announcements)): ?>
+                        <div class="cis-card cis-empty">
+                            <i class="bi bi-megaphone fs-1 d-block mb-2"></i>
+                            <strong>No announcements</strong>
+                            <p class="small mb-0">Barangay updates will appear here.</p>
+                        </div>
+                    <?php else: ?>
+                        <div class="d-grid gap-3">
+                            <?php foreach (array_slice($announcements, 0, 3) as $announcement): ?>
+                                <a href="announcements.php?id=<?= (int)$announcement['id'] ?>"
+                                    class="cis-request-item announcement-item"
+                                    data-id="<?= (int)$announcement['id'] ?>">
+
+                                    <div class="d-flex justify-content-between gap-3">
+                                        <div>
+                                            <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+                                                <strong><?= htmlspecialchars($announcement['title']) ?></strong>
+
+                                                <?php if (empty($announcement['is_read'])): ?>
+                                                    <span class="cis-badge bg-primary text-white">
+                                                        New
+                                                    </span>
+                                                <?php endif; ?>
+
+                                                <?php if (!empty($announcement['priority']) && in_array($announcement['priority'], ['Urgent', 'High'])): ?>
+                                                    <span class="cis-badge bg-danger text-white">
+                                                        <?= htmlspecialchars($announcement['priority']) ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </div>
+
+                                            <p class="small text-muted mb-2">
+                                                <?= htmlspecialchars(mb_strimwidth(strip_tags($announcement['content'] ?? ''), 0, 95, '...')) ?>
+                                            </p>
+
+                                            <div class="small text-muted">
+                                                <i class="bi bi-calendar3 me-1"></i>
+                                                <?= !empty($announcement['published_at']) ? date('M d, Y', strtotime($announcement['published_at'])) : 'No date' ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-muted">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </section>
+            </div>
+
+            <aside class="cis-desktop-sticky">
+                <section class="mb-4">
+                    <h2 class="cis-section-title mb-3">Quick Actions</h2>
+
+                    <div class="row g-3">
+                        <div class="col-6 col-lg-3">
+                            <a href="request_document.php" class="cis-card p-3 d-block text-decoration-none text-dark h-100">
+                                <div class="cis-stat-icon mb-3">
+                                    <i class="bi bi-file-earmark-plus"></i>
+                                </div>
+                                <strong>Request</strong>
+                                <small class="d-block text-muted">New document</small>
+                            </a>
+                        </div>
+
+                        <div class="col-6 col-lg-3">
+                            <a href="my_request.php" class="cis-card p-3 d-block text-decoration-none text-dark h-100">
+                                <div class="cis-stat-icon mb-3">
+                                    <i class="bi bi-folder2-open"></i>
+                                </div>
+                                <strong>History</strong>
+                                <small class="d-block text-muted">Track requests</small>
+                            </a>
+                        </div>
+
+                        <div class="col-6 col-lg-3">
+                            <a href="citizen_notifications.php" class="cis-card p-3 d-block text-decoration-none text-dark h-100 position-relative">
+                                <div class="cis-stat-icon mb-3">
+                                    <i class="bi bi-bell"></i>
+                                </div>
+                                <strong>Alerts</strong>
+                                <small class="d-block text-muted">Notifications</small>
+
+                                <?php if ($unreadNotifications > 0): ?>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        <?= $unreadNotifications ?>
+                                    </span>
+                                <?php endif; ?>
+                            </a>
+                        </div>
+
+                        <div class="col-6 col-lg-3">
+                            <a href="citizen_profile.php" class="cis-card p-3 d-block text-decoration-none text-dark h-100">
+                                <div class="cis-stat-icon mb-3">
+                                    <i class="bi bi-person-gear"></i>
+                                </div>
+                                <strong>Profile</strong>
+                                <small class="d-block text-muted">Update details</small>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DESKTOP FOOTER ACTION -->
+                <section class="d-none d-lg-block mb-4">
+                    <div class="cis-card p-4 d-flex align-items-center justify-content-between">
+                        <div>
+                            <strong>Need another document?</strong>
+                            <p class="small text-muted mb-0">Start a new barangay request anytime.</p>
+                        </div>
+
+                        <a href="request_document.php" class="btn btn-primary rounded-pill px-4">
+                            <i class="bi bi-plus-circle me-1"></i> New Request
+                        </a>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="cis-bottom-nav">
+        <a href="citizen_dashboard.php" class="active">
+            <i class="bi bi-house-fill"></i>
+            Home
+        </a>
+
+        <a href="my_request.php">
+            <i class="bi bi-files"></i>
+            Requests
+        </a>
+
+        <a href="request_document.php">
+            <i class="bi bi-plus-circle-fill"></i>
+            New
+        </a>
+
+        <a href="citizen_notifications.php">
+            <i class="bi bi-bell"></i>
+            Alerts
+        </a>
+
+        <a href="citizen_profile.php">
+            <i class="bi bi-person"></i>
+            Profile
+        </a>
+    </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        // Sidebar Toggle for Mobile
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
-
-            // Add overlay for mobile
-            if (sidebar.classList.contains('open')) {
-                let overlay = document.querySelector('.sidebar-overlay');
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.className = 'sidebar-overlay';
-                    overlay.style.position = 'fixed';
-                    overlay.style.top = '0';
-                    overlay.style.left = '0';
-                    overlay.style.right = '0';
-                    overlay.style.bottom = '0';
-                    overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
-                    overlay.style.zIndex = '1029';
-                    overlay.onclick = toggleSidebar;
-                    document.body.appendChild(overlay);
-                }
-            } else {
-                const overlay = document.querySelector('.sidebar-overlay');
-                if (overlay) overlay.remove();
-            }
-        }
-
-        // Close sidebar when clicking a link on mobile
-        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    toggleSidebar();
-                }
-            });
-        });
-
-        // Handle announcement click to mark as read
         document.querySelectorAll('.announcement-item').forEach(item => {
             item.addEventListener('click', async (e) => {
-                e.preventDefault();
                 const announcementId = item.dataset.id;
+                if (!announcementId) return;
 
-                if (announcementId) {
-                    try {
-                        await fetch('mark_announcement_read.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                id: announcementId
-                            })
-                        });
-
-                        // Update UI
-                        const badge = item.querySelector('.badge');
-                        if (badge) badge.remove();
-
-                        // Show toast notification
-                        showToast('Announcement marked as read', 'success');
-                    } catch (error) {
-                        console.error('Error marking announcement:', error);
-                    }
-                }
-            });
-        });
-
-        // Show toast notification
-        function showToast(message, type = 'info') {
-            const toastContainer = document.querySelector('.toast-container');
-            const toastId = 'toast-' + Date.now();
-
-            const toastHTML = `
-                <div id="${toastId}" class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            ${message}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                    </div>
-                </div>
-            `;
-
-            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-            const toastElement = document.getElementById(toastId);
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show();
-
-            // Remove toast after it's hidden
-            toastElement.addEventListener('hidden.bs.toast', () => {
-                toastElement.remove();
-            });
-        }
-
-        // Auto-refresh data every 60 seconds (optional)
-        let autoRefresh = true;
-        if (autoRefresh) {
-            setInterval(() => {
-                // Only refresh if page is visible
-                if (!document.hidden) {
-                    fetch(window.location.href, {
+                try {
+                    await fetch('mark_announcement_read.php', {
+                        method: 'POST',
                         headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    }).then(response => {
-                        if (response.ok) {
-                            // Update specific elements without full page reload
-                            // This is a simplified version - you'd want to update only dynamic content
-                            console.log('Auto-refresh check');
-                        }
-                    }).catch(console.error);
-                }
-            }, 60000);
-        }
-
-        // Add smooth scroll behavior
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: announcementId
+                        })
                     });
+                } catch (error) {
+                    console.error('Announcement read error:', error);
                 }
             });
         });
 
-        // Initialize tooltips
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-
-        // Handle offline mode detection
         window.addEventListener('online', () => {
-            showToast('You are back online!', 'success');
+            console.log('Back online');
         });
 
         window.addEventListener('offline', () => {
-            showToast('You are offline. Some features may be unavailable.', 'warning');
+            console.log('Offline mode');
         });
     </script>
 </body>
