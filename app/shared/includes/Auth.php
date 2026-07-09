@@ -110,7 +110,7 @@ class Auth
 
     // ============= LOGIN WITH RATE LIMITING & GENERIC ERRORS =============
 
-     public function login($emailOrPhone, $password)
+    public function login($emailOrPhone, $password)
     {
         $this->errors = [];
         $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
@@ -256,11 +256,11 @@ class Auth
     }
 
     // ============= REMEMBER ME =============
-
     public function createRememberToken($citizenId)
     {
+        $selector = bin2hex(random_bytes(16));
         $token = bin2hex(random_bytes(32));
-        $hash = password_hash($token, PASSWORD_DEFAULT);
+        $tokenHash = hash('sha256', $token);
         $expires = date('Y-m-d H:i:s', strtotime('+30 days'));
 
         $stmt = $this->db->prepare("DELETE FROM remember_tokens WHERE citizen_id = ?");
@@ -268,36 +268,82 @@ class Auth
         $stmt->execute();
         $stmt->close();
 
-        $stmt = $this->db->prepare("INSERT INTO remember_tokens (citizen_id, token_hash, expires_at) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $citizenId, $hash, $expires);
+        $stmt = $this->db->prepare("
+        INSERT INTO remember_tokens (citizen_id, selector, token_hash, expires_at)
+        VALUES (?, ?, ?, ?)
+    ");
+        $stmt->bind_param("isss", $citizenId, $selector, $tokenHash, $expires);
         $stmt->execute();
         $stmt->close();
 
-        return $token;
+        return $selector . ':' . $token;
     }
 
-     public function loginWithRememberToken($token)
+    public function loginWithRememberToken($cookieValue)
     {
+        if (empty($cookieValue) || strpos($cookieValue, ':') === false) {
+            return false;
+        }
+
+        [$selector, $token] = explode(':', $cookieValue, 2);
+
+        if (!preg_match('/^[a-f0-9]{32}$/', $selector) || !preg_match('/^[a-f0-9]{64}$/', $token)) {
+            return false;
+        }
+
         $stmt = $this->db->prepare("
-            SELECT citizen_id, token_hash
-            FROM remember_tokens
-            WHERE expires_at > NOW()
-        ");
+        SELECT rt.id AS remember_id,
+               rt.token_hash,
+               rt.citizen_id,
+               c.*
+        FROM remember_tokens rt
+        JOIN citizens c ON rt.citizen_id = c.id
+        WHERE rt.selector = ?
+          AND rt.expires_at > NOW()
+          AND c.is_verified = 1
+          AND c.account_status = 'Active'
+        LIMIT 1
+    ");
+        $stmt->bind_param("s", $selector);
         $stmt->execute();
-        $result = $stmt->get_result();
+        $row = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        while ($row = $result->fetch_assoc()) {
-            if (password_verify($token, $row['token_hash'])) {
-                return $this->getCitizen($row['citizen_id']);
-            }
+        if (!$row) {
+            return false;
         }
-        return false;
+
+        $tokenHash = hash('sha256', $token);
+
+        if (!hash_equals($row['token_hash'], $tokenHash)) {
+            $this->deleteRememberToken($cookieValue);
+            return false;
+        }
+
+        return $row;
     }
 
     public function rotateRememberToken($citizenId)
     {
         return $this->createRememberToken($citizenId);
+    }
+
+    public function deleteRememberToken($cookieValue)
+    {
+        if (empty($cookieValue) || strpos($cookieValue, ':') === false) {
+            return;
+        }
+
+        [$selector] = explode(':', $cookieValue, 2);
+
+        if (!preg_match('/^[a-f0-9]{32}$/', $selector)) {
+            return;
+        }
+
+        $stmt = $this->db->prepare("DELETE FROM remember_tokens WHERE selector = ?");
+        $stmt->bind_param("s", $selector);
+        $stmt->execute();
+        $stmt->close();
     }
 
     // Verify account
@@ -521,69 +567,7 @@ class Auth
         return $success;
     }
 
-    // Create remember me token
-    public function createRememberToken($citizenId)
-    {
-        $selector = bin2hex(random_bytes(16));
-        $token = bin2hex(random_bytes(32));
-        $tokenHash = hash('sha256', $token);
-        $expires = date('Y-m-d H:i:s', strtotime('+30 days'));
-
-        $stmt = $this->db->prepare("
-        INSERT INTO remember_tokens (citizen_id, selector, token_hash, expires_at)
-        VALUES (?, ?, ?, ?)
-    ");
-        $stmt->bind_param("isss", $citizenId, $selector, $tokenHash, $expires);
-        $stmt->execute();
-        $stmt->close();
-
-        return $selector . ':' . $token;
-    }
-
-    public function loginWithRememberToken($cookieValue)
-    {
-        if (strpos($cookieValue, ':') === false) {
-            return false;
-        }
-
-        [$selector, $token] = explode(':', $cookieValue, 2);
-        $tokenHash = hash('sha256', $token);
-
-        $stmt = $this->db->prepare("
-        SELECT rt.id, rt.token_hash, c.*
-        FROM remember_tokens rt
-        JOIN citizens c ON rt.citizen_id = c.id
-        WHERE rt.selector = ?
-          AND rt.expires_at > NOW()
-          AND c.is_verified = 1
-          AND c.account_status = 'Active'
-        LIMIT 1
-    ");
-        $stmt->bind_param("s", $selector);
-        $stmt->execute();
-        $row = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-
-        if (!$row || !hash_equals($row['token_hash'], $tokenHash)) {
-            return false;
-        }
-
-        return $row;
-    }
-
-    public function deleteRememberToken($cookieValue)
-    {
-        if (strpos($cookieValue, ':') === false) {
-            return;
-        }
-
-        [$selector] = explode(':', $cookieValue, 2);
-
-        $stmt = $this->db->prepare("DELETE FROM remember_tokens WHERE selector = ?");
-        $stmt->bind_param("s", $selector);
-        $stmt->execute();
-        $stmt->close();
-    }
+    
 
 
 
