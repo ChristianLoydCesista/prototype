@@ -30,69 +30,82 @@ class Auth
     {
         $this->errors = [];
 
-        // Validate inputs
         if (!$this->validateRegistration($data)) {
             return false;
         }
 
-        // Check if email/phone already exists
         if ($this->citizenExists($data['email'], $data['phone'])) {
             $this->errors[] = 'Email or phone number already registered';
             return false;
         }
 
-        // Hash password
         $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => PASSWORD_COST]);
-
-        // Generate verification code
         $verificationCode = $this->generateVerificationCode();
-
-        // Insert citizen
         $middleName = $data['middle_name'] ?? '';
-        $activeStatus = 'Active';
+        $activeStatus = 'Inactive';
 
-        $stmt = $this->db->prepare("
-            INSERT INTO citizens (email,
-                                phone,
-                                password,
-                                first_name,
-                                last_name,
-                                middle_name,
-                                birth_date,
-                                address, 
-                                barangay_id,
-                                verification_code,
-                                account_status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        $this->db->begin_transaction();
+
+        try {
+            $stmt = $this->db->prepare("
+            INSERT INTO citizens (
+                email, phone, password, first_name, last_name, middle_name,
+                birth_date, address, barangay_id, verification_code,
+                verification_created_at, verification_attempts,
+                last_verification_sent, account_status, is_verified
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0, NOW(), ?, 0)
         ");
 
-        $stmt->bind_param(
-            "ssssssssiss",
-            $data['email'],
-            $data['phone'],
-            $hashedPassword,
-            $data['first_name'],
-            $data['last_name'],
-            $middleName,
-            $data['birth_date'],
-            $data['address'],
-            $data['barangay_id'],
-            $verificationCode,
-            $activeStatus
-        );
+            $stmt->bind_param(
+                "ssssssssiss",
+                $data['email'],
+                $data['phone'],
+                $hashedPassword,
+                $data['first_name'],
+                $data['last_name'],
+                $middleName,
+                $data['birth_date'],
+                $data['address'],
+                $data['barangay_id'],
+                $verificationCode,
+                $activeStatus
+            );
 
-        if ($stmt->execute()) {
+            if (!$stmt->execute()) {
+                throw new Exception('Citizen insert failed');
+            }
+
             $citizenId = $stmt->insert_id;
             $stmt->close();
 
-            // Send verification email/SMS (placeholder)
-            $this->sendVerification($data['email'], $data['phone'], $verificationCode);
+            $fullName = trim($data['first_name'] . ' ' . $data['last_name']);
 
+            $emailSent = $this->mailer->sendVerificationEmail(
+                $data['email'],
+                $fullName,
+                $verificationCode
+            );
+
+            if (!$emailSent) {
+                throw new Exception('Verification email failed to send');
+            }
+
+            $_SESSION['verification_email'] = $data['email'];
+            $_SESSION['verification_phone'] = $data['phone'];
+
+            if (defined('APP_ENV') && APP_ENV === 'development') {
+                $_SESSION['demo_verification_code'] = $verificationCode;
+            }
+
+            $this->db->commit();
             return $citizenId;
+        } catch (Exception $e) {
+            $this->db->rollback();
+            error_log('Registration error: ' . $e->getMessage());
+            $this->errors[] = 'Registration failed. Please check your email settings and try again.';
+            return false;
         }
-
-        $this->errors[] = 'Registration failed. Please try again.';
-        return false;
     }
 
     // ============= LOGIN WITH RATE LIMITING & GENERIC ERRORS =============
@@ -290,18 +303,76 @@ class Auth
     // Verify account
     public function verifyAccount($email, $code)
     {
-        $stmt = $this->db->prepare("
-            UPDATE citizens 
-            SET is_verified = TRUE, verification_code = NULL 
-            WHERE email = ? AND verification_code = ? AND is_verified = FALSE
-        ");
+        $this->errors = [];
 
-        $stmt->bind_param("ss", $email, $code);
-        $success = $stmt->execute();
-        $affected = $stmt->affected_rows;
+        $code = trim($code);
+
+        if (!preg_match('/^[0-9]{6}$/', $code)) {
+            $this->errors[] = 'Invalid verification code format';
+            return false;
+        }
+
+        $stmt = $this->db->prepare("
+        SELECT id, verification_code, verification_created_at, verification_attempts, is_verified, account_status
+        FROM citizens
+        WHERE email = ?
+        LIMIT 1
+    ");
+
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $citizen = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        return $affected > 0;
+        if (!$citizen) {
+            $this->errors[] = 'Account not found';
+            return false;
+        }
+
+        if ((int)$citizen['is_verified'] === 1) {
+            $this->errors[] = 'Account is already verified';
+            return false;
+        }
+
+        if ((int)$citizen['verification_attempts'] >= 5) {
+            $this->errors[] = 'Too many failed attempts. Please request a new code.';
+            return false;
+        }
+
+        if (empty($citizen['verification_created_at']) || strtotime($citizen['verification_created_at']) < strtotime('-24 hours')) {
+            $this->errors[] = 'Verification code expired. Please request a new code.';
+            return false;
+        }
+
+        if (!hash_equals($citizen['verification_code'], $code)) {
+            $stmt = $this->db->prepare("
+            UPDATE citizens 
+            SET verification_attempts = verification_attempts + 1 
+            WHERE id = ?
+        ");
+            $stmt->bind_param("i", $citizen['id']);
+            $stmt->execute();
+            $stmt->close();
+
+            $this->errors[] = 'Invalid verification code';
+            return false;
+        }
+
+        $stmt = $this->db->prepare("
+        UPDATE citizens
+        SET is_verified = 1,
+            account_status = 'Active',
+            verification_code = NULL,
+            verification_created_at = NULL,
+            verification_attempts = 0
+        WHERE id = ?
+    ");
+
+        $stmt->bind_param("i", $citizen['id']);
+        $success = $stmt->execute();
+        $stmt->close();
+
+        return $success;
     }
 
     // Send password reset
@@ -449,6 +520,72 @@ class Auth
 
         return $success;
     }
+
+    // Create remember me token
+    public function createRememberToken($citizenId)
+    {
+        $selector = bin2hex(random_bytes(16));
+        $token = bin2hex(random_bytes(32));
+        $tokenHash = hash('sha256', $token);
+        $expires = date('Y-m-d H:i:s', strtotime('+30 days'));
+
+        $stmt = $this->db->prepare("
+        INSERT INTO remember_tokens (citizen_id, selector, token_hash, expires_at)
+        VALUES (?, ?, ?, ?)
+    ");
+        $stmt->bind_param("isss", $citizenId, $selector, $tokenHash, $expires);
+        $stmt->execute();
+        $stmt->close();
+
+        return $selector . ':' . $token;
+    }
+
+    public function loginWithRememberToken($cookieValue)
+    {
+        if (strpos($cookieValue, ':') === false) {
+            return false;
+        }
+
+        [$selector, $token] = explode(':', $cookieValue, 2);
+        $tokenHash = hash('sha256', $token);
+
+        $stmt = $this->db->prepare("
+        SELECT rt.id, rt.token_hash, c.*
+        FROM remember_tokens rt
+        JOIN citizens c ON rt.citizen_id = c.id
+        WHERE rt.selector = ?
+          AND rt.expires_at > NOW()
+          AND c.is_verified = 1
+          AND c.account_status = 'Active'
+        LIMIT 1
+    ");
+        $stmt->bind_param("s", $selector);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if (!$row || !hash_equals($row['token_hash'], $tokenHash)) {
+            return false;
+        }
+
+        return $row;
+    }
+
+    public function deleteRememberToken($cookieValue)
+    {
+        if (strpos($cookieValue, ':') === false) {
+            return;
+        }
+
+        [$selector] = explode(':', $cookieValue, 2);
+
+        $stmt = $this->db->prepare("DELETE FROM remember_tokens WHERE selector = ?");
+        $stmt->bind_param("s", $selector);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+
 
     // ============= NEW FUNCTIONS FOR CITIZEN PROFILE =============
 
@@ -789,7 +926,7 @@ class Auth
 
     private function generateVerificationCode()
     {
-        return strtoupper(substr(md5(uniqid()), 0, 6));
+        return (string) random_int(100000, 999999);
     }
 
     // Send verification email using Mailer class

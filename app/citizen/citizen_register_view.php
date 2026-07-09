@@ -14,9 +14,12 @@ $db = getDB();
 $barangays = $db->query("SELECT id, name FROM barangays ORDER BY name")->fetch_all(MYSQLI_ASSOC);
 
 $pageTitle = "Register - Arteche Citizen Portal";
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
@@ -60,7 +63,7 @@ $pageTitle = "Register - Arteche Citizen Portal";
         /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, rgba(11, 31, 51, 0.8) 0%, rgba(31, 106, 165, 0.75) 100%),
-                        url("../../public/assets/img/bungto_han_arteche.png") center center/cover no-repeat;
+                url("../../public/assets/img/bungto_han_arteche.png") center center/cover no-repeat;
             padding: 4rem 0 3rem;
             border-bottom: 6px solid #c92a2a;
         }
@@ -87,14 +90,16 @@ $pageTitle = "Register - Arteche Citizen Portal";
         }
 
         /* Form Controls */
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border: 1.5px solid #e9edf2;
             border-radius: 10px;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 4px rgba(31, 106, 165, 0.1);
         }
@@ -166,6 +171,7 @@ $pageTitle = "Register - Arteche Citizen Portal";
             .hero-title {
                 font-size: 1.8rem;
             }
+
             .auth-card {
                 margin: 1rem;
                 margin-top: -1rem;
@@ -225,73 +231,139 @@ $pageTitle = "Register - Arteche Citizen Portal";
                                 <!-- Personal Information -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">First Name *</label>
-                                    <input type="text" name="first_name" class="form-control" required>
+                                    <input
+                                        type="text"
+                                        name="first_name"
+                                        class="form-control"
+                                        required
+                                        value="<?= htmlspecialchars($_SESSION['old']['first_name'] ?? '') ?>">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Last Name *</label>
-                                    <input type="text" name="last_name" class="form-control" required>
+                                    <input
+                                        type="text"
+                                        name="last_name"
+                                        class="form-control"
+                                        required
+                                        value="<?= htmlspecialchars($_SESSION['old']['last_name'] ?? '') ?>">
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Middle Name</label>
-                                    <input type="text" name="middle_name" class="form-control">
+                                    <input
+                                        type="text"
+                                        name="middle_name"
+                                        class="form-control"
+                                        value="<?= htmlspecialchars($_SESSION['old']['middle_name'] ?? '') ?>">
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Birth Date *</label>
-                                    <input type="date" name="birth_date" class="form-control" required
-                                        max="<?= date('Y-m-d', strtotime('-13 years')) ?>">
+                                    <input
+                                        type="date"
+                                        name="birth_date"
+                                        class="form-control"
+                                        required
+                                        max="<?= date('Y-m-d', strtotime('-13 years')) ?>"
+                                        value="<?= htmlspecialchars($_SESSION['old']['birth_date'] ?? '') ?>">
                                 </div>
 
                                 <!-- Contact Information -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Email Address *</label>
-                                    <input type="email" name="email" class="form-control" required>
-                                    <small class="text-muted">Verification code will be sent</small>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        class="form-control"
+                                        required
+                                        value="<?= htmlspecialchars($_SESSION['old']['email'] ?? '') ?>">
+                                    <small class="text-muted">
+                                        Verification code will be sent to this email.
+                                    </small>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Mobile Number *</label>
-                                    <input type="tel" name="phone" class="form-control" required
-                                        pattern="09[0-9]{9}" placeholder="09XXXXXXXXX">
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        class="form-control"
+                                        required
+                                        pattern="09[0-9]{9}"
+                                        placeholder="09XXXXXXXXX"
+                                        value="<?= htmlspecialchars($_SESSION['old']['phone'] ?? '') ?>">
                                 </div>
 
                                 <!-- Address -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Barangay *</label>
-                                    <select name="barangay_id" class="form-select" required>
+                                    <select
+                                        name="barangay_id"
+                                        class="form-select"
+                                        required>
+
                                         <option value="">Select Barangay</option>
+
                                         <?php foreach ($barangays as $b): ?>
-                                            <option value="<?= $b['id'] ?>"><?= htmlspecialchars($b['name']) ?></option>
+                                            <option
+                                                value="<?= $b['id'] ?>"
+                                                <?= (($_SESSION['old']['barangay_id'] ?? '') == $b['id']) ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($b['name']) ?>
+                                            </option>
                                         <?php endforeach; ?>
+
                                     </select>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Complete Address *</label>
-                                    <textarea name="address" class="form-control" rows="2" required
-                                        placeholder="House No., Street, etc."></textarea>
+                                    <textarea
+                                        name="address"
+                                        class="form-control"
+                                        rows="2"
+                                        required
+                                        placeholder="House No., Street, etc."><?= htmlspecialchars($_SESSION['old']['address'] ?? '') ?></textarea>
                                 </div>
 
                                 <!-- Password -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Password *</label>
-                                    <input type="password" name="password" class="form-control" required minlength="8">
-                                    <small class="text-muted">Minimum 8 characters</small>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        class="form-control"
+                                        required
+                                        minlength="8">
+                                    <small class="text-muted">
+                                        Minimum 8 characters.
+                                    </small>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Confirm Password *</label>
-                                    <input type="password" name="confirm_password" class="form-control" required>
+                                    <input
+                                        type="password"
+                                        name="confirm_password"
+                                        class="form-control"
+                                        required>
                                 </div>
 
                                 <!-- Terms -->
                                 <div class="col-12 mb-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="terms" id="terms" required>
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            name="terms"
+                                            id="terms"
+                                            required
+                                            <?= !empty($_SESSION['old']['terms']) ? 'checked' : '' ?>>
+
                                         <label class="form-check-label" for="terms">
-                                            I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
-                                            and <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                                            I agree to the
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
+                                            and
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
                                         </label>
                                     </div>
                                 </div>
@@ -331,7 +403,7 @@ $pageTitle = "Register - Arteche Citizen Portal";
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small>
-                        <i class="bi bi-question-circle me-1"></i> Need help? 
+                        <i class="bi bi-question-circle me-1"></i> Need help?
                         <a href="mailto:cis@arteche.gov.ph">Contact Support</a>
                     </small>
                 </div>
@@ -447,6 +519,8 @@ $pageTitle = "Register - Arteche Citizen Portal";
         });
     </script>
 </body>
+<?php
+unset($_SESSION['old']);
+?>
 
 </html>
-

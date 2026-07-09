@@ -22,6 +22,28 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
 // environment & configuration
 // ---------------------------------------------------------------------------
 // load constants (DB credentials, SITE_URL, etc.)
+// load environment variables from .env file if present
+// Load Composer autoloader first
+$projectRoot = dirname(__DIR__, 2);
+$composerAutoload = $projectRoot . '/vendor/autoload.php';
+
+if (file_exists($composerAutoload)) {
+    require_once $composerAutoload;
+} else {
+    error_log("Composer autoload not found at: " . $composerAutoload);
+}
+
+$envFile = $projectRoot . '/.env';
+
+if (class_exists('Dotenv\Dotenv') && file_exists($envFile)) {
+    try {
+        $dotenv = Dotenv\Dotenv::createUnsafeImmutable($projectRoot);
+        $dotenv->safeLoad();
+    } catch (Throwable $e) {
+        error_log("Dotenv load failed: " . $e->getMessage());
+    }
+}
+
 require_once __DIR__ . '/config/constants.php';
 
 // setup base paths/urls
@@ -146,11 +168,27 @@ try {
     $_SESSION['db_error'] = $dbError;
 }
 
-try {
-    $auth = new Auth();
-} catch (Exception $e) {
-    error_log("AUTH Init Failed: " . $e->getMessage());
-    die("System temporarily unavailable.");
+$auth = null;
+if ($conn) {
+    try {
+        $auth = new Auth();
+        if (
+            !$session->isCitizenLoggedIn() &&
+            !empty($_COOKIE['remember_token'])
+        ) {
+            $rememberCitizen = $auth->loginWithRememberToken($_COOKIE['remember_token']);
+
+            if ($rememberCitizen) {
+                $session->setCitizen($rememberCitizen);
+            } else {
+                setcookie('remember_token', '', time() - 3600, '/', '', !empty($_SERVER['HTTPS']), true);
+            }
+        }
+    } catch (Exception $e) {
+        $dbError = $e->getMessage();
+        error_log("AUTH Init Failed: " . $dbError);
+        $_SESSION['db_error'] = $dbError;
+    }
 }
 
 try {

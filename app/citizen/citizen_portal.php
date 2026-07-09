@@ -29,7 +29,7 @@ if (!$session->isCitizenLoggedIn() && isset($_COOKIE['remember_token'])) {
 }
 
 // Redirect if already logged in
-if ($session->isCitizenLoggedIn()) {
+if ($session->isCitizenLoggedIn() && !empty($_SESSION['remember_login'])) {
     header("Location: citizen_dashboard.php");
     exit;
 }
@@ -51,7 +51,8 @@ unset($_SESSION['login_username']); // Clear after use
 // =============================================
 $rememberChecked = $_COOKIE['remember_me_preference'] ?? false;
 $pageTitle = "Login - Arteche Citizen Portal";
-
+$oldLogin = $_SESSION['old_login'] ?? [];
+unset($_SESSION['old_login']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -258,15 +259,9 @@ $pageTitle = "Login - Arteche Citizen Portal";
                             <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                             <div class="mb-4">
                                 <label class="form-label">Email or Phone Number</label>
-                                <input
-                                    type="text"
-                                    name="username"
-                                    class="form-control <?= $errorMessage ? 'is-invalid' : '' ?>"
-                                    required
-                                    placeholder="your@email.com or 09XXXXXXXXX"
-                                    value="<?= htmlspecialchars($loginUsername) ?>"
-                                    autocomplete="username"
-                                    <?= empty($loginUsername) ? 'autofocus' : '' ?>>
+                                <input type="text" name="username" class="form-control"
+                                    required placeholder="your@email.com or 09XXXXXXXXX"
+                                    value="<?= htmlspecialchars($oldLogin['username'] ?? '') ?>">
                             </div>
 
                             <div class="mb-4">
@@ -282,7 +277,8 @@ $pageTitle = "Login - Arteche Citizen Portal";
                             </div>
 
                             <div class="mb-4 form-check">
-                                <input type="checkbox" class="form-check-input" name="remember" id="remember">
+                                <input type="checkbox" class="form-check-input" name="remember" id="remember"
+                                    <?= !empty($oldLogin['remember']) ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="remember">Remember me</label>
                             </div>
 

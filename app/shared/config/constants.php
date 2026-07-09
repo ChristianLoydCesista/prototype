@@ -35,19 +35,22 @@ define('SITE_NAME', 'Arteche Citizen Portal');
 define('SITE_EMAIL', 'citizen@arteche.gov.ph');
 
 // Email/SMTP Configuration
-// Set SMTP_ENABLED to true and configure your SMTP settings to send real emails
-// For Gmail: Use App Password (not your regular password)
-// Get App Password: https://myaccount.google.com/apppasswords
-define('SMTP_ENABLED', false); // Set to true to enable SMTP
-define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_PORT', 587);
-define('SMTP_USERNAME', ''); // Your Gmail address
-define('SMTP_PASSWORD', ''); // Your App Password (not regular password)
-define('SMTP_ENCRYPTION', 'tls');
+define('SMTP_ENABLED', filter_var(getenv('SMTP_ENABLED') ?: false, FILTER_VALIDATE_BOOLEAN));
+define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
+define('SMTP_PORT', intval(getenv('SMTP_PORT') ?: 587));
+define('SMTP_USERNAME', getenv('SMTP_USERNAME') ?: '');
+define('SMTP_PASSWORD', getenv('SMTP_PASSWORD') ?: '');
+define('SMTP_ENCRYPTION', getenv('SMTP_ENCRYPTION') ?: 'tls');
+
+define('FROM_EMAIL', getenv('FROM_EMAIL') ?: SMTP_USERNAME);
+define('FROM_NAME', getenv('FROM_NAME') ?: 'Arteche Citizen Portal');
+
+error_log("SMTP_ENABLED=" . (SMTP_ENABLED ? 'true' : 'false'));
+error_log("SMTP_HOST=" . SMTP_HOST);
+error_log("SMTP_USERNAME=" . SMTP_USERNAME);
+error_log("SMTP_PASSWORD_EMPTY=" . (empty(SMTP_PASSWORD) ? 'yes' : 'no'));
 
 // From email settings
-define('FROM_EMAIL', 'noreply@arteche.gov.ph');
-define('FROM_NAME', 'Arteche Citizen Portal');
 
 // File paths - resolve from the actual project root for hosting environments
 $projectRootAbsolute = $projectRootReal ?: $projectRoot;
@@ -81,24 +84,14 @@ define('PASSWORD_COST', 12); // Bcrypt cost factor
 define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
 define('ALLOWED_FILE_TYPES', 'jpg,jpeg,png,pdf,doc,docx');
 
-// ==========================
-// DATABASE CONFIG (AUTO-LOCAL/PRODUCTION)
-// ==========================
-$isLocalhost = isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false;
-$isLocalFile = isset($_SERVER['SERVER_ADDR']) && $_SERVER['SERVER_ADDR'] === '127.0.0.1';
-$isLocalEnvironment = $isLocalhost || $isLocalFile || (php_sapi_name() === 'cli' && !getenv('DB_HOST'));
 
-if ($isLocalEnvironment) {
-    define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-    define('DB_USER', getenv('DB_USER') ?: 'root');
-    define('DB_PASS', getenv('DB_PASS') ?: '');
-    define('DB_NAME', getenv('DB_NAME') ?: 'barangay_ci_system');
-} else {
-    define('DB_HOST', getenv('DB_HOST') ?: 'sql306.infinityfree.com');
-    define('DB_USER', getenv('DB_USER') ?: 'if0_42353709');
-    define('DB_PASS', getenv('DB_PASS') ?: '6GbzqbCGseL');
-    define('DB_NAME', getenv('DB_NAME') ?: 'if0_42353709_barangay_ci_system');
-}
+// ==========================
+// DATABASE CONFIG
+// ==========================
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: 'barangay_ci_system');
 
 // ==========================
 // ENVIRONMENT DETECTION (for secure cookies and HTTPS enforcement)

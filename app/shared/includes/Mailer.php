@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mailer Class - Handles sending emails for verification and notifications
  * 
@@ -17,7 +18,7 @@ class Mailer
     private $fromEmail;
     private $fromName;
     private $useSMTP;
-    
+
     public function __construct()
     {
         // SMTP configuration from constants
@@ -29,7 +30,7 @@ class Mailer
         $this->fromName = defined('FROM_NAME') ? FROM_NAME : 'Arteche Community System';
         $this->useSMTP = defined('SMTP_ENABLED') && SMTP_ENABLED;
     }
-    
+
     /**
      * Send verification email to citizen
      */
@@ -39,7 +40,7 @@ class Mailer
         $body = $this->getVerificationEmailTemplate($name, $verificationCode);
         return $this->send($email, $subject, $body, true);
     }
-    
+
     /**
      * Send password reset email
      */
@@ -49,7 +50,7 @@ class Mailer
         $body = $this->getPasswordResetEmailTemplate($name, $resetLink);
         return $this->send($email, $subject, $body, true);
     }
-    
+
     /**
      * Send welcome email after verification
      */
@@ -59,7 +60,7 @@ class Mailer
         $body = $this->getWelcomeEmailTemplate($name);
         return $this->send($email, $subject, $body, true);
     }
-    
+
     /**
      * Send document request confirmation
      */
@@ -69,27 +70,34 @@ class Mailer
         $body = $this->getDocumentRequestTemplate($name, $requestNumber, $documentType);
         return $this->send($email, $subject, $body, true);
     }
-    
+
     /**
      * Main send function
      */
     public function send($to, $subject, $body, $isHTML = true)
     {
-        // If SMTP is not configured, log and return true for demo mode
-        if (!$this->useSMTP || empty($this->smtpUsername)) {
+        if (!$this->useSMTP) {
             $this->logEmail($to, $subject, $body);
             return true;
         }
-        
+
+        if (empty($this->smtpUsername) || empty($this->smtpPassword)) {
+            error_log("SMTP is enabled but username/password is missing.");
+            $this->logEmail($to, $subject, $body);
+            return false;
+        }
+
         // Try to use PHPMailer if available
         if ($this->loadPHPMailer()) {
             return $this->sendWithPHPMailer($to, $subject, $body, $isHTML);
         }
-        
+
+
+
         // Fallback to PHP mail()
         return $this->sendWithMail($to, $subject, $body, $isHTML);
     }
-    
+
     /**
      * Try to load PHPMailer
      */
@@ -99,16 +107,16 @@ class Mailer
             __DIR__ . '/../../../vendor/autoload.php',
             __DIR__ . '/../../../../vendor/autoload.php',
         ];
-        
+
         foreach ($autoloadPaths as $path) {
             if (file_exists($path)) {
                 require_once $path;
             }
         }
-        
+
         return class_exists('PHPMailer\PHPMailer\PHPMailer');
     }
-    
+
     /**
      * Send email using PHPMailer
      */
@@ -116,58 +124,73 @@ class Mailer
     {
         try {
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
-            
+
             $mail->isSMTP();
             $mail->Host       = $this->smtpHost;
             $mail->SMTPAuth   = true;
             $mail->Username   = $this->smtpUsername;
             $mail->Password   = $this->smtpPassword;
-            $mail->SMTPSecure = 'tls';
             $mail->Port       = $this->smtpPort;
-            
-            $mail->setFrom($this->fromEmail, $this->fromName);
+            $mail->CharSet    = 'UTF-8';
+
+            if (defined('SMTP_ENCRYPTION') && SMTP_ENCRYPTION === 'ssl') {
+                $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+            } else {
+                $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            }
+
+            $fromEmail = !empty($this->fromEmail) ? $this->fromEmail : $this->smtpUsername;
+
+            $mail->setFrom($fromEmail, $this->fromName);
             $mail->addAddress($to);
-            
+
             $mail->isHTML($isHTML);
             $mail->Subject = $subject;
             $mail->Body    = $body;
-            $mail->CharSet = 'UTF-8';
-            
+
+            if ($isHTML) {
+                $mail->AltBody = strip_tags(str_replace(['<br>', '<br/>', '<br />'], "\n", $body));
+            }
+
             $mail->send();
-            error_log("Email sent successfully to: $to");
+
+            error_log("Email sent successfully to: " . $to);
             return true;
-            
-        } catch (Exception $e) {
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
             error_log("PHPMailer Error: " . $e->getMessage());
             $this->logEmail($to, $subject, $body);
-            return true;
+            return false;
+        } catch (\Exception $e) {
+            error_log("General Mailer Error: " . $e->getMessage());
+            $this->logEmail($to, $subject, $body);
+            return false;
         }
     }
-    
+
     /**
      * Send email using PHP mail()
      */
     private function sendWithMail($to, $subject, $body, $isHTML)
     {
         $headers = "From: {$this->fromName} <{$this->fromEmail}>\r\n";
-        
+
         if ($isHTML) {
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
         }
-        
+
         $subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
-        
+
         $result = mail($to, $subject, $body, $headers);
-        
+
         if (!$result) {
             error_log("mail() failed for: $to");
             $this->logEmail($to, $subject, $body);
         }
-        
+
         return $result;
     }
-    
+
     /**
      * Log email to file (for demo/development)
      */
@@ -177,22 +200,22 @@ class Mailer
         if (!is_dir($logDir)) {
             @mkdir($logDir, 0755, true);
         }
-        
+
         $logFile = $logDir . '/emails.log';
         $timestamp = date('Y-m-d H:i:s');
-        
+
         $logEntry = "====================================================================\n";
         $logEntry .= "Timestamp: $timestamp\n";
         $logEntry .= "To: $to\n";
         $logEntry .= "Subject: $subject\n";
         $logEntry .= "--------------------------------------------------------------------\n";
         $logEntry .= "Body:\n$body\n\n";
-        
+
         @file_put_contents($logFile, $logEntry, FILE_APPEND);
-        
+
         error_log("DEMO EMAIL logged for: $to - Subject: $subject");
     }
-    
+
     /**
      * Get verification email HTML template
      */
@@ -234,7 +257,7 @@ class Mailer
 </body>
 </html>';
     }
-    
+
     /**
      * Get password reset email template
      */
@@ -266,7 +289,7 @@ class Mailer
 </body>
 </html>';
     }
-    
+
     /**
      * Get welcome email template
      */
@@ -301,7 +324,7 @@ class Mailer
 </body>
 </html>';
     }
-    
+
     /**
      * Get document request confirmation template
      */
