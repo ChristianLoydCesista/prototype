@@ -2,433 +2,471 @@
 // app/admin/shared/dashboard.php
 require_once __DIR__ . '/../../shared/bootstrap.php';
 
-// database connection available from bootstrap
 $conn = getDB();
 
-// Authentication check
+/*
+|--------------------------------------------------------------------------
+| 1. AUTHENTICATION
+|--------------------------------------------------------------------------
+*/
+
 if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
     header("Location: ../admin_login.php");
     exit;
 }
 
-// Get session variables from login
-$admin_barangay_id = $_SESSION['barangay_id'] ?? null;
-$is_super_admin = ($_SESSION['role'] ?? '') === 'super_admin';
+$adminBarangayId = $_SESSION['barangay_id'] ?? null;
+$isSuperAdmin = ($_SESSION['role'] ?? '') === 'super_admin';
 $username = $_SESSION['username'] ?? 'Admin';
-$full_name = $_SESSION['full_name'] ?? $username;
+$fullName = $_SESSION['full_name'] ?? $username;
 
-// ============================================
-// SECURITY: RBAC Logic
-// ============================================
+/*
+|--------------------------------------------------------------------------
+| 2. HELPER FUNCTIONS
+|--------------------------------------------------------------------------
+*/
 
-if (!$is_super_admin) {
-    // BARANGAY ADMIN LOGIC
-    $selected_barangay_id = $admin_barangay_id;
-
-    if ($selected_barangay_id) {
-        $stmt = $conn->prepare("SELECT * FROM barangays WHERE id = ?");
-        $stmt->bind_param("i", $selected_barangay_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $selected_barangay = $result->fetch_assoc();
-        $stmt->close();
-    } else {
-        session_destroy();
-        header("Location: ../admin_login.php?error=no_barangay_assigned");
-        exit;
-    }
-
-    $viewing_all_barangays = false;
-
-    // Get only their barangay
-    $stmt = $conn->prepare("SELECT * FROM barangays WHERE id = ?");
-    $stmt->bind_param("i", $selected_barangay_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $barangays = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-
-    // Security check
-    if (isset($_GET['barangay_id']) && $_GET['barangay_id'] != $selected_barangay_id) {
-        error_log("SECURITY: Barangay admin " . $username . " attempted to access barangay_id=" . $_GET['barangay_id']);
-        header("Location: dashboard.php");
-        exit;
-    }
-} else {
-    // SUPER ADMIN LOGIC
-    $barangays = $conn->query("SELECT * FROM barangays ORDER BY name")->fetch_all(MYSQLI_ASSOC);
-
-    if (isset($_GET['barangay_id']) && $_GET['barangay_id'] !== '') {
-        $selected_barangay_id = intval($_GET['barangay_id']);
-        $stmt = $conn->prepare("SELECT * FROM barangays WHERE id = ?");
-        $stmt->bind_param("i", $selected_barangay_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $selected_barangay = $result->fetch_assoc();
-        $stmt->close();
-
-        if (!$selected_barangay) {
-            $selected_barangay_id = null;
-            $selected_barangay = null;
-        }
-    } else {
-        $selected_barangay_id = null;
-        $selected_barangay = null;
-    }
-
-    $viewing_all_barangays = empty($selected_barangay_id);
-}
-
-// ============================================
-// ERROR HANDLING & DATA FETCHING
-// ============================================
-
-// Initialize default values
-$stats = [
-    'total_households' => 0,
-    'avg_income' => 0,
-    'four_ps_count' => 0,
-    'pending_requests' => 0,
-    'low_risk' => 0,
-    'medium_risk' => 0,
-    'high_risk' => 0
-];
-
-$households = [];
-$pending_requests = [];
-$barangay_summary = [];
-
-// ============================================
-// PAGINATION SETUP
-// ============================================
-$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 25;
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-$sort = isset($_GET['sort']) ? $_GET['sort'] : 'id';
-$order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
-
-// Validate and sanitize pagination values
-$limit = in_array($limit, [10, 25, 50, 100]) ? $limit : 25;
-$offset = ($page - 1) * $limit;
-
-// Allowed sort columns
-$allowed_sorts = ['id', 'name', 'household_size', 'income_monthly', 'risk_score', 'survey_date'];
-if (!in_array($sort, $allowed_sorts))
-    $sort = 'id';
-$order = in_array(strtoupper($order), ['ASC', 'DESC']) ? strtoupper($order) : 'DESC';
-
-// Build search condition
-$search_condition = '';
-$search_params = [];
-if (!empty($search)) {
-    $search_condition = " AND (h.name LIKE ? OR h.household_identifier LIKE ? OR h.contact_number LIKE ?)";
-    $search_params = ["%$search%", "%$search%", "%$search%"];
-}
-
-// ============================================
-// BARANGAY PAGINATION SETUP (for super admin)
-// ============================================
-$barangay_page = isset($_GET['barangay_page']) ? max(1, intval($_GET['barangay_page'])) : 1;
-$barangay_limit = isset($_GET['barangay_limit']) ? intval($_GET['barangay_limit']) : 10;
-$barangay_limit = in_array($barangay_limit, [5, 10, 20, 50]) ? $barangay_limit : 10;
-$barangay_offset = ($barangay_page - 1) * $barangay_limit;
-
-// Helper function for safe queries
-function safeQuery($conn, $sql, $params = null, $types = null)
+function fetchOne(mysqli $conn, string $sql, string $types = '', array $params = []): ?array
 {
-    try {
-        if ($params) {
-            $stmt = $conn->prepare($sql);
-            if ($stmt) {
-                $stmt->bind_param($types, ...$params);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $stmt->close();
-                return $result;
-            }
-        } else {
-            return $conn->query($sql);
-        }
-    } catch (Exception $e) {
-        error_log("Database error: " . $e->getMessage());
+    $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        error_log("SQL prepare failed: " . $conn->error);
         return null;
     }
-    return null;
+
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    return $row ?: null;
 }
 
-// Get statistics with error handling
-if ($viewing_all_barangays) {
-    // SUPER ADMIN: View ALL barangays statistics
-    $result = safeQuery($conn, "SELECT COUNT(*) as cnt FROM households");
-    $stats['total_households'] = ($result && $row = $result->fetch_assoc()) ? $row['cnt'] : 0;
+function fetchAllRows(mysqli $conn, string $sql, string $types = '', array $params = []): array
+{
+    $stmt = $conn->prepare($sql);
 
-    $result = safeQuery($conn, "SELECT AVG(income_monthly) as avg_inc FROM households");
-    $stats['avg_income'] = ($result && $row = $result->fetch_assoc()) ? round($row['avg_inc'] ?? 0) : 0;
+    if (!$stmt) {
+        error_log("SQL prepare failed: " . $conn->error);
+        return [];
+    }
 
-    $result = safeQuery($conn, "SELECT COUNT(*) as cnt FROM households WHERE four_ps='Yes'");
-    $stats['four_ps_count'] = ($result && $row = $result->fetch_assoc()) ? $row['cnt'] : 0;
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
 
-    // Get pending document requests
-    $result = safeQuery($conn, "
-        SELECT COUNT(*) as cnt 
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    return $rows;
+}
+
+function getBarangayById(mysqli $conn, int $barangayId): ?array
+{
+    return fetchOne(
+        $conn,
+        "SELECT * FROM barangays WHERE id = ?",
+        "i",
+        [$barangayId]
+    );
+}
+
+function getDashboardStats(mysqli $conn, ?int $barangayId = null): array
+{
+    $where = '';
+    $types = '';
+    $params = [];
+
+    if ($barangayId !== null) {
+        $where = "WHERE h.barangay_id = ?";
+        $types = "i";
+        $params[] = $barangayId;
+    }
+
+    $householdStats = fetchOne(
+        $conn,
+        "
+        SELECT
+            COUNT(*) AS total_households,
+            COALESCE(AVG(income_monthly), 0) AS avg_income,
+            COALESCE(SUM(CASE WHEN four_ps = 'Yes' THEN 1 ELSE 0 END), 0) AS four_ps_count,
+            COALESCE(SUM(CASE WHEN risk_score <= 30 THEN 1 ELSE 0 END), 0) AS low_risk,
+            COALESCE(SUM(CASE WHEN risk_score > 30 AND risk_score <= 60 THEN 1 ELSE 0 END), 0) AS medium_risk,
+            COALESCE(SUM(CASE WHEN risk_score > 60 THEN 1 ELSE 0 END), 0) AS high_risk
+        FROM households h
+        $where
+        ",
+        $types,
+        $params
+    ) ?? [];
+
+    $requestWhere = "";
+    $requestTypes = "";
+    $requestParams = [];
+
+    if ($barangayId !== null) {
+        $requestWhere = "AND c.barangay_id = ?";
+        $requestTypes = "i";
+        $requestParams[] = $barangayId;
+    }
+
+    $requestStats = fetchOne(
+        $conn,
+        "
+        SELECT COUNT(*) AS pending_requests
         FROM citizen_requests cr
         JOIN citizens c ON cr.citizen_id = c.id
         WHERE cr.status IN ('Submitted', 'Under Review')
-    ");
-    $stats['pending_requests'] = ($result && $row = $result->fetch_assoc()) ? $row['cnt'] : 0;
+        $requestWhere
+        ",
+        $requestTypes,
+        $requestParams
+    ) ?? [];
 
-    // Handle status updates
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_POST['csrf']) && hash_equals($_SESSION['csrf'] ?? '', $_POST['csrf'])) {
-        $action = $_POST['action'];
-        if ($action === 'update_status') {
-            $request_id = intval($_POST['request_id']);
-            $new_status = $_POST['new_status'];
-            $stmt = $conn->prepare("UPDATE citizen_requests SET status = ? WHERE id = ? AND (barangay_id = ? OR ?)");
-            $stmt->bind_param("siii", $new_status, $request_id, $admin_barangay_id, $is_super_admin);
-            $stmt->execute();
-        } elseif ($action === 'bulk_update') {
-            $ids = json_decode($_POST['ids'], true);
-            $new_status = $_POST['new_status'];
-            $placeholders = str_repeat('?,', count($ids) - 1) . '?';
-            $stmt = $conn->prepare("UPDATE citizen_requests SET status = ? WHERE id IN ($placeholders) AND (barangay_id = ? OR ?)");
-            $params = array_merge([$new_status], $ids, [$admin_barangay_id, $is_super_admin]);
-            call_user_func_array([$stmt, 'bind_param'], array_merge(['s', str_repeat('i', count($ids)), 'ii'], array_fill(0, count($params), null)));
-            $stmt->bind_param('s' . str_repeat('i', count($ids)) . 'ii', ...$params);
-            $stmt->execute();
-        }
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']);
-        exit;
-    }
-    $_SESSION['csrf'] = bin2hex(random_bytes(32));
-
-    // Risk distribution
-    $result = safeQuery($conn, "
-        SELECT 
-            SUM(CASE WHEN risk_score <= 30 THEN 1 ELSE 0 END) as low,
-            SUM(CASE WHEN risk_score > 30 AND risk_score <= 60 THEN 1 ELSE 0 END) as medium,
-            SUM(CASE WHEN risk_score > 60 THEN 1 ELSE 0 END) as high
-        FROM households
-    ");
-    if ($result && $row = $result->fetch_assoc()) {
-        $stats['low_risk'] = $row['low'] ?? 0;
-        $stats['medium_risk'] = $row['medium'] ?? 0;
-        $stats['high_risk'] = $row['high'] ?? 0;
-    }
-} elseif ($selected_barangay_id) {
-    // View specific barangay statistics
-    $stmt = $conn->prepare("SELECT COUNT(*) as cnt FROM households WHERE barangay_id = ?");
-    $stmt->bind_param("i", $selected_barangay_id);
-    $stmt->execute();
-    $stats['total_households'] = $stmt->get_result()->fetch_assoc()['cnt'] ?? 0;
-    $stmt->close();
-
-    $stmt = $conn->prepare("SELECT AVG(income_monthly) as avg_inc FROM households WHERE barangay_id = ?");
-    $stmt->bind_param("i", $selected_barangay_id);
-    $stmt->execute();
-    $stats['avg_income'] = round($stmt->get_result()->fetch_assoc()['avg_inc'] ?? 0);
-    $stmt->close();
-
-    $stmt = $conn->prepare("SELECT COUNT(*) as cnt FROM households WHERE four_ps='Yes' AND barangay_id = ?");
-    $stmt->bind_param("i", $selected_barangay_id);
-    $stmt->execute();
-    $stats['four_ps_count'] = $stmt->get_result()->fetch_assoc()['cnt'] ?? 0;
-    $stmt->close();
-
-    // Get pending document requests for this barangay
-    $stmt = $conn->prepare("
-        SELECT COUNT(*) as cnt 
-        FROM citizen_requests cr
-        JOIN citizens c ON cr.citizen_id = c.id
-        WHERE cr.status IN ('Submitted', 'Under Review')
-        AND c.barangay_id = ?
-    ");
-    $stmt->bind_param("i", $selected_barangay_id);
-    $stmt->execute();
-    $stats['pending_requests'] = $stmt->get_result()->fetch_assoc()['cnt'] ?? 0;
-    $stmt->close();
-
-    // Risk distribution
-    $stmt = $conn->prepare("
-        SELECT 
-            SUM(CASE WHEN risk_score <= 30 THEN 1 ELSE 0 END) as low,
-            SUM(CASE WHEN risk_score > 30 AND risk_score <= 60 THEN 1 ELSE 0 END) as medium,
-            SUM(CASE WHEN risk_score > 60 THEN 1 ELSE 0 END) as high
-        FROM households 
-        WHERE barangay_id = ?
-    ");
-    $stmt->bind_param("i", $selected_barangay_id);
-    $stmt->execute();
-    $risk_counts = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
-
-    $stats['low_risk'] = $risk_counts['low'] ?? 0;
-    $stats['medium_risk'] = $risk_counts['medium'] ?? 0;
-    $stats['high_risk'] = $risk_counts['high'] ?? 0;
+    return [
+        'total_households' => (int)($householdStats['total_households'] ?? 0),
+        'avg_income' => round((float)($householdStats['avg_income'] ?? 0)),
+        'four_ps_count' => (int)($householdStats['four_ps_count'] ?? 0),
+        'pending_requests' => (int)($requestStats['pending_requests'] ?? 0),
+        'low_risk' => (int)($householdStats['low_risk'] ?? 0),
+        'medium_risk' => (int)($householdStats['medium_risk'] ?? 0),
+        'high_risk' => (int)($householdStats['high_risk'] ?? 0),
+    ];
 }
 
-// Get households with coordinates (with pagination)
-$total_households = 0;
-if ($viewing_all_barangays) {
-    // Count total for pagination
-    $count_result = $conn->query("SELECT COUNT(*) as total FROM households h WHERE h.latitude IS NOT NULL AND h.longitude IS NOT NULL");
-    $total_households = $count_result ? ($count_result->fetch_assoc()['total'] ?? 0) : 0;
+function getHouseholdCountWithCoordinates(mysqli $conn, ?int $barangayId = null): int
+{
+    if ($barangayId !== null) {
+        $row = fetchOne(
+            $conn,
+            "
+            SELECT COUNT(*) AS total
+            FROM households
+            WHERE barangay_id = ?
+            AND latitude IS NOT NULL
+            AND longitude IS NOT NULL
+            ",
+            "i",
+            [$barangayId]
+        );
+    } else {
+        $row = fetchOne(
+            $conn,
+            "
+            SELECT COUNT(*) AS total
+            FROM households
+            WHERE latitude IS NOT NULL
+            AND longitude IS NOT NULL
+            "
+        );
+    }
 
-    // Data query with pagination
-    $stmt = $conn->prepare("
-        SELECT h.*, b.name as barangay_name 
-        FROM households h 
-        LEFT JOIN barangays b ON h.barangay_id = b.id 
-        WHERE h.latitude IS NOT NULL AND h.longitude IS NOT NULL
-        ORDER BY h." . $sort . " " . $order . " 
-        LIMIT ? OFFSET ?
-    ");
-    $stmt->bind_param("ii", $limit, $offset);
-    $stmt->execute();
-    $households = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-} elseif ($selected_barangay_id) {
-    // Count total for pagination
-    $count_stmt = $conn->prepare("SELECT COUNT(*) as total FROM households h WHERE h.barangay_id = ? AND h.latitude IS NOT NULL AND h.longitude IS NOT NULL");
-    $count_stmt->bind_param("i", $selected_barangay_id);
-    $count_stmt->execute();
-    $total_households = $count_stmt->get_result()->fetch_assoc()['total'] ?? 0;
-    $count_stmt->close();
-
-    // Data query with pagination
-    $stmt = $conn->prepare("
-        SELECT h.*, b.name as barangay_name 
-        FROM households h 
-        LEFT JOIN barangays b ON h.barangay_id = b.id 
-        WHERE h.barangay_id = ? 
-        AND h.latitude IS NOT NULL AND h.longitude IS NOT NULL
-        ORDER BY h." . $sort . " " . $order . "
-        LIMIT ? OFFSET ?
-    ");
-    $stmt->bind_param("iii", $selected_barangay_id, $limit, $offset);
-    $stmt->execute();
-    $households = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
+    return (int)($row['total'] ?? 0);
 }
 
-// Calculate pagination info
-$total_pages = ceil($total_households / $limit);
-$current_page = $page;
-$showing_from = ($offset + 1);
-$showing_to = min($offset + $limit, $total_households);
+function getHouseholdsWithCoordinates(
+    mysqli $conn,
+    ?int $barangayId,
+    int $limit,
+    int $offset,
+    string $sort,
+    string $order
+): array {
+    if ($barangayId !== null) {
+        return fetchAllRows(
+            $conn,
+            "
+            SELECT h.*, b.name AS barangay_name
+            FROM households h
+            LEFT JOIN barangays b ON h.barangay_id = b.id
+            WHERE h.barangay_id = ?
+            AND h.latitude IS NOT NULL
+            AND h.longitude IS NOT NULL
+            ORDER BY h.$sort $order
+            LIMIT ? OFFSET ?
+            ",
+            "iii",
+            [$barangayId, $limit, $offset]
+        );
+    }
 
-// Get pending document requests
-if ($viewing_all_barangays) {
-    $result = safeQuery($conn, "
-        SELECT 
+    return fetchAllRows(
+        $conn,
+        "
+        SELECT h.*, b.name AS barangay_name
+        FROM households h
+        LEFT JOIN barangays b ON h.barangay_id = b.id
+        WHERE h.latitude IS NOT NULL
+        AND h.longitude IS NOT NULL
+        ORDER BY h.$sort $order
+        LIMIT ? OFFSET ?
+        ",
+        "ii",
+        [$limit, $offset]
+    );
+}
+
+function getPendingRequests(mysqli $conn, ?int $barangayId = null, int $limit = 20): array
+{
+    if ($barangayId !== null) {
+        return fetchAllRows(
+            $conn,
+            "
+            SELECT
+                cr.id,
+                cr.request_number,
+                cr.status,
+                cr.submitted_at,
+                cr.purpose,
+                CONCAT(c.first_name, ' ', c.last_name) AS citizen_name,
+                dt.name AS document_name
+            FROM citizen_requests cr
+            JOIN citizens c ON cr.citizen_id = c.id
+            JOIN document_types dt ON cr.document_type_id = dt.id
+            WHERE cr.status IN ('Submitted', 'Under Review')
+            AND c.barangay_id = ?
+            ORDER BY cr.submitted_at DESC
+            LIMIT ?
+            ",
+            "ii",
+            [$barangayId, $limit]
+        );
+    }
+
+    return fetchAllRows(
+        $conn,
+        "
+        SELECT
             cr.id,
             cr.request_number,
             cr.status,
             cr.submitted_at,
             cr.purpose,
-            CONCAT(c.first_name, ' ', c.last_name) as citizen_name,
-            dt.name as document_name,
-            b.name as barangay_name
+            CONCAT(c.first_name, ' ', c.last_name) AS citizen_name,
+            dt.name AS document_name,
+            b.name AS barangay_name
         FROM citizen_requests cr
         JOIN citizens c ON cr.citizen_id = c.id
         JOIN document_types dt ON cr.document_type_id = dt.id
         LEFT JOIN barangays b ON c.barangay_id = b.id
         WHERE cr.status IN ('Submitted', 'Under Review')
-        ORDER BY cr.submitted_at DESC 
-        LIMIT 20
-    ");
-    $pending_requests = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
-} elseif ($selected_barangay_id) {
-    $stmt = $conn->prepare("
-        SELECT 
-            cr.id,
-            cr.request_number,
-            cr.status,
-            cr.submitted_at,
-            cr.purpose,
-            CONCAT(c.first_name, ' ', c.last_name) as citizen_name,
-            dt.name as document_name
-        FROM citizen_requests cr
-        JOIN citizens c ON cr.citizen_id = c.id
-        JOIN document_types dt ON cr.document_type_id = dt.id
-        WHERE cr.status IN ('Submitted', 'Under Review')
-        AND c.barangay_id = ?
-        ORDER BY cr.submitted_at DESC 
-        LIMIT 10
-    ");
-    $stmt->bind_param("i", $selected_barangay_id);
-    $stmt->execute();
-    $pending_requests = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
+        ORDER BY cr.submitted_at DESC
+        LIMIT ?
+        ",
+        "i",
+        [$limit]
+    );
 }
 
-// Get barangay summary for super admin
-$total_barangays = 0;
-$household_summary = [];
-if ($is_super_admin && $viewing_all_barangays) {
-    // Count total barangays for pagination
-    $count_result = safeQuery($conn, "SELECT COUNT(*) as total FROM barangays");
-    $total_barangays = $count_result ? ($count_result->fetch_assoc()['total'] ?? 0) : 0;
-
-    // Paginated query
-    $stmt = $conn->prepare("
-        SELECT 
-            b.id, 
-            b.name, 
+function getBarangaySummary(mysqli $conn, int $limit, int $offset): array
+{
+    return fetchAllRows(
+        $conn,
+        "
+        SELECT
+            b.id,
+            b.name,
             b.latitude,
             b.longitude,
-            COUNT(DISTINCT h.id) as household_count,
-            COALESCE(AVG(h.income_monthly), 0) as avg_income,
-            SUM(CASE WHEN h.four_ps = 'Yes' THEN 1 ELSE 0 END) as four_ps_count,
-            COALESCE(AVG(h.risk_score), 0) as avg_risk_score,
+            COUNT(DISTINCT h.id) AS household_count,
+            COALESCE(AVG(h.income_monthly), 0) AS avg_income,
+            COALESCE(SUM(CASE WHEN h.four_ps = 'Yes' THEN 1 ELSE 0 END), 0) AS four_ps_count,
+            COALESCE(AVG(h.risk_score), 0) AS avg_risk_score,
             (
-                SELECT COUNT(*) 
+                SELECT COUNT(*)
                 FROM citizen_requests cr
                 JOIN citizens c ON cr.citizen_id = c.id
                 WHERE cr.status IN ('Submitted', 'Under Review')
                 AND c.barangay_id = b.id
-            ) as pending_requests
+            ) AS pending_requests
         FROM barangays b
         LEFT JOIN households h ON b.id = h.barangay_id
         GROUP BY b.id
         ORDER BY b.name
         LIMIT ? OFFSET ?
-    ");
-    $stmt->bind_param("ii", $barangay_limit, $barangay_offset);
-    $stmt->execute();
-    $barangay_summary = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
+        ",
+        "ii",
+        [$limit, $offset]
+    );
+}
 
-    // NEW: Household summary for map aggregation (Option B)
-    $stmt = $conn->prepare("
-        SELECT 
-            b.name, b.id, b.latitude as b_lat, b.longitude as b_lng,
-            COUNT(h.id) as hh_count,
-            AVG(h.risk_score) as avg_risk,
-            AVG(h.income_monthly) as avg_income
+function getBarangayCount(mysqli $conn): int
+{
+    $row = fetchOne($conn, "SELECT COUNT(*) AS total FROM barangays");
+    return (int)($row['total'] ?? 0);
+}
+
+function getHouseholdSummaryForMap(mysqli $conn): array
+{
+    return fetchAllRows(
+        $conn,
+        "
+        SELECT
+            b.name,
+            b.id,
+            b.latitude AS b_lat,
+            b.longitude AS b_lng,
+            COUNT(h.id) AS hh_count,
+            AVG(h.risk_score) AS avg_risk,
+            AVG(h.income_monthly) AS avg_income
         FROM barangays b
-        LEFT JOIN households h ON b.id = h.barangay_id AND h.latitude IS NOT NULL AND h.longitude IS NOT NULL
+        LEFT JOIN households h
+            ON b.id = h.barangay_id
+            AND h.latitude IS NOT NULL
+            AND h.longitude IS NOT NULL
         GROUP BY b.id
         HAVING hh_count > 0
         ORDER BY b.name
-    ");
-    $stmt->execute();
-    $household_summary = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
+        "
+    );
 }
 
-// Calculate barangay pagination info
-$total_barangay_pages = ceil($total_barangays / $barangay_limit);
-$barangay_showing_from = ($barangay_offset + 1);
+/*
+|--------------------------------------------------------------------------
+| 3. ROLE SCOPE
+|--------------------------------------------------------------------------
+*/
+
+$selected_barangay_id = null;
+$selected_barangay = null;
+$viewing_all_barangays = false;
+
+if ($isSuperAdmin) {
+    $barangays = fetchAllRows($conn, "SELECT * FROM barangays ORDER BY name");
+
+    $requestedBarangayId = isset($_GET['barangay_id']) && $_GET['barangay_id'] !== ''
+        ? (int)$_GET['barangay_id']
+        : null;
+
+    if ($requestedBarangayId) {
+        $selected_barangay = getBarangayById($conn, $requestedBarangayId);
+
+        if ($selected_barangay) {
+            $selected_barangay_id = $requestedBarangayId;
+        }
+    }
+
+    $viewing_all_barangays = empty($selected_barangay_id);
+} else {
+    if (empty($adminBarangayId)) {
+        session_destroy();
+        header("Location: ../admin_login.php?error=no_barangay_assigned");
+        exit;
+    }
+
+    $selected_barangay_id = (int)$adminBarangayId;
+    $selected_barangay = getBarangayById($conn, $selected_barangay_id);
+    $barangays = $selected_barangay ? [$selected_barangay] : [];
+    $viewing_all_barangays = false;
+
+    if (isset($_GET['barangay_id']) && (int)$_GET['barangay_id'] !== $selected_barangay_id) {
+        error_log("SECURITY: Barangay admin {$username} attempted to access barangay_id=" . $_GET['barangay_id']);
+        header("Location: dashboard.php");
+        exit;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| 4. REQUEST INPUT
+|--------------------------------------------------------------------------
+*/
+
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 25;
+$sort = $_GET['sort'] ?? 'id';
+$order = strtoupper($_GET['order'] ?? 'DESC');
+
+$allowedLimits = [10, 25, 50, 100];
+$allowedSorts = ['id', 'name', 'household_size', 'income_monthly', 'risk_score', 'survey_date'];
+$allowedOrders = ['ASC', 'DESC'];
+
+$limit = in_array($limit, $allowedLimits, true) ? $limit : 25;
+$sort = in_array($sort, $allowedSorts, true) ? $sort : 'id';
+$order = in_array($order, $allowedOrders, true) ? $order : 'DESC';
+
+$offset = ($page - 1) * $limit;
+
+$barangay_page = isset($_GET['barangay_page']) ? max(1, (int)$_GET['barangay_page']) : 1;
+$barangay_limit = isset($_GET['barangay_limit']) ? (int)$_GET['barangay_limit'] : 10;
+
+$allowedBarangayLimits = [5, 10, 20, 50];
+$barangay_limit = in_array($barangay_limit, $allowedBarangayLimits, true) ? $barangay_limit : 10;
+$barangay_offset = ($barangay_page - 1) * $barangay_limit;
+
+/*
+|--------------------------------------------------------------------------
+| 5. DATA FETCHING
+|--------------------------------------------------------------------------
+*/
+
+$scopeBarangayId = $viewing_all_barangays ? null : $selected_barangay_id;
+
+$stats = getDashboardStats($conn, $scopeBarangayId);
+
+$total_households = getHouseholdCountWithCoordinates($conn, $scopeBarangayId);
+
+$households = getHouseholdsWithCoordinates(
+    $conn,
+    $scopeBarangayId,
+    $limit,
+    $offset,
+    $sort,
+    $order
+);
+
+$pendingLimit = $viewing_all_barangays ? 20 : 10;
+$pending_requests = getPendingRequests($conn, $scopeBarangayId, $pendingLimit);
+
+$total_barangays = 0;
+$barangay_summary = [];
+$household_summary = [];
+
+if ($isSuperAdmin && $viewing_all_barangays) {
+    $total_barangays = getBarangayCount($conn);
+    $barangay_summary = getBarangaySummary($conn, $barangay_limit, $barangay_offset);
+    $household_summary = getHouseholdSummaryForMap($conn);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 6. COMPUTED VALUES
+|--------------------------------------------------------------------------
+*/
+
+$total_pages = (int)ceil($total_households / $limit);
+$current_page = $page;
+$showing_from = $total_households > 0 ? ($offset + 1) : 0;
+$showing_to = min($offset + $limit, $total_households);
+
+$total_barangay_pages = (int)ceil($total_barangays / $barangay_limit);
+$barangay_showing_from = $total_barangays > 0 ? ($barangay_offset + 1) : 0;
 $barangay_showing_to = min($barangay_offset + $barangay_limit, $total_barangays);
 
-// Calculate percentages for risk distribution
 $total_risk = $stats['low_risk'] + $stats['medium_risk'] + $stats['high_risk'];
+
 $low_percent = $total_risk > 0 ? round(($stats['low_risk'] / $total_risk) * 100) : 0;
 $medium_percent = $total_risk > 0 ? round(($stats['medium_risk'] / $total_risk) * 100) : 0;
 $high_percent = $total_risk > 0 ? round(($stats['high_risk'] / $total_risk) * 100) : 0;
 
-// Format currency
 $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
+
+/*
+|--------------------------------------------------------------------------
+| 7. UI COMPATIBILITY VARIABLES
+|--------------------------------------------------------------------------
+| These keep your existing HTML working without rewriting the UI yet.
+|--------------------------------------------------------------------------
+*/
+
+$is_super_admin = $isSuperAdmin;
+$admin_barangay_id = $adminBarangayId;
+$full_name = $fullName;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -461,461 +499,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --dark-color: #1f2937;
-            --light-bg: #f3f4f6;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: var(--light-bg);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
-
-        /* Modern Navbar */
-        .navbar-modern {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            padding: 1rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.5px;
-        }
-
-        .breadcrumb-modern {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .breadcrumb-modern .breadcrumb-item {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .breadcrumb-modern .breadcrumb-item.active {
-            color: white;
-        }
-
-        .breadcrumb-modern .breadcrumb-item a {
-            color: white;
-            text-decoration: none;
-        }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), #60a5fa);
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-icon.primary {
-            background: #dbeafe;
-            color: var(--primary-color);
-        }
-
-        .stat-icon.success {
-            background: #d1fae5;
-            color: var(--success-color);
-        }
-
-        .stat-icon.warning {
-            background: #fed7aa;
-            color: var(--warning-color);
-        }
-
-        .stat-icon.danger {
-            background: #fee2e2;
-            color: var(--danger-color);
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--dark-color);
-            line-height: 1.2;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            color: #6b7280;
-            font-weight: 500;
-            font-size: 0.875rem;
-        }
-
-        /* Sidebar */
-        .sidebar-modern {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 1rem;
-        }
-
-        .sidebar-title {
-            font-weight: 600;
-            color: var(--dark-color);
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--light-bg);
-        }
-
-        .nav-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 2rem 0;
-        }
-
-        .nav-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-link-modern {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: #4b5563;
-            text-decoration: none;
-            border-radius: 1rem;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-
-        .nav-link-modern i {
-            margin-right: 0.75rem;
-            font-size: 1.25rem;
-        }
-
-        .nav-link-modern:hover {
-            background: var(--light-bg);
-            color: var(--primary-color);
-        }
-
-        .nav-link-modern.active {
-            background: #dbeafe;
-            color: var(--primary-color);
-        }
-
-        .badge-pill {
-            margin-left: auto;
-            background: var(--danger-color);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        /* Map Container */
-        .map-container {
-            position: relative;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-        }
-
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-
-        .map-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 12px 10px;
-            border-radius: 20px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .map-control-btn {
-            width: 44px;
-            height: 44px;
-            border: none;
-            border-radius: 50%;
-            background: white;
-            color: #4b5563;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .map-control-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            background: var(--primary-color);
-            color: white;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-        }
-
-        .map-control-btn.active {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Risk Pulse Animation */
-        /* Removed pulse animations */
-
-        /* Risk Distribution */
-        .risk-distribution {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .risk-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .risk-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 4px;
-        }
-
-        .risk-color.low {
-            background: var(--success-color);
-        }
-
-        .risk-color.medium {
-            background: var(--warning-color);
-        }
-
-        .risk-color.high {
-            background: var(--danger-color);
-        }
-
-        .risk-label {
-            flex: 1;
-            font-weight: 500;
-        }
-
-        .risk-value {
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-
-        .risk-percent {
-            width: 60px;
-            text-align: right;
-            color: #6b7280;
-        }
-
-        .progress-risk {
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar-risk {
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-
-        /* Tables */
-        .table-modern {
-            background: white;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .table-modern thead {
-            background: var(--light-bg);
-        }
-
-        .table-modern th {
-            padding: 1rem;
-            font-weight: 600;
-            color: #4b5563;
-            border: none;
-        }
-
-        .table-modern td {
-            padding: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .table-modern tbody tr:hover {
-            background: #f9fafb;
-        }
-
-        /* Status Badges */
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .status-badge.submitted {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-badge.review {
-            background: #fed7aa;
-            color: #92400e;
-        }
-
-        .status-badge.approved {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-badge.ready {
-            background: #e0f2fe;
-            color: #0369a1;
-        }
-
-        .status-badge.rejected {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .stat-card {
-                padding: 1rem;
-            }
-
-            .stat-value {
-                font-size: 1.5rem;
-            }
-
-            #map {
-                height: 350px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Loading States */
-        .loading {
-            opacity: 0.5;
-            pointer-events: none;
-            position: relative;
-        }
-
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 2rem;
-            height: 2rem;
-            border: 3px solid #e5e7eb;
-            border-top-color: var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-
-            .sidebar-modern,
-            .map-controls,
-            .navbar-modern,
-            .btn {
-                display: none !important;
-            }
-
-            .col-md-3 {
-                display: none;
-            }
-
-            .col-md-9 {
-                width: 100%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../../../assets/css/admin_dashboard.css">
 </head>
 
 <body>
@@ -1358,7 +942,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                                         $start_page = max(1, $barangay_page - 2);
                                         $end_page = min($total_barangay_pages, $barangay_page + 2);
                                         for ($i = $start_page; $i <= $end_page; $i++):
-                                            ?>
+                                        ?>
                                             <li class="page-item <?= $i == $barangay_page ? 'active' : '' ?>">
                                                 <a class="page-link"
                                                     href="?barangay_page=<?= $i ?>&barangay_limit=<?= $barangay_limit ?>"><?= $i ?></a>
@@ -1509,7 +1093,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                                 <tbody>
                                     <?php foreach (array_slice($households, 0, 10) as $hh):
                                         $risk_class = $hh['risk_score'] <= 30 ? 'success' : ($hh['risk_score'] <= 60 ? 'warning' : 'danger');
-                                        ?>
+                                    ?>
                                         <tr>
                                             <?php if ($viewing_all_barangays): ?>
                                                 <td>
@@ -1565,24 +1149,24 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
     </div>
 
     <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 
-<script>
-    // ============================================
-    // Risk Chart Initialization
-    // ============================================
-    document.addEventListener('DOMContentLoaded', function () {
-        // Risk Distribution Chart
-        const ctx = document.getElementById('riskChart')?.getContext('2d');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Low Risk', 'Medium Risk', 'High Risk'],
-                    datasets: [{
-                        data: [<?= $stats['low_risk'] ?>, <?= $stats['medium_risk'] ?>, <?= $stats['high_risk'] ?>],
+    <script>
+        // ============================================
+        // Risk Chart Initialization
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Risk Distribution Chart
+            const ctx = document.getElementById('riskChart')?.getContext('2d');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Low Risk', 'Medium Risk', 'High Risk'],
+                        datasets: [{
+                            data: [<?= $stats['low_risk'] ?>, <?= $stats['medium_risk'] ?>, <?= $stats['high_risk'] ?>],
                             backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
                             borderWidth: 0
                         }]
@@ -1662,11 +1246,11 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
 
                         // Safe household data
                         const householdsData = <?= json_encode(array_filter($households ?? [], function ($h) {
-                            return !empty($h['latitude']) && !empty($h['longitude']);
-                        })) ?> || [];
+                                                    return !empty($h['latitude']) && !empty($h['longitude']);
+                                                })) ?> || [];
 
                         // Add household markers
-                        householdsData.forEach(function (hh) {
+                        householdsData.forEach(function(hh) {
                             const score = hh.risk_score || 0;
                             const color = score <= 30 ? '#10b981' : (score <= 60 ? '#f59e0b' : '#ef4444');
 
@@ -1745,7 +1329,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                             if (!empty($b['latitude']) && !empty($b['longitude'])):
                                 $avg_risk = round($b['avg_risk_score'] ?? 0);
                                 $color = $avg_risk <= 30 ? '#10b981' : ($avg_risk <= 60 ? '#f59e0b' : '#ef4444');
-                                ?>
+                        ?>
                                 const riskLevel<?= $b['id'] ?> = '<?= $avg_risk <= 30 ? 'low' : ($avg_risk <= 60 ? 'medium' : 'high') ?>';
                                 const markerSize<?= $b['id'] ?> = Math.max(20, Math.min(40, (<?= $b['household_count'] ?: 0 ?> / 10) + 20));
 
@@ -1766,7 +1350,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                                                     <a href="?barangay_id=<?= $b['id'] ?>" class="btn btn-sm btn-primary w-100">View Dashboard →</a>
                                                 </div>
                                             `);
-                            <?php endif;
+                        <?php endif;
                         endforeach; ?>
                     <?php endif; ?>
 
@@ -1787,7 +1371,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
             // ============================================
             // Toolbar Functions
             // ============================================
-            window.toggleHeatmap = function () {
+            window.toggleHeatmap = function() {
                 if (typeof map === 'undefined' || !map || !heatLayer) return;
 
                 if (map.hasLayer(heatLayer)) {
@@ -1799,7 +1383,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                 }
             };
 
-            window.toggleMarkers = function () {
+            window.toggleMarkers = function() {
                 if (typeof map === 'undefined' || !map || !markersLayer) return;
 
                 if (map.hasLayer(markersLayer)) {
@@ -1811,7 +1395,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                 }
             };
 
-            window.toggleBarangayMarkers = function () {
+            window.toggleBarangayMarkers = function() {
                 if (!window.miniMap || !window.barangayMarkers) return;
 
                 if (window.miniMap.hasLayer(window.barangayMarkers)) {
@@ -1823,7 +1407,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                 }
             };
 
-            window.fitAllBarangays = function () {
+            window.fitAllBarangays = function() {
                 if (!window.miniMap) return;
 
                 const group = new L.featureGroup([window.barangayMarkers, window.householdLayer]);
@@ -1832,37 +1416,41 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
                 }
             };
 
-            window.resetMiniMap = function () {
+            window.resetMiniMap = function() {
                 if (window.miniMap) {
                     window.miniMap.setView([12.2660, 125.3690], 11);
                 }
             };
 
-            window.focusOnBarangay = function () {
+            window.focusOnBarangay = function() {
                 if (!map) return;
                 <?php if ($selected_barangay && isset($selected_barangay['latitude']) && isset($selected_barangay['longitude'])): ?>
                     const lat = <?= $selected_barangay['latitude'] ?>;
                     const lng = <?= $selected_barangay['longitude'] ?>;
                     if (lat !== null && lng !== null && !isNaN(lat) && !isNaN(lng)) {
-                        map.setView([lat, lng], 16, { animate: true });
+                        map.setView([lat, lng], 16, {
+                            animate: true
+                        });
                     }
                 <?php endif; ?>
             };
 
-            window.resetMap = function () {
+            window.resetMap = function() {
                 if (!map) return;
 
                 const lat = <?= json_encode($selected_barangay['latitude'] ?? null) ?>;
                 const lng = <?= json_encode($selected_barangay['longitude'] ?? null) ?>;
 
                 if (lat !== null && lng !== null && !isNaN(lat) && !isNaN(lng)) {
-                    map.setView([lat, lng], 14, { animate: true });
+                    map.setView([lat, lng], 14, {
+                        animate: true
+                    });
                 } else {
                     map.setView([12.266, 125.369], 13);
                 }
             };
 
-            window.changeBarangay = function (barangayId) {
+            window.changeBarangay = function(barangayId) {
                 <?php if ($is_super_admin): ?>
                     if (!barangayId) {
                         window.location.href = "dashboard.php";
@@ -1875,7 +1463,7 @@ $avg_income_formatted = '₱' . number_format($stats['avg_income'], 0);
             };
 
             // Auto Refresh
-            setTimeout(function () {
+            setTimeout(function() {
                 window.location.reload();
             }, 300000);
         });
