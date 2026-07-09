@@ -430,7 +430,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_request'])) {
         <a href="request_document.php" class="active">
             <i class="bi bi-plus-circle-fill"></i> New
         </a>
-        <a href="citizen_notifications.php">
+        <a href="citizen_notification.php">
             <i class="bi bi-bell"></i> Alerts
         </a>
         <a href="citizen_profile.php">
