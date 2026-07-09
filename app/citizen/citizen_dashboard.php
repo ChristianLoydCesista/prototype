@@ -203,7 +203,7 @@ function calculateProfileCompletion($data)
             </div>
 
             <div class="d-flex align-items-center gap-2">
-                <a href="citizen_notifications.php" class="cis-icon-btn position-relative">
+                <a href="citizen_notification.php" class="cis-icon-btn position-relative">
                     <i class="bi bi-bell"></i>
                     <?php if ($unreadNotifications > 0): ?>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -492,7 +492,7 @@ function calculateProfileCompletion($data)
                         </div>
 
                         <div class="col-6 col-lg-3">
-                            <a href="citizen_notifications.php" class="cis-card p-3 d-block text-decoration-none text-dark h-100 position-relative">
+                            <a href="citizen_notification.php" class="cis-card p-3 d-block text-decoration-none text-dark h-100 position-relative">
                                 <div class="cis-stat-icon mb-3">
                                     <i class="bi bi-bell"></i>
                                 </div>
@@ -553,7 +553,7 @@ function calculateProfileCompletion($data)
             New
         </a>
 
-        <a href="citizen_notifications.php">
+        <a href="citizen_notification.php">
             <i class="bi bi-bell"></i>
             Alerts
         </a>
