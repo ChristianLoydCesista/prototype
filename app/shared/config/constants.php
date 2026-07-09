@@ -93,6 +93,17 @@ define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_NAME', getenv('DB_NAME') ?: 'barangay_ci_system');
 
+// ==========================
+// ENVIRONMENT DETECTION (for secure cookies and HTTPS enforcement)
+// ==========================
+define('ENVIRONMENT', (strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false || 
+                       strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false)
+                     ? 'local' : 'production');
+
+// Optional: Rate‑limit overrides (if not defined, Auth uses defaults)
+define('MAX_LOGIN_ATTEMPTS', 5);
+define('LOCKOUT_SECONDS', 900); // 15 minutes
+
 // Risk score thresholds
 define('RISK_LOW_MAX', 30);
 define('RISK_MEDIUM_MAX', 60);

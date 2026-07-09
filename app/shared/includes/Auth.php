@@ -10,11 +10,20 @@ class Auth
     private $errors = [];
     private $mailer;
 
+    private $maxAttempts;
+    private $lockoutSeconds;
+
     public function __construct()
     {
         $this->db = getDB();
         $this->mailer = new Mailer();
+
+        // Use constants if defined, otherwise fallback to secure defaults
+        $this->maxAttempts   = defined('MAX_LOGIN_ATTEMPTS') ? MAX_LOGIN_ATTEMPTS : 5;
+        $this->lockoutSeconds = defined('LOCKOUT_SECONDS') ? LOCKOUT_SECONDS : 900;
     }
+
+
 
     // Register new citizen
     public function register($data)
@@ -99,50 +108,196 @@ class Auth
         }
     }
 
-    // Login citizen - CORRECTED VERSION
-    public function login($emailOrPhone, $password)
+    // ============= LOGIN WITH RATE LIMITING & GENERIC ERRORS =============
+
+     public function login($emailOrPhone, $password)
     {
         $this->errors = [];
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 
-        // Find citizen by email or phone - FIXED QUERY
+        try {
+            // 1. Find citizen by email or phone
+            $stmt = $this->db->prepare("
+                SELECT id, email, phone, password, first_name, last_name,
+                       is_verified, barangay_id,
+                       failed_attempts, locked_until
+                FROM citizens
+                WHERE email = ? OR phone = ?
+            ");
+            $stmt->bind_param("ss", $emailOrPhone, $emailOrPhone);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows === 0) {
+                // Generic message – do NOT reveal existence
+                $this->errors[] = 'Invalid credentials';
+                $this->logFailedAttempt($emailOrPhone, $ip, 'User not found');
+                $stmt->close();
+                return false;
+            }
+
+            $citizen = $result->fetch_assoc();
+            $stmt->close();
+
+            // 2. Check if account is locked
+            if ($citizen['locked_until'] !== null && strtotime($citizen['locked_until']) > time()) {
+                $this->errors[] = 'Account temporarily locked. Please try again later.';
+                $this->logFailedAttempt($emailOrPhone, $ip, 'Account locked');
+                return false;
+            }
+
+            // 3. Verify password
+            if (!password_verify($password, $citizen['password'])) {
+                $this->incrementFailedAttempts($citizen['id']);
+                $this->errors[] = 'Invalid credentials';
+                $this->logFailedAttempt($emailOrPhone, $ip, 'Invalid password');
+                return false;
+            }
+
+            // 4. Check if account is verified
+            if (!$citizen['is_verified']) {
+                $this->errors[] = 'Please verify your account first.';
+                $this->logFailedAttempt($emailOrPhone, $ip, 'Unverified account');
+                return false;
+            }
+
+            // 5. Success – reset attempts, update last login
+            $this->resetFailedAttempts($citizen['id']);
+            $this->updateLastLogin($citizen['id']);
+
+            // 6. Re‑hash password if algorithm/cost changed
+            if (password_needs_rehash($citizen['password'], PASSWORD_BCRYPT, ['cost' => PASSWORD_COST])) {
+                $this->updatePasswordHash($citizen['id'], $password);
+            }
+
+            // 7. Log success
+            error_log(sprintf(
+                "[%s] Successful login: %s (ID: %d) from IP %s",
+                date('Y-m-d H:i:s'),
+                $citizen['email'],
+                $citizen['id'],
+                $ip
+            ) . "\n", 3, LOG_PATH . '/auth.log');
+
+            return $citizen;
+        } catch (mysqli_sql_exception $e) {
+            error_log("Auth::login DB error: " . $e->getMessage());
+            $this->errors[] = 'System error. Please try again later.';
+            return false;
+        }
+    }
+
+    // ============= RATE‑LIMITING HELPERS =============
+
+    private function incrementFailedAttempts($citizenId)
+    {
         $stmt = $this->db->prepare("
-        SELECT id, email, phone, password, first_name, last_name, is_verified, barangay_id
-        FROM citizens 
-        WHERE (email = ? OR phone = ?)
+            UPDATE citizens
+            SET failed_attempts = failed_attempts + 1,
+                last_failed_attempt = NOW()
+            WHERE id = ?
         ");
-
-        $stmt->bind_param("ss", $emailOrPhone, $emailOrPhone);
+        $stmt->bind_param("i", $citizenId);
         $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 0) {
-            $this->errors[] = 'Account not found';
-            $stmt->close();
-            return false;
-        }
-
-        $citizen = $result->fetch_assoc();
-
-        // Verify password
-        if (!password_verify($password, $citizen['password'])) {
-            $this->errors[] = 'Invalid password';
-            $stmt->close();
-            return false;
-        }
-
-        // Check if account is verified
-        if (!$citizen['is_verified']) {
-            $this->errors[] = 'Please verify your email/phone first';
-            $stmt->close();
-            return false;
-        }
-
         $stmt->close();
 
-        // Update last login
-        $this->updateLastLogin($citizen['id']);
+        // Check if threshold reached → lock account
+        $stmt = $this->db->prepare("
+            UPDATE citizens
+            SET locked_until = DATE_ADD(NOW(), INTERVAL ? SECOND)
+            WHERE id = ? AND failed_attempts >= ?
+        ");
+        $stmt->bind_param("iii", $this->lockoutSeconds, $citizenId, $this->maxAttempts);
+        $stmt->execute();
+        $stmt->close();
+    }
 
-        return $citizen;
+    private function resetFailedAttempts($citizenId)
+    {
+        $stmt = $this->db->prepare("
+            UPDATE citizens
+            SET failed_attempts = 0,
+                last_failed_attempt = NULL,
+                locked_until = NULL
+            WHERE id = ?
+        ");
+        $stmt->bind_param("i", $citizenId);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    private function updateLastLogin($citizenId)
+    {
+        $stmt = $this->db->prepare("UPDATE citizens SET last_login = NOW() WHERE id = ?");
+        $stmt->bind_param("i", $citizenId);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    private function updatePasswordHash($citizenId, $plainPassword)
+    {
+        $newHash = password_hash($plainPassword, PASSWORD_BCRYPT, ['cost' => PASSWORD_COST]);
+        $stmt = $this->db->prepare("UPDATE citizens SET password = ? WHERE id = ?");
+        $stmt->bind_param("si", $newHash, $citizenId);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    private function logFailedAttempt($identifier, $ip, $reason)
+    {
+        $msg = sprintf(
+            "[%s] Failed login attempt: %s (IP: %s) - %s",
+            date('Y-m-d H:i:s'),
+            $identifier,
+            $ip,
+            $reason
+        );
+        error_log($msg . "\n", 3, LOG_PATH . '/auth.log');
+    }
+
+    // ============= REMEMBER ME =============
+
+    public function createRememberToken($citizenId)
+    {
+        $token = bin2hex(random_bytes(32));
+        $hash = password_hash($token, PASSWORD_DEFAULT);
+        $expires = date('Y-m-d H:i:s', strtotime('+30 days'));
+
+        $stmt = $this->db->prepare("DELETE FROM remember_tokens WHERE citizen_id = ?");
+        $stmt->bind_param("i", $citizenId);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $this->db->prepare("INSERT INTO remember_tokens (citizen_id, token_hash, expires_at) VALUES (?, ?, ?)");
+        $stmt->bind_param("iss", $citizenId, $hash, $expires);
+        $stmt->execute();
+        $stmt->close();
+
+        return $token;
+    }
+
+     public function loginWithRememberToken($token)
+    {
+        $stmt = $this->db->prepare("
+            SELECT citizen_id, token_hash
+            FROM remember_tokens
+            WHERE expires_at > NOW()
+        ");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+
+        while ($row = $result->fetch_assoc()) {
+            if (password_verify($token, $row['token_hash'])) {
+                return $this->getCitizen($row['citizen_id']);
+            }
+        }
+        return false;
+    }
+
+    public function rotateRememberToken($citizenId)
+    {
+        return $this->createRememberToken($citizenId);
     }
 
     // Verify account
@@ -800,17 +955,6 @@ class Auth
         }
 
         return $result;
-    }
-
-    private function updateLastLogin($citizenId)
-    {
-        $stmt = $this->db->prepare("
-            UPDATE citizens SET last_login = NOW() WHERE id = ?
-        ");
-
-        $stmt->bind_param("i", $citizenId);
-        $stmt->execute();
-        $stmt->close();
     }
 
     // Get errors

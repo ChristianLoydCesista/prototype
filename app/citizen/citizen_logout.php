@@ -1,7 +1,5 @@
 <?php
-// citizen_logout.php
-require_once '../shared/bootstrap.php'; // session will be ended below
-
+require_once '../shared/bootstrap.php';
 $session = new Session();
 
 // Clear remember me cookie if exists

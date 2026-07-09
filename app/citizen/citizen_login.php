@@ -11,7 +11,17 @@ if ($session->isCitizenLoggedIn() && !empty($_SESSION['remember_login'])) {
 
 $errors = [];
 
+//Store username to repopulate the form in case of error
+$submittedUsername = "";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // --- CSRF validation ---
+    if (!isset($_POST['csrf_token']) || !verify_csrf($_POST['csrf_token'])) {
+        $session->setFlash('error', 'Invalid request. Please try again.');
+        header("Location: citizen_portal.php");
+        exit;
+    }
+
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     $remember = isset($_POST['remember']);
@@ -28,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Attempt login
     $citizen = $auth->login($username, $password);
 
     if ($citizen) {
-        // Set session
+        // Success - clear stored username
+        unset($_SESSION['login_username']);
         $session->setCitizen($citizen);
         $_SESSION['remember_login'] = !empty($_POST['remember']);
 
@@ -57,10 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: citizen_dashboard.php");
         exit;
     } else {
+       
+        $submittedUsername = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+        // Failed login - store username for repopulation
+        $_SESSION['login_username'] = $username;
+
         $errors = $auth->getErrors();
-        foreach ($errors as $error) {
-            $session->setFlash('error', $error);
-        }
+        $errorMsg = !empty($errors) ? $errors[0] : 'Login failed. Please try again.';
+        $session->setFlash('error', $errorMsg);
         header("Location: citizen_portal.php");
         exit;
     }

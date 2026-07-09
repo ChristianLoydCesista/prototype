@@ -3,12 +3,53 @@
 require_once '../shared/bootstrap.php';
 $auth = new Auth();
 
+// Auto-login via remember-me cookie
+if (!$session->isCitizenLoggedIn() && isset($_COOKIE['remember_token'])) {
+    $citizen = $auth->loginWithRememberToken($_COOKIE['remember_token']);
+    if ($citizen) {
+        $session->setCitizen($citizen);
+        // Rotate token for security
+        $newToken = $auth->rotateRememberToken($citizen['id']);
+        $isSecure = (defined('ENVIRONMENT') && ENVIRONMENT === 'production');
+        setcookie(
+            'remember_token',
+            $newToken,
+            time() + (30 * 24 * 60 * 60),
+            '/',
+            '',
+            $isSecure,
+            true
+        );
+        header("Location: citizen_dashboard.php");
+        exit;
+    } else {
+        // Invalid token – delete cookie
+        setcookie('remember_token', '', time() - 3600, '/');
+    }
+}
+
 // Redirect if already logged in
 if ($session->isCitizenLoggedIn() && !empty($_SESSION['remember_login'])) {
     header("Location: citizen_dashboard.php");
     exit;
 }
 
+// =============================================
+// ✅ RETRIEVE FLASH MESSAGES
+// =============================================
+$errorMessage = $session->getFlash('error');      // Gets and removes error flash
+$successMessage = $session->getFlash('success');  // Gets and removes success flash
+
+// =============================================
+// ✅ RETRIEVE SUBMITTED USERNAME (if any)
+// =============================================
+$loginUsername = $_SESSION['login_username'] ?? '';
+unset($_SESSION['login_username']); // Clear after use
+
+// =============================================
+// ✅ REMEMBER ME PREFERENCE
+// =============================================
+$rememberChecked = $_COOKIE['remember_me_preference'] ?? false;
 $pageTitle = "Login - Arteche Citizen Portal";
 $oldLogin = $_SESSION['old_login'] ?? [];
 unset($_SESSION['old_login']);
@@ -197,21 +238,25 @@ unset($_SESSION['old_login']);
                             <p class="text-muted mb-0">Sign in to your account</p>
                         </div>
 
-                        <?php if ($session->hasFlash('error')): ?>
-                            <div class="alert alert-danger alert-dismissible fade show">
-                                <?= $session->getFlash('error') ?>
+                        <!-- Flash Messages -->
+                        <?php if ($errorMessage): ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <?= htmlspecialchars($errorMessage) ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($session->hasFlash('success')): ?>
-                            <div class="alert alert-success alert-dismissible fade show">
-                                <?= $session->getFlash('success') ?>
+                        <?php if ($successMessage): ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                <?= htmlspecialchars($successMessage) ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>
 
                         <form action="citizen_login.php" method="POST" id="loginForm">
+                            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                             <div class="mb-4">
                                 <label class="form-label">Email or Phone Number</label>
                                 <input type="text" name="username" class="form-control"
@@ -221,10 +266,14 @@ unset($_SESSION['old_login']);
 
                             <div class="mb-4">
                                 <label class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control" required>
-                                <div class="mt-2">
-                                    <a href="citizen_forgot_password.php" class="small">Forgot password?</a>
-                                </div>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control <?= $errorMessage ? 'is-invalid' : '' ?>"
+                                    required
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    <?= !empty($loginUsername) ? 'autofocus' : '' ?>>
                             </div>
 
                             <div class="mb-4 form-check">
