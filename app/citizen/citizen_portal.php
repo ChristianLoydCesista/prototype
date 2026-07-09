@@ -4,12 +4,14 @@ require_once '../shared/bootstrap.php';
 $auth = new Auth();
 
 // Redirect if already logged in
-if ($session->isCitizenLoggedIn()) {
+if ($session->isCitizenLoggedIn() && !empty($_SESSION['remember_login'])) {
     header("Location: citizen_dashboard.php");
     exit;
 }
 
 $pageTitle = "Login - Arteche Citizen Portal";
+$oldLogin = $_SESSION['old_login'] ?? [];
+unset($_SESSION['old_login']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +58,7 @@ $pageTitle = "Login - Arteche Citizen Portal";
         /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, rgba(11, 31, 51, 0.8) 0%, rgba(31, 106, 165, 0.75) 100%),
-                        url("../../public/assets/img/bungto_han_arteche.png") center center/cover no-repeat;
+                url("../../public/assets/img/bungto_han_arteche.png") center center/cover no-repeat;
             padding: 4rem 0 3rem;
             border-bottom: 6px solid #c92a2a;
         }
@@ -83,14 +85,16 @@ $pageTitle = "Login - Arteche Citizen Portal";
         }
 
         /* Form Controls */
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border: 1.5px solid #e9edf2;
             border-radius: 10px;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 4px rgba(31, 106, 165, 0.1);
         }
@@ -145,6 +149,7 @@ $pageTitle = "Login - Arteche Citizen Portal";
             .hero-title {
                 font-size: 1.8rem;
             }
+
             .auth-card {
                 margin: 1rem;
                 margin-top: -1rem;
@@ -210,7 +215,8 @@ $pageTitle = "Login - Arteche Citizen Portal";
                             <div class="mb-4">
                                 <label class="form-label">Email or Phone Number</label>
                                 <input type="text" name="username" class="form-control"
-                                    required placeholder="your@email.com or 09XXXXXXXXX">
+                                    required placeholder="your@email.com or 09XXXXXXXXX"
+                                    value="<?= htmlspecialchars($oldLogin['username'] ?? '') ?>">
                             </div>
 
                             <div class="mb-4">
@@ -222,7 +228,8 @@ $pageTitle = "Login - Arteche Citizen Portal";
                             </div>
 
                             <div class="mb-4 form-check">
-                                <input type="checkbox" class="form-check-input" name="remember" id="remember">
+                                <input type="checkbox" class="form-check-input" name="remember" id="remember"
+                                    <?= !empty($oldLogin['remember']) ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="remember">Remember me</label>
                             </div>
 
@@ -257,7 +264,7 @@ $pageTitle = "Login - Arteche Citizen Portal";
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small>
-                        <i class="bi bi-question-circle me-1"></i> Need help? 
+                        <i class="bi bi-question-circle me-1"></i> Need help?
                         <a href="mailto:cis@arteche.gov.ph">Contact Support</a>
                     </small>
                 </div>
@@ -269,4 +276,3 @@ $pageTitle = "Login - Arteche Citizen Portal";
 </body>
 
 </html>
-

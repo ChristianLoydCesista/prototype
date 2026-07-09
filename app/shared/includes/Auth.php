@@ -366,6 +366,72 @@ class Auth
         return $success;
     }
 
+    // Create remember me token
+    public function createRememberToken($citizenId)
+    {
+        $selector = bin2hex(random_bytes(16));
+        $token = bin2hex(random_bytes(32));
+        $tokenHash = hash('sha256', $token);
+        $expires = date('Y-m-d H:i:s', strtotime('+30 days'));
+
+        $stmt = $this->db->prepare("
+        INSERT INTO remember_tokens (citizen_id, selector, token_hash, expires_at)
+        VALUES (?, ?, ?, ?)
+    ");
+        $stmt->bind_param("isss", $citizenId, $selector, $tokenHash, $expires);
+        $stmt->execute();
+        $stmt->close();
+
+        return $selector . ':' . $token;
+    }
+
+    public function loginWithRememberToken($cookieValue)
+    {
+        if (strpos($cookieValue, ':') === false) {
+            return false;
+        }
+
+        [$selector, $token] = explode(':', $cookieValue, 2);
+        $tokenHash = hash('sha256', $token);
+
+        $stmt = $this->db->prepare("
+        SELECT rt.id, rt.token_hash, c.*
+        FROM remember_tokens rt
+        JOIN citizens c ON rt.citizen_id = c.id
+        WHERE rt.selector = ?
+          AND rt.expires_at > NOW()
+          AND c.is_verified = 1
+          AND c.account_status = 'Active'
+        LIMIT 1
+    ");
+        $stmt->bind_param("s", $selector);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if (!$row || !hash_equals($row['token_hash'], $tokenHash)) {
+            return false;
+        }
+
+        return $row;
+    }
+
+    public function deleteRememberToken($cookieValue)
+    {
+        if (strpos($cookieValue, ':') === false) {
+            return;
+        }
+
+        [$selector] = explode(':', $cookieValue, 2);
+
+        $stmt = $this->db->prepare("DELETE FROM remember_tokens WHERE selector = ?");
+        $stmt->bind_param("s", $selector);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+
+
     // ============= NEW FUNCTIONS FOR CITIZEN PROFILE =============
 
     /**

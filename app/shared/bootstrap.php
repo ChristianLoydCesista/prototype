@@ -172,6 +172,18 @@ $auth = null;
 if ($conn) {
     try {
         $auth = new Auth();
+        if (
+            !$session->isCitizenLoggedIn() &&
+            !empty($_COOKIE['remember_token'])
+        ) {
+            $rememberCitizen = $auth->loginWithRememberToken($_COOKIE['remember_token']);
+
+            if ($rememberCitizen) {
+                $session->setCitizen($rememberCitizen);
+            } else {
+                setcookie('remember_token', '', time() - 3600, '/', '', !empty($_SERVER['HTTPS']), true);
+            }
+        }
     } catch (Exception $e) {
         $dbError = $e->getMessage();
         error_log("AUTH Init Failed: " . $dbError);
