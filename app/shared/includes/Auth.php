@@ -100,10 +100,13 @@ class Auth
 
             $this->db->commit();
             return $citizenId;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->db->rollback();
+
             error_log('Registration error: ' . $e->getMessage());
-            $this->errors[] = 'Registration failed. Please check your email settings and try again.';
+            error_log('Registration trace: ' . $e->getTraceAsString());
+
+            $this->errors[] = 'Registration failed: ' . $e->getMessage();
             return false;
         }
     }

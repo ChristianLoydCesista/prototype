@@ -4,7 +4,7 @@ require_once '../shared/bootstrap.php';
 $auth = new Auth();
 
 // Redirect if already logged in
-if ($session->isCitizenLoggedIn()) {
+if ($session->isCitizenLoggedIn() && !empty($_SESSION['remember_login'])) {
     header("Location: citizen_dashboard.php");
     exit;
 }
