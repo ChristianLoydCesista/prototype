@@ -1,4 +1,5 @@
 <------------------------------- TASKS ------------------------------------->
+
 1. Am submission form
 2. an Heatmap katapos han geotagging
 3. File Structure, Magulo pa medjo okay naman
@@ -16,49 +17,131 @@
 14. Upayon an logic han pag calculate han risk score, kailangan naka align hiya kun pano hiya gin cacalculate ha DSWD or 4ps
 15. Make an user friendly UI
 16. Pag upay han document request feature para han user
-19. Pag tuhay han registration han user, dapat it pag verify hit user is naka base han data han system. Dri hiya makakapag request if diri hiya verified han system anay, makaka login an user pero dri hiya puwede mag request hin document
-20. Pag remove han announcement functionality for the admins
+17. Pag tuhay han registration han user, dapat it pag verify hit user is naka base han data han system. Dri hiya makakapag request if diri hiya verified han system anay, makaka login an user pero dri hiya puwede mag request hin document
+18. Pag remove han announcement functionality for the admins
 
-21. Pag complete han mga missing nga features 
+19. Pag complete han mga missing nga features
 
 <------------------------------- URGENT ------------------------------------->
+
 1. Pag tuhay han file structure
 2. Pag linis han code ngan structure han codes para madali maintindihan
 3. pag refactor ngan pag refine han code
 
 <------------------------------- DOCUMENTATION ------------------------------------->
+
 1. Pag update han data dictionary for announcements - gamit an ai ig paste an schema then create han data dictionary for the missing tables
 2. Pag update han erd for the announcements
 3. Pag tuhay han flowchart - diagrams_backup(3).xml
 
 -- Page update han data han barangays goods
--- update han date ngan online queues goods 
+-- update han date ngan online queues goods
 -- update an header han maps page, dapat working na done
 -- medjo paupayon pa an about page done
 -- dapat maging accurate anay an mga informations
 
-
-
-
 // MUST BE DONE NOW
+
 1. Upload an mga files ngan folders ha Infinity
-2. Once working, Ig fix an needed 
+2. Once working, Ig fix an needed
 3. Ig check an mga refinement nga needed talaga
 4. Then refine incrementally
-
 
 Task 1. Dapat Matuhay an logic han registration nga kun diin dapat nagsesend na hin code for verification.
 Task 2. Research kun ano it pag calculate han risk score hit mga government sectors, para maging accurate tat system.
 Task 3. Dapat maupay na an flow han registration
 
-July 07 2026
-1. Pag upay han login page
-1.1 Pag pagana han remember me
-1.2 Pag retain han input ngin nagkaka erorr
-1.3 Pag upay han flash error pag nag login, nag logout, ngan mayda error
+July 09 2026
+//---//
 
+1. Pag upay han login page
+   1.1 Pag pagana han remember me
+   1.2 Pag retain han input ngin nagkaka erorr
+   1.3 Pag upay han flash error pag nag login, nag logout, ngan mayda error
 
 2. Pag upay han UI
-2.1 Ig mobile first and every pages han citizen
+   2.1 Ig mobile first and every pages han citizen
 
+// PDF GENERATION REFINEMENT PLAN
+
+1. Dapat adaptable it pag generate hit pdf based kun hain hiya nga barangay
+2. Dapat mayda separate formats or templates nga ready for the four barangays or arteche poblacion
+3. Dapat mayda perma hit captain.
+4. Ngan dapat mayda ngaran hit barangay captain.
+
+Core feature of this system
+
+1. Document Generation
+2. Mapping
+3. Risk Scoring
+4. analytics
+5.
+
+// ADMIN PAGE REFINEMENT PLAN
+
+1. pag add hin additional page for barangays kun diin makikita an location, information, name han captain.
+2. asya it magiging reference ngan control para pag insert hit barangay captain hit iya information
+3. An page is flexible for both super admin and barangay admin, wherin hira nga duha an puwede maka access han page para pag update ngan manage
+4. inside hiya ha manage user nga page.
+5. Pag update han Pag display han Actual ID han mga barangays ha Manage Barangay page.
+
+// MGA ID HAN KADA BARANGAY HA POBLACION 
+
+3 => BALUD,
+17 => RAWIS,
+15 => CENTRAL,
+20 => GARDEN
+
+// NAME OF CERTIFICATES
+barangay-clearance.html
+│       │   ├── certificate-of-indigency.html
+│       │   ├── certificate-of-residency.html
+│       │   └── business-permit.html
+
+Prompts
+///
+My task now is to make my citizen pages mobile first.
+As a Senior front end developer, do this steps
+
+1. Read, analyze and understand the layouts, constraints, pros and cons, then the update or modifications to add
+2. give the final plan and design
+3. Give the codes and improvements
+
+lets first focus on the UI, and record the things to update in php codes later.
+Project: Barangay CI System (Pure PHP + MySQL)\
+
+///
+Role: Senior Software Engineer, Specialized in php
+
+Chat Title: PHP Coding, Refining And Refactoring
+
+Expected Behavior: Read and analyze the query, given context and the situation, then analyze and plan the best solution to it. Then create a clean code which tailored to the situation and plan.
+
+Now, lets start in this situation, I want to change the Approve card to a Ready card which reference the document status ready for pickup, meaning ready to download. Same with the my_request.php page. Now to do it correcly
+
+Note: This chat will focus on the php coding side, styling and UI maybe considered and noted but not prioritized, the only priority is to create a clean code to solve the issue or situation given.
+
+////
+Role: Senior UI UX designer
+
+Chat Title: Admin Pages Designer
+
+Expected Behavior: Read and analyze the query, given context and the situation, then analyze and plan the best solution to it. Then create a clean code which tailored to the situation and plan.
+
+Now, lets start in this situation, I want to update the admin login page UI, I am considering to make it consistent with the citizen_login style and layout. So provide a clean and consistent refined design to admin login page.
+
+Note: This chat will focus on the styling and UI, php refinement can be noted but not prioritized. The priority is to provide a consistent and clean design.
+
+Role: Senior Software Engineer Expert in PHP
+
+Task: 
+1. Analyze the code, scan understand.
+2. Plan the things to change and improve
+3. Give clean and improved code based on the plan
+
+Expected Output:
+I want to make the file or pdf generation dynamic, based on what barangay the user is situated.
+Like I want to create a templates for every barangays where when generating, it checks the user information, then pull the correct template or corresponding file. Then the flow of generating continue like inserting the user information. Also I am planning to add the e-signature and of barangay captains in the generated file. My plan is to create a page in super admin where he can change or add barangay information. and this page will be the one who is responsible whenever a new captain is elected with their e-signature. It should be a simple page.
+
+Plan and understand this first before coding.
 
