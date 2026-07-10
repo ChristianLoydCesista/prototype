@@ -7,6 +7,9 @@ global $session;
 // User the custom, secure logout method
 $session->logout();
 
-// Redirect usign the dynamically generated Base URL
-header("Location: " . SITE_URL . "public/index.html");
+$session->setFlash('success', 'You have been logged out successfully.');
+
+// Redirect to admin login page using the dynamically generated Base URL
+header("Location: " . SITE_URL . "app/admin/admin_login.php");
+
 exit;
