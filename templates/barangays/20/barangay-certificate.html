@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Barangay Certification</title>
+
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 18mm 18mm 20mm 18mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Times New Roman", Times, serif;
+        color: #000;
+        font-size: 14px;
+        line-height: 1.55;
+        position: relative;
+      }
+
+      /*
+        |--------------------------------------------------------------------------
+        | WATERMARK
+        |--------------------------------------------------------------------------
+        */
+      .certificate-watermark {
+        position: fixed;
+
+        /* Center vertically */
+        top: 50%;
+
+        /* Center horizontally */
+        left: 50%;
+
+        /* Increase size */
+        width: 650px;
+        height: auto;
+
+        /* Half of the width */
+        margin-left: -325px;
+
+        /* Half of the approximate height */
+        margin-top: -325px;
+        z-index: 0;
+      }
+
+      /*
+        |--------------------------------------------------------------------------
+        | HEADER
+        |--------------------------------------------------------------------------
+        */
+
+      .certificate-header {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      .certificate-header-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+      }
+
+      .office-strip {
+        width: 100%;
+        margin: 0;
+        padding: 5px 10px 6px;
+        background: #8bd56e;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #74b95d;
+        color: #000;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 21px;
+        font-weight: normal;
+        line-height: 1.2;
+        text-align: center;
+      }
+
+      /*
+        |--------------------------------------------------------------------------
+        | DOCUMENT TITLE
+        |--------------------------------------------------------------------------
+        */
+
+      .certificate-header,
+      .document-title,
+      .certificate-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .document-title {
+        margin: 25px 0 42px;
+        color: #111;
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 0.4px;
+        line-height: 1.2;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      /*
+        |--------------------------------------------------------------------------
+        | CONTENT
+        |--------------------------------------------------------------------------
+        */
+
+      .certificate-content {
+        width: 84%;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .salutation {
+        margin: 0 0 19px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.4;
+        text-align: left;
+        text-indent: 0;
+      }
+
+      .certificate-paragraph {
+        margin: 0 0 17px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        line-height: 1.55;
+        text-align: justify;
+        text-indent: 42px;
+      }
+
+      .certificate-paragraph strong {
+        font-weight: bold;
+      }
+
+      .person-name {
+        text-transform: uppercase;
+      }
+
+      /*
+        |--------------------------------------------------------------------------
+        | SIGNATURE BLOCK
+        |--------------------------------------------------------------------------
+        */
+
+      .certified-label {
+        width: 100%;
+        margin-top: 47px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        text-align: left;
+      }
+
+      .signature-wrapper {
+        width: 340px;
+        margin: 28px auto 0;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+      }
+
+      .signature-image-area {
+        height: 68px;
+        margin-bottom: -8px;
+        text-align: center;
+      }
+
+      .captain-signature {
+        display: inline-block;
+        width: auto;
+        max-width: 190px;
+        max-height: 68px;
+      }
+
+      .captain-signature[src=""] {
+        display: none;
+      }
+
+      .captain-name {
+        margin: 0;
+        padding: 0 5px 3px;
+        border-bottom: 1px solid #000;
+        font-size: 13px;
+        font-weight: bold;
+        line-height: 1.25;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .captain-position {
+        margin-top: 3px;
+        font-size: 13px;
+        line-height: 1.3;
+        text-align: center;
+      }
+
+      /*
+        |--------------------------------------------------------------------------
+        | DOCUMENT CONTROL
+        |--------------------------------------------------------------------------
+        */
+
+      .document-control {
+        position: fixed;
+        right: 18mm;
+        bottom: 10mm;
+        color: #555;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 8px;
+        line-height: 1.3;
+        text-align: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Barangay Garden seal used as a light document watermark -->
+    <img src="[WATERMARK_IMAGE_PATH]" alt="" class="certificate-watermark" />
+
+    <header class="certificate-header">
+      <!--
+            Use a cropped header/banner image only.
+            Do not use an image that contains an entire A4 page.
+        -->
+      <img
+        src="[HEADER_IMAGE_PATH]"
+        alt="Barangay Garden official header"
+        class="certificate-header-image"
+      />
+
+      <div class="office-strip">[OFFICE_NAME]</div>
+    </header>
+
+    <main>
+      <div class="document-title">[CERTIFICATION_TITLE]</div>
+
+      <section class="certificate-content">
+        <p class="salutation">TO WHOM IT MAY CONCERN:</p>
+
+        <p class="certificate-paragraph">
+          <strong>THIS IS TO CERTIFY</strong> that
+          <strong class="person-name">[FULL_NAME]</strong>, of legal age,
+          <strong>[CIVIL_STATUS]</strong>, Filipino, and a bona fide resident of
+          Barangay <strong>[BARANGAY_NAME]</strong>,
+          <strong>[BARANGAY_LOCATION]</strong>.
+        </p>
+
+        <p class="certificate-paragraph">
+          This certification is issued upon the request of the above-named
+          person for whatever legal purpose it may serve
+        </p>
+
+        <p class="certificate-paragraph">
+          Issued this
+          <strong>[DATE_EXTENDED]</strong>
+          at Barangay
+          <strong>[BARANGAY_NAME]</strong>,
+          <strong>[BARANGAY_LOCATION]</strong>.
+        </p>
+
+        <div class="certified-label">Certified:</div>
+
+        <div class="signature-wrapper">
+          <div class="signature-image-area">
+            <img
+              src="[CAPTAIN_SIGNATURE_PATH]"
+              alt=""
+              class="captain-signature"
+            />
+          </div>
+
+          <div class="captain-name">[CAPTAIN_NAME]</div>
+
+          <div class="captain-position">[BARANGAY_CAPTAIN_POSITION]</div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

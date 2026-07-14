@@ -27,18 +27,19 @@
       /* =======================
            WATERMARK
         ======================= */
-
       .watermark {
         position: fixed;
-        top: 48%;
+        top: 225px;
         left: 50%;
-        transform: translate(-50%, -50%);
-        width: 600px;
-        height: 550px;
-      }
 
-      .watermark img {
-        width: 380px;
+        width: 500px;
+        height: auto;
+
+        /* Half of the width, used to center it */
+        margin-left: -250px;
+
+        opacity: 1;
+        z-index: 0;
       }
 
       /* =======================
