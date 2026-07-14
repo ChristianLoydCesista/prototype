@@ -64,68 +64,86 @@ function loadRequestForGeneration(
     int $requestId,
     bool $isSuperAdmin,
     ?int $adminBarangayId
+
 ): ?array {
     $sql = "
-        SELECT
-            cr.id,
-            cr.request_number,
-            cr.citizen_id,
-            cr.document_type_id,
-            cr.purpose,
-            cr.status,
-            cr.fee,
-            cr.payment_status,
-            cr.submitted_at,
-            cr.reviewed_by,
-            cr.reviewed_at,
-            cr.released_at,
-            cr.completed_at,
-            cr.rejection_reason,
-            cr.notes,
-            cr.document_path,
-            cr.created_at,
+    SELECT
+        cr.id,
+        cr.request_number,
+        cr.citizen_id,
+        cr.document_type_id,
+        cr.purpose,
+        cr.status,
+        cr.fee,
+        cr.payment_status,
+        cr.submitted_at,
+        cr.reviewed_by,
+        cr.reviewed_at,
+        cr.released_at,
+        cr.completed_at,
+        cr.rejection_reason,
+        cr.notes,
+        cr.document_path,
+        cr.created_at,
 
-            c.first_name,
-            c.middle_name,
-            c.last_name,
-            c.suffix,
-            c.address,
-            c.gender,
-            c.civil_status,
-            c.barangay_id,
+        c.first_name,
+        c.middle_name,
+        c.last_name,
+        c.suffix,
+        c.address,
+        c.gender,
+        c.civil_status,
+        c.barangay_id,
 
-            b.name AS barangay_name,
-            b.municipality,
-            b.province,
+        b.name AS barangay_name,
+        b.municipality,
+        b.province,
 
-            dt.name AS document_name,
-            dt.template_key,
-            dt.default_template_path,
-            dt.requires_signature,
+        dt.name AS document_name,
+        dt.template_key,
+        dt.default_template_path,
+        dt.requires_signature,
 
-            bds.office_name,
-            bds.barangay_hall_address,
-            bds.header_image_path,
-            bds.seal_path,
-            bds.watermark_path,
-            bds.custom_template_directory
+        bds.office_name,
+        bds.barangay_hall_address,
+        bds.header_image_path,
+        bds.seal_path,
+        bds.watermark_path,
+        bds.custom_template_directory,
 
-        FROM citizen_requests cr
+        bo.full_name AS captain_name,
+        bo.position AS captain_position,
+        bo.signature_path AS captain_signature_path
 
-        INNER JOIN citizens c
-            ON c.id = cr.citizen_id
+    FROM citizen_requests cr
 
-        INNER JOIN document_types dt
-            ON dt.id = cr.document_type_id
+    INNER JOIN citizens c
+        ON c.id = cr.citizen_id
 
-        LEFT JOIN barangays b
-            ON b.id = c.barangay_id
+    INNER JOIN document_types dt
+        ON dt.id = cr.document_type_id
 
-        LEFT JOIN barangay_document_settings bds
-            ON bds.barangay_id = c.barangay_id
-            AND bds.is_active = 1
+    LEFT JOIN barangays b
+        ON b.id = c.barangay_id
 
-        WHERE cr.id = ?
+    LEFT JOIN barangay_document_settings bds
+        ON bds.barangay_id = c.barangay_id
+        AND bds.is_active = 1
+
+    LEFT JOIN barangay_officials bo
+        ON bo.id = (
+            SELECT bo2.id
+            FROM barangay_officials bo2
+            WHERE bo2.barangay_id = c.barangay_id
+              AND bo2.is_active = 1
+              AND bo2.is_primary_signatory = 1
+            ORDER BY
+                bo2.term_start DESC,
+                bo2.id DESC
+            LIMIT 1
+        )
+
+    WHERE cr.id = ?
     ";
 
     $types = 'i';
@@ -236,11 +254,35 @@ function buildFullName(array $request): string
 }
 
 /**
+ * Escape a value for safe insertion into an HTML template.
+ */
+function escapeTemplateValue(mixed $value): string
+{
+    return htmlspecialchars(
+        trim((string)$value),
+        ENT_QUOTES | ENT_SUBSTITUTE,
+        'UTF-8'
+    );
+}
+
+
+
+/**
  * Build all placeholders that are currently supported.
  *
  * Phase 3 will replace the temporary captain and asset fallbacks
  * with actual barangay settings and active official information.
  */
+
+function formatCertificateDate(?DateTimeInterface $date = null): string
+{
+    $date = $date ?? new DateTimeImmutable();
+
+    return $date->format('jS')
+        . ' day of '
+        . strtoupper($date->format('F Y'));
+}
+
 function buildTemplateReplacements(
     array $request,
     string $projectRoot
@@ -252,31 +294,58 @@ function buildTemplateReplacements(
     );
 
     $municipality = trim(
-        (string)($request['municipality'] ?? 'Arteche')
+        (string)($request['municipality'] ?? '')
     );
+
+    if ($municipality === '') {
+        $municipality = 'Arteche';
+    }
 
     $province = trim(
-        (string)($request['province'] ?? 'Eastern Samar')
+        (string)($request['province'] ?? '')
     );
 
+    if ($province === '') {
+        $province = 'Eastern Samar';
+    }
+
     $officeName = trim(
-        (string)(
-            $request['office_name']
-            ?? 'Office of the Punong Barangay'
-        )
+        (string)($request['office_name'] ?? '')
     );
+
+    if ($officeName === '') {
+        $officeName = 'Office of the Punong Barangay';
+    }
 
     /*
     |--------------------------------------------------------------------------
-    | Temporary Phase 2.5 fallbacks
+    | Active Barangay Signatory
     |--------------------------------------------------------------------------
-    | These values will be replaced by barangay officials and settings
-    | during Phase 3.
+    | Loaded from barangay_officials. Fallback values prevent broken output
+    | when a barangay has not yet configured an active primary signatory.
     |--------------------------------------------------------------------------
     */
 
-    $captainName = 'HON. BARANGAY CAPTAIN';
-    $captainPosition = 'Punong Barangay';
+    $captainName = trim(
+        (string)($request['captain_name'] ?? '')
+    );
+
+    $captainPosition = trim(
+        (string)($request['captain_position'] ?? '')
+    );
+
+    $requiresSignature = (int)($request['requires_signature'] ?? 1) === 1;
+
+    if ($requiresSignature && $captainName === '') {
+        throw new RuntimeException(
+            'No active primary signatory is configured for Barangay '
+                . ($request['barangay_name'] ?? 'Unknown') . '.'
+        );
+    }
+
+    if ($captainPosition === '') {
+        $captainPosition = 'Punong Barangay';
+    }
 
     $headerImage = resolveAssetPath(
         $projectRoot,
@@ -290,55 +359,75 @@ function buildTemplateReplacements(
         null
     );
 
+    $captainSignature = resolveAssetPath(
+        $projectRoot,
+        $request['captain_signature_path'] ?? null,
+        null
+    );
+
     $watermarkImage = resolveAssetPath(
         $projectRoot,
         $request['watermark_path'] ?? null,
         'assets/img/watermark_garden.png'
     );
 
-    $documentTitle = strtoupper(
-        trim(
-            (string)(
-                $request['document_name']
-                ?? 'Barangay Certificate'
-            )
-        )
+    error_log('Watermark database path: ' . ($request['watermark_path'] ?? 'NULL'));
+    error_log('Watermark resolved path: ' . ($watermarkImage ?: 'NOT FOUND'));
+
+    $templateKey = trim(
+        (string)($request['template_key'] ?? '')
     );
+
+    $documentTitle = match ($templateKey) {
+        'barangay-certificate' => 'BARANGAY CERTIFICATION',
+        'certificate-of-indigency' => 'CERTIFICATE OF INDIGENCY',
+        'certificate-of-residency' => 'CERTIFICATE OF RESIDENCY',
+        'business-permit' => 'BUSINESS PERMIT',
+        default => strtoupper(
+            trim(
+                (string)(
+                    $request['document_name']
+                    ?? 'DOCUMENT'
+                )
+            )
+        ),
+    };
 
     $householdSize = 1;
     $monthlyIncome = 0;
     $riskScore = 0;
 
     return [
+        '[CERTIFICATION_TITLE]' => $documentTitle,
         '[DOCUMENT_TITLE]' => $documentTitle,
 
-        '[FULL_NAME]' => $fullName,
-        '[FIRST_NAME]' => $request['first_name'] ?? '',
-        '[MIDDLE_NAME]' => $request['middle_name'] ?? '',
-        '[LAST_NAME]' => $request['last_name'] ?? '',
-        '[SUFFIX]' => $request['suffix'] ?? '',
+        '[FULL_NAME]' => escapeTemplateValue($fullName),
+        '[FIRST_NAME]' => escapeTemplateValue($request['first_name'] ?? ''),
+        '[MIDDLE_NAME]' => escapeTemplateValue($request['middle_name'] ?? ''),
+        '[LAST_NAME]' => escapeTemplateValue($request['last_name'] ?? ''),
+        '[SUFFIX]' => escapeTemplateValue($request['suffix'] ?? ''),
 
-        '[SEX]' => $request['gender'] ?? '',
-        '[CIVIL_STATUS]' => $request['civil_status'] ?? '',
-        '[ADDRESS]' => $request['address'] ?? '',
+        '[SEX]' => escapeTemplateValue($request['gender'] ?? ''),
+        '[CIVIL_STATUS]' => escapeTemplateValue($request['civil_status'] ?? ''),
+        '[ADDRESS]' => escapeTemplateValue($request['address'] ?? ''),
 
-        '[BARANGAY_NAME]' => $barangayName,
-        '[MUNICIPALITY]' => $municipality,
-        '[PROVINCE]' => $province,
+        '[BARANGAY_NAME]' => escapeTemplateValue($barangayName),
+        '[MUNICIPALITY]' => escapeTemplateValue($municipality),
+        '[PROVINCE]' => escapeTemplateValue($province),
+
         '[BARANGAY_LOCATION]' => trim(
             $municipality . ', ' . $province
         ),
+
         '[BARANGAY_HALL_ADDRESS]' =>
-        $request['barangay_hall_address'] ?? '',
+        escapeTemplateValue($request['barangay_hall_address'] ?? ''),
         '[OFFICE_NAME]' => $officeName,
 
-        '[CAPTAIN_NAME]' => $captainName,
-        '[CAPTAIN_POSITION]' => $captainPosition,
-        '[CAPTAIN_SIGNATURE_PATH]' => '',
-
-        // Compatibility with your older placeholders
-        '[BARANGAY_CAPTAIN_NAME]' => $captainName,
-        '[BARANGAY_CAPTAIN_POSITION]' => $captainPosition,
+        '[CAPTAIN_NAME]' => escapeTemplateValue($captainName),
+        '[CAPTAIN_POSITION]' => escapeTemplateValue($captainPosition),
+        '[BARANGAY_CAPTAIN_NAME]' => escapeTemplateValue($captainName),
+        '[BARANGAY_CAPTAIN_POSITION]' => escapeTemplateValue($captainPosition),
+        '[CAPTAIN_SIGNATURE_PATH]' => $captainSignature,
 
         '[HEADER_IMAGE_PATH]' => $headerImage,
         '[BARANGAY_SEAL_PATH]' => $sealImage,
@@ -347,8 +436,8 @@ function buildTemplateReplacements(
         '[PURPOSE]' =>
         $request['purpose'] ?? 'legal purposes',
 
-        '[DATE_ISSUED]' => date('F j, Y'),
-        '[DATE_EXTENDED]' => date('F j, Y'),
+        '[DATE_ISSUED]' => formatCertificateDate(),
+        '[DATE_EXTENDED]' => formatCertificateDate(),
 
         '[REQUEST_NUMBER]' =>
         $request['request_number'] ?? 'N/A',
@@ -387,6 +476,9 @@ function buildTemplateReplacements(
         '[HOUSEHOLD_IDENTIFIER]' => 'N/A',
     ];
 }
+
+
+
 
 /**
  * Replace template placeholders with their corresponding values.
@@ -516,14 +608,25 @@ function generateAndSavePdf(
 function markRequestAsReady(
     mysqli $conn,
     int $requestId,
-    string $documentWebPath
+    string $documentWebPath,
+    int $generatedBy,
+    string $templateKey,
+    string $signatoryName,
+    string $signatoryPosition,
+    ?string $signaturePath
 ): void {
     $stmt = $conn->prepare("
         UPDATE citizen_requests
         SET
             status = 'Ready for Pickup',
             document_path = ?,
-            released_at = NOW()
+            released_at = NOW(),
+            generated_at = NOW(),
+            generated_by = NULLIF(?, 0),
+            generated_template_key = ?,
+            signatory_name_snapshot = ?,
+            signatory_position_snapshot = ?,
+            signature_path_snapshot = ?
         WHERE id = ?
     ");
 
@@ -534,8 +637,13 @@ function markRequestAsReady(
     }
 
     $stmt->bind_param(
-        'si',
+        'sissssi',
         $documentWebPath,
+        $generatedBy,
+        $templateKey,
+        $signatoryName,
+        $signatoryPosition,
+        $signaturePath,
         $requestId
     );
 
@@ -551,6 +659,9 @@ function markRequestAsReady(
     $stmt->close();
 }
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | 3. LOAD REQUEST
@@ -565,12 +676,25 @@ try {
         $adminBarangayId
     );
 
+
+    $allowedGenerationStatuses = [
+        'Approved',
+        'Ready for Pickup',
+    ];
+
+    if (!in_array($request['status'], $allowedGenerationStatuses, true)) {
+        throw new RuntimeException(
+            'Only approved requests can generate an official document.'
+        );
+    }
+
     if (!$request) {
         http_response_code(404);
         exit('Request not found or access denied.');
     }
 
     $barangayId = (int)($request['barangay_id'] ?? 0);
+
     $templateKey = trim(
         (string)($request['template_key'] ?? '')
     );
@@ -662,7 +786,12 @@ try {
         markRequestAsReady(
             $conn,
             (int)$requestId,
-            $documentPaths['web_path']
+            $documentPaths['web_path'],
+            $adminUserId,
+            $templateKey,
+            trim((string)($request['captain_name'] ?? '')),
+            trim((string)($request['captain_position'] ?? 'Punong Barangay')),
+            $request['captain_signature_path'] ?? null
         );
     } catch (Throwable $updateError) {
         if (is_file($documentPaths['absolute_path'])) {
