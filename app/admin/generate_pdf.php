@@ -93,6 +93,7 @@ function loadRequestForGeneration(
         c.address,
         c.gender,
         c.civil_status,
+        c.birth_date,
         c.barangay_id,
 
         b.name AS barangay_name,
@@ -283,6 +284,28 @@ function formatCertificateDate(?DateTimeInterface $date = null): string
         . strtoupper($date->format('F Y'));
 }
 
+function calculateAge(?string $birthDate): string
+{
+    $birthDate = trim((string)$birthDate);
+
+    if ($birthDate === '') {
+        return '';
+    }
+
+    try {
+        $birthday = new DateTimeImmutable($birthDate);
+        $today = new DateTimeImmutable('today');
+
+        if ($birthday > $today) {
+            return '';
+        }
+
+        return (string)$birthday->diff($today)->y;
+    } catch (Throwable $e) {
+        return '';
+    }
+}
+
 function buildTemplateReplacements(
     array $request,
     string $projectRoot
@@ -315,6 +338,18 @@ function buildTemplateReplacements(
 
     if ($officeName === '') {
         $officeName = 'Office of the Punong Barangay';
+    }
+
+    $age = calculateAge(
+        $request['birth_date'] ?? null
+    );
+
+    $purpose = trim(
+        (string)($request['purpose'] ?? '')
+    );
+
+    if ($purpose === '') {
+        $purpose = 'financial assistance';
     }
 
     /*
@@ -402,6 +437,7 @@ function buildTemplateReplacements(
         '[DOCUMENT_TITLE]' => $documentTitle,
 
         '[FULL_NAME]' => escapeTemplateValue($fullName),
+        '[AGE]' => $age,
         '[FIRST_NAME]' => escapeTemplateValue($request['first_name'] ?? ''),
         '[MIDDLE_NAME]' => escapeTemplateValue($request['middle_name'] ?? ''),
         '[LAST_NAME]' => escapeTemplateValue($request['last_name'] ?? ''),
@@ -433,8 +469,7 @@ function buildTemplateReplacements(
         '[BARANGAY_SEAL_PATH]' => $sealImage,
         '[WATERMARK_IMAGE_PATH]' => $watermarkImage,
 
-        '[PURPOSE]' =>
-        $request['purpose'] ?? 'legal purposes',
+        '[PURPOSE]' => $purpose,
 
         '[DATE_ISSUED]' => formatCertificateDate(),
         '[DATE_EXTENDED]' => formatCertificateDate(),
