@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Certificate of Indigency</title>
+
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        position: relative;
+        overflow: hidden;
+        color: #111;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+
+      /*
+       * FULL-PAGE RAWIS TEMPLATE
+       */
+      .rawis-page-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+
+        display: block;
+        width: 210mm;
+        height: 297mm;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      /*
+       * OFFICE HEADING
+       *
+       * These values position the heading directly
+       * below the background header.
+       */
+      .office-heading {
+        position: absolute;
+        top: 57.2mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        margin: 0;
+
+        font-family: "Times New Roman", Times, serif;
+        font-size: 8.5pt;
+        font-weight: bold;
+        line-height: 1;
+        letter-spacing: 0.15pt;
+
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      /*
+       * ORANGE DIVIDER
+       */
+      .office-divider {
+        position: absolute;
+        top: 62.4mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        height: 1.05mm;
+
+        margin: 0;
+        padding: 0;
+        background: #e87522;
+      }
+
+      /*
+       * DOCUMENT TITLE
+       */
+      .document-title {
+        position: absolute;
+        top: 74.2mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        margin: 0;
+
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 13pt;
+        font-weight: bold;
+        line-height: 1;
+        letter-spacing: 0;
+
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      /*
+       * SALUTATION
+       */
+      .salutation {
+        position: absolute;
+        top: 93.3mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        margin: 0;
+
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 7.8pt;
+        font-weight: bold;
+        line-height: 1;
+
+        text-align: left;
+        text-transform: uppercase;
+      }
+
+      /*
+       * MAIN CERTIFICATE TEXT
+       */
+      .certificate-body {
+        position: absolute;
+        top: 107.5mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 8pt;
+        font-weight: normal;
+        line-height: 11.7pt;
+
+        text-align: justify;
+      }
+
+      .certificate-body p {
+        margin: 0 0 5mm;
+        padding: 0;
+
+        text-indent: 12mm;
+      }
+
+      .certificate-body strong {
+        font-weight: bold;
+      }
+
+      /*
+       * UNDERLINED DYNAMIC FIELDS
+       */
+      .name-field {
+        display: inline-block;
+
+        min-width: 55mm;
+        padding: 0 1mm 0.3mm;
+
+        border-bottom: 0.55pt solid #111;
+
+        font-weight: bold;
+        line-height: 1;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .day-field {
+        display: inline-block;
+
+        width: 11mm;
+        padding-bottom: 0.3mm;
+
+        border-bottom: 0.55pt solid #111;
+
+        font-weight: bold;
+        line-height: 1;
+        text-align: center;
+      }
+
+      .month-field {
+        display: inline-block;
+
+        width: 28mm;
+        padding-bottom: 0.3mm;
+
+        border-bottom: 0.55pt solid #111;
+
+        font-weight: bold;
+        line-height: 1;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .year-field {
+        display: inline-block;
+
+        width: 14mm;
+        padding-bottom: 0.3mm;
+
+        border-bottom: 0.55pt solid #111;
+
+        font-weight: bold;
+        line-height: 1;
+        text-align: center;
+      }
+
+      /*
+       * SIGNATURE BLOCK
+       */
+      .signature-block {
+        position: absolute;
+        top: 180.5mm;
+        right: 31.5mm;
+
+        width: 61mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, Arial, sans-serif;
+      }
+
+      .certified-by {
+        margin: 0;
+        padding: 0;
+
+        font-size: 7.8pt;
+        font-weight: normal;
+        line-height: 1;
+
+        text-align: left;
+      }
+
+      .signature-space {
+        width: 61mm;
+        height: 13.5mm;
+        margin: 2mm 0 0;
+        padding: 0;
+
+        text-align: center;
+      }
+
+      .signature-image {
+        display: block;
+
+        width: auto;
+        max-width: 43mm;
+        height: auto;
+        max-height: 13.5mm;
+
+        margin: 0 auto;
+        padding: 0;
+        border: 0;
+      }
+
+      .captain-name {
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 8pt;
+        font-weight: bold;
+        line-height: 1.15;
+
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .captain-position {
+        margin-top: 1.2mm;
+        padding: 0;
+
+        font-family: "Times New Roman", Times, serif;
+        font-size: 7.5pt;
+        font-style: italic;
+        font-weight: normal;
+        line-height: 1;
+
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Full-page official Rawis design -->
+    <img
+      class="rawis-page-background"
+      src="[RAWIS_FULL_PAGE_BACKGROUND]"
+      alt=""
+    />
+
+    <!-- Office heading -->
+    <div class="office-heading">Office of the Punong Barangay</div>
+
+    <div class="office-divider"></div>
+
+    <!-- Document title -->
+    <div class="document-title">Certificate of Indigency</div>
+
+    <!-- Salutation -->
+    <div class="salutation">To Whom It May Concern:</div>
+
+    <!-- Certificate body -->
+    <div class="certificate-body">
+      <p>
+        <strong>THIS IS TO CERTIFY</strong> that
+        <span class="name-field">[FULL_NAME]</span>
+        is a bona fide resident of Barangay [BARANGAY_NAME], [MUNICIPALITY],
+        [PROVINCE]. He/She is a qualified beneficiary of any assistance or
+        program that your good office may provide.
+      </p>
+
+      <p>
+        <strong>THIS FURTHER CERTIFIES</strong> that the above-named individual
+        belongs to a low-income household or an indigent family in this
+        barangay.
+      </p>
+
+      <p>
+        This certification is given to the above-stated person for
+        <strong>[PURPOSE]</strong>.
+      </p>
+
+      <p>
+        Given this
+        <span class="day-field">[ISSUE_DAY]</span>
+        day of
+        <span class="month-field">[ISSUE_MONTH]</span>,
+        <span class="year-field">[ISSUE_YEAR]</span>, at Barangay
+        [BARANGAY_NAME], [MUNICIPALITY], [PROVINCE].
+      </p>
+    </div>
+
+    <!-- Signature -->
+    <div class="signature-block">
+      <div class="certified-by">Certified by:</div>
+
+      <div class="signature-space">
+        <img class="signature-image" src="[CAPTAIN_SIGNATURE_PATH]" alt="" />
+      </div>
+
+      <div class="captain-name">[CAPTAIN_NAME]</div>
+
+      <div class="captain-position">[CAPTAIN_POSITION]</div>
+    </div>
+  </body>
+</html>
