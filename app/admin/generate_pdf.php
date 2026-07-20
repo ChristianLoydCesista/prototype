@@ -181,6 +181,45 @@ function loadRequestForGeneration(
 }
 
 /**
+ * Convert one local image into a Base64 data URI.
+ *
+ * Use this only for the Rawis full-page background.
+ */
+function localImageToDataUri(string $absolutePath): string
+{
+    $absolutePath = trim($absolutePath);
+
+    if ($absolutePath === '' || !is_file($absolutePath)) {
+        return '';
+    }
+
+    $imageContents = file_get_contents($absolutePath);
+
+    if ($imageContents === false) {
+        return '';
+    }
+
+    $extension = strtolower(
+        pathinfo($absolutePath, PATHINFO_EXTENSION)
+    );
+
+    $mimeType = match ($extension) {
+        'png' => 'image/png',
+        'jpg', 'jpeg' => 'image/jpeg',
+        default => '',
+    };
+
+    if ($mimeType === '') {
+        return '';
+    }
+
+    return 'data:'
+        . $mimeType
+        . ';base64,'
+        . base64_encode($imageContents);
+}
+
+/**
  * Resolve a local asset path that Dompdf can read.
  *
  * Barangay assets will become database-driven in Phase 3.
@@ -352,6 +391,46 @@ function buildTemplateReplacements(
         $purpose = 'financial assistance';
     }
 
+    // Rawis full-page background is only used for the Rawis Barangay Certificate of Indigency template
+    $rawisFullPageBackground = '';
+
+    if (
+        (int) $request['barangay_id'] === 17
+        && ($request['template_key'] ?? '') === 'certificate-of-indigency'
+    ) {
+        $rawisBackgroundPath =
+            $projectRoot
+            . DIRECTORY_SEPARATOR
+            . 'public'
+            . DIRECTORY_SEPARATOR
+            . 'uploads'
+            . DIRECTORY_SEPARATOR
+            . 'barangays'
+            . DIRECTORY_SEPARATOR
+            . '17'
+            . DIRECTORY_SEPARATOR
+            . 'full-page-template.png';
+
+        if (!is_file($rawisBackgroundPath)) {
+            throw new RuntimeException(
+                'Rawis background was not found at: '
+                    . $rawisBackgroundPath
+            );
+        }
+
+        $rawisFullPageBackground =
+            localImageToDataUri($rawisBackgroundPath);
+
+        if ($rawisFullPageBackground === '') {
+            throw new RuntimeException(
+                'Rawis background could not be embedded.'
+            );
+        }
+    }
+
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Active Barangay Signatory
@@ -428,6 +507,12 @@ function buildTemplateReplacements(
         ),
     };
 
+    $issueTimestamp = time();
+
+    $issueDay = date('j', $issueTimestamp);
+    $issueMonth = strtoupper(date('F', $issueTimestamp));
+    $issueYear = date('Y', $issueTimestamp);
+
     $householdSize = 1;
     $monthlyIncome = 0;
     $riskScore = 0;
@@ -476,6 +561,27 @@ function buildTemplateReplacements(
 
         '[REQUEST_NUMBER]' =>
         $request['request_number'] ?? 'N/A',
+
+        '[RAWIS_FULL_PAGE_BACKGROUND]' =>
+        $rawisFullPageBackground,
+
+        '[ISSUE_DAY]' => htmlspecialchars(
+            $issueDay,
+            ENT_QUOTES,
+            'UTF-8'
+        ),
+
+        '[ISSUE_MONTH]' => htmlspecialchars(
+            $issueMonth,
+            ENT_QUOTES,
+            'UTF-8'
+        ),
+
+        '[ISSUE_YEAR]' => htmlspecialchars(
+            $issueYear,
+            ENT_QUOTES,
+            'UTF-8'
+        ),
 
         /*
         |--------------------------------------------------------------------------
@@ -608,6 +714,8 @@ function generateAndSavePdf(
             'Unable to create document output directory.'
         );
     }
+
+
 
     $options = new Options();
 
