@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Barangay Certification</title>
+
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        position: relative;
+        overflow: hidden;
+
+        color: #111;
+        font-family: Helvetica, sans-serif;
+      }
+
+      /*
+     * Full-page Rawis background.
+     * The background should already contain:
+     * - border
+     * - header graphics
+     * - logos
+     * - watermark
+     * - bottom wave design
+     */
+      .page-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+
+        display: block;
+        width: 210mm;
+        height: 297mm;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      /*
+     * OFFICE HEADING
+     */
+      .office-heading {
+        position: absolute;
+        top: 57.2mm;
+        left: 36mm;
+
+        width: 138mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Times, serif;
+        font-size: 8pt;
+        font-weight: bold;
+        line-height: 1;
+        letter-spacing: 0.15pt;
+
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      /*
+     * ORANGE DIVIDER
+     */
+      .office-divider {
+        position: absolute;
+        top: 62.3mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        height: 0.9mm;
+
+        margin: 0;
+        padding: 0;
+
+        background: #e87522;
+      }
+
+      /*
+     * DOCUMENT TITLE
+     */
+      .document-title {
+        position: absolute;
+        top: 73.5mm;
+        left: 36mm;
+
+        width: 138mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Times, serif;
+        font-size: 12.5pt;
+        font-weight: bold;
+        line-height: 1;
+        letter-spacing: 2.2pt;
+
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      /*
+     * SALUTATION
+     */
+      .salutation {
+        position: absolute;
+        top: 94.5mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, sans-serif;
+        font-size: 6.8pt;
+        font-weight: bold;
+        line-height: 1;
+
+        text-align: left;
+        text-transform: uppercase;
+      }
+
+      /*
+     * MAIN BODY AREA
+     */
+      .certificate-body {
+        position: absolute;
+        top: 107mm;
+        left: 32.5mm;
+
+        width: 145mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, sans-serif;
+        font-size: 7.2pt;
+        font-weight: normal;
+        line-height: 10pt;
+      }
+
+      .certificate-body p {
+        margin: 0 0 4.2mm;
+        padding: 0;
+
+        text-align: justify;
+        text-indent: 12mm;
+      }
+
+      .certificate-body strong {
+        font-weight: bold;
+      }
+
+      /*
+     * FIRST CERTIFICATION PARAGRAPH
+     *
+     * This is separated because it contains the
+     * resident-name underline.
+     */
+      .first-paragraph {
+        margin: 0 0 4.2mm;
+        padding: 0;
+
+        text-align: left;
+        text-indent: 12mm;
+      }
+
+      .name-field {
+        display: inline-block;
+
+        width: 51mm;
+        margin: 0 0.8mm;
+        padding: 0 1mm 0.25mm;
+
+        border: 0;
+        border-bottom: 0.45pt solid #111;
+
+        font-size: 7.2pt;
+        font-weight: bold;
+        line-height: 1.05;
+        text-align: center;
+        text-transform: uppercase;
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      /*
+     * DATE / ISSUANCE PARAGRAPH
+     *
+     * The invisible spacer indents only the first line.
+     * Wrapped lines return to the full body margin.
+     */
+      .issue-paragraph {
+        width: 145mm;
+        margin: 0;
+        padding: 0;
+
+        text-align: left;
+        line-height: 10pt;
+        white-space: normal;
+      }
+
+      .first-line-indent {
+        display: inline-block;
+
+        width: 12mm;
+        height: 1px;
+
+        margin: 0;
+        padding: 0;
+
+        font-size: 0;
+        line-height: 0;
+        vertical-align: baseline;
+      }
+
+      .date-field {
+        display: inline-block;
+
+        margin: 0 0.7mm;
+        padding: 0 0 0.25mm;
+
+        border: 0;
+        border-bottom: 0.45pt solid #111;
+
+        font-weight: bold;
+        line-height: 1.05;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      .day-field {
+        width: 13mm;
+      }
+
+      .month-field {
+        width: 27mm;
+        text-transform: uppercase;
+      }
+
+      .year-field {
+        width: 15mm;
+      }
+
+      /*
+     * SIGNATURE BLOCK
+     */
+      .signature-block {
+        position: absolute;
+        top: 176mm;
+        right: 32mm;
+
+        width: 61mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, sans-serif;
+      }
+
+      .certified-by {
+        margin: 0;
+        padding: 0;
+
+        font-size: 7pt;
+        font-weight: normal;
+        line-height: 1;
+
+        text-align: left;
+      }
+
+      .signature-space {
+        width: 61mm;
+        height: 13mm;
+
+        margin: 2mm 0 0;
+        padding: 0;
+
+        text-align: center;
+      }
+
+      .signature-image {
+        display: block;
+
+        width: auto;
+        max-width: 42mm;
+        height: auto;
+        max-height: 13mm;
+
+        margin: 0 auto;
+        padding: 0;
+        border: 0;
+      }
+
+      .captain-name {
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, sans-serif;
+        font-size: 7.3pt;
+        font-weight: bold;
+        line-height: 1.1;
+
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .captain-position {
+        margin: 1mm 0 0;
+        padding: 0;
+
+        font-family: Times, serif;
+        font-size: 6.8pt;
+        font-style: italic;
+        font-weight: normal;
+        line-height: 1;
+
+        text-align: center;
+      }
+
+      /*
+     * PAYMENT / ISSUANCE DETAILS
+     */
+      .document-details {
+        position: absolute;
+        top: 253mm;
+        left: 16.5mm;
+
+        width: 70mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, sans-serif;
+        font-size: 5pt;
+        font-weight: normal;
+        line-height: 6.5pt;
+
+        text-align: left;
+      }
+
+      .detail-row {
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+      }
+
+      .detail-label {
+        display: inline-block;
+        vertical-align: baseline;
+      }
+
+      .detail-value {
+        display: inline-block;
+
+        min-width: 20mm;
+        margin-left: 1mm;
+        padding: 0 0 0.2mm;
+
+        border: 0;
+        border-bottom: 0.4pt solid #111;
+
+        vertical-align: baseline;
+      }
+
+      .issued-at-value {
+        min-width: 42mm;
+      }
+    </style>
+  </head>
+
+  <body>
+    <img class="page-background" src="[RAWIS_FULL_PAGE_BACKGROUND]" alt="" />
+
+    <div class="office-heading">Office of the Punong Barangay</div>
+
+    <div class="office-divider"></div>
+
+    <div class="document-title">Certification</div>
+
+    <div class="salutation">To Whom It May Concern:</div>
+
+    <div class="certificate-body">
+      <div class="first-paragraph">
+        <strong>THIS IS TO CERTIFY</strong> that
+        <span class="name-field">[FULL_NAME]</span>
+        is a bona fide resident of Barangay [BARANGAY_NAME], [MUNICIPALITY],
+        [PROVINCE], this further certify that he/she is a citizen of good moral
+        character and has no violation and no property responsibility of this
+        barangay.
+      </div>
+
+      <p>
+        This certification is issued upon the request of the above-named person
+        for whatever legal purpose it may serve.
+      </p>
+
+      <div class="issue-paragraph">
+        <span class="first-line-indent"></span>ISSUED this
+        <span class="date-field day-field">[ISSUE_DAY]</span>
+        day of
+        <span class="date-field month-field">[ISSUE_MONTH]</span>,
+        <span class="date-field year-field">[ISSUE_YEAR]</span>, at Barangay
+        [BARANGAY_NAME], [MUNICIPALITY], [PROVINCE].
+      </div>
+    </div>
+
+    <div class="signature-block">
+      <div class="certified-by">Certified by:</div>
+
+      <div class="signature-space">
+        <img class="signature-image" src="[CAPTAIN_SIGNATURE_PATH]" alt="" />
+      </div>
+
+      <div class="captain-name">[CAPTAIN_NAME]</div>
+
+      <div class="captain-position">[CAPTAIN_POSITION]</div>
+    </div>
+
+    <div class="document-details">
+      <div class="detail-row">
+        <span class="detail-label">Paid Under O.R.:</span>
+        <span class="detail-value">[OR_NUMBER]</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Issued on:</span>
+        <span class="detail-value">[DATE_ISSUED]</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Issued At:</span>
+        <span class="detail-value issued-at-value">
+          BARANGAY [BARANGAY_NAME], [MUNICIPALITY]
+        </span>
+      </div>
+    </div>
+  </body>
+</html>
