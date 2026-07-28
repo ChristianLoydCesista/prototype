@@ -145,15 +145,107 @@
         font-size: 8pt;
         font-weight: normal;
         line-height: 11.7pt;
-
-        text-align: justify;
       }
 
       .certificate-body p {
         margin: 0 0 5mm;
         padding: 0;
+      }
 
+      /* Ordinary narrative paragraphs */
+      .body-paragraph {
+        text-align: justify;
         text-indent: 12mm;
+      }
+
+      /* First paragraph contains a fixed-width name */
+      .name-paragraph {
+        text-align: left;
+        text-indent: 12mm;
+      }
+      .issue-date-block {
+        width: 145mm;
+        margin: 0 0 5mm 0;
+        padding: 0;
+
+        font-family: Helvetica, sans-serif;
+        font-size: 8pt;
+        font-weight: normal;
+        line-height: 11.7pt;
+      }
+
+      .issue-date-line {
+        display: block;
+        width: 145mm;
+
+        margin: 0;
+        padding: 0;
+
+        text-align: left;
+        text-indent: 0;
+        white-space: normal;
+      }
+
+      /*
+ * Indents only the beginning of the first line.
+ * Wrapped lines return to the normal left edge.
+ */
+      .first-line-indent {
+        display: inline-block;
+        width: 12mm;
+        height: 1px;
+
+        margin: 0;
+        padding: 0;
+
+        font-size: 0;
+        line-height: 0;
+        vertical-align: baseline;
+      }
+
+      .date-underlined {
+        display: inline-block;
+
+        margin: 0 1mm;
+        padding: 0 0 0.3mm;
+
+        border: 0;
+        border-bottom: 0.55pt solid #111;
+
+        font-weight: bold;
+        line-height: 1.1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      .day-width {
+        width: 11mm;
+      }
+
+      .month-width {
+        width: 27mm;
+        text-transform: uppercase;
+      }
+
+      .year-width {
+        width: 14mm;
+      }
+
+      .date-location {
+        display: inline;
+
+        margin: 0;
+        padding: 0;
+
+        font-weight: normal;
+        text-align: left;
+
+        /*
+     * Do not use nowrap here.
+     * The text can wrap at spaces when necessary.
+     */
+        white-space: normal;
       }
 
       .certificate-body strong {
@@ -165,56 +257,47 @@
        */
       .name-field {
         display: inline-block;
-
-        min-width: 55mm;
+        width: 58mm;
         padding: 0 1mm 0.3mm;
 
+        border: 0;
         border-bottom: 0.55pt solid #111;
 
         font-weight: bold;
-        line-height: 1;
+        line-height: 1.1;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      .day-field,
+      .month-field,
+      .year-field {
+        display: inline-block;
+        padding: 0 0 0.3mm;
+
+        border: 0;
+        border-bottom: 0.55pt solid #111;
+
+        font-weight: bold;
+        line-height: 1.1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
       }
 
       .day-field {
-        display: inline-block;
-
         width: 11mm;
-        padding-bottom: 0.3mm;
-
-        border-bottom: 0.55pt solid #111;
-
-        font-weight: bold;
-        line-height: 1;
-        text-align: center;
       }
 
       .month-field {
-        display: inline-block;
-
-        width: 28mm;
-        padding-bottom: 0.3mm;
-
-        border-bottom: 0.55pt solid #111;
-
-        font-weight: bold;
-        line-height: 1;
-        text-align: center;
+        width: 27mm;
         text-transform: uppercase;
       }
 
       .year-field {
-        display: inline-block;
-
         width: 14mm;
-        padding-bottom: 0.3mm;
-
-        border-bottom: 0.55pt solid #111;
-
-        font-weight: bold;
-        line-height: 1;
-        text-align: center;
       }
 
       /*
@@ -314,7 +397,7 @@
 
     <!-- Certificate body -->
     <div class="certificate-body">
-      <p>
+      <p class="name-paragraph">
         <strong>THIS IS TO CERTIFY</strong> that
         <span class="name-field">[FULL_NAME]</span>
         is a bona fide resident of Barangay [BARANGAY_NAME], [MUNICIPALITY],
@@ -322,25 +405,27 @@
         program that your good office may provide.
       </p>
 
-      <p>
+      <p class="body-paragraph">
         <strong>THIS FURTHER CERTIFIES</strong> that the above-named individual
         belongs to a low-income household or an indigent family in this
         barangay.
       </p>
 
-      <p>
-        This certification is given to the above-stated person for
-        <strong>[PURPOSE]</strong>.
+      <p class="body-paragraph">
+        This certification is given to the above-stated person for whatever
+        legal purpose it may serve.
       </p>
 
-      <p>
-        Given this
-        <span class="day-field">[ISSUE_DAY]</span>
-        day of
-        <span class="month-field">[ISSUE_MONTH]</span>,
-        <span class="year-field">[ISSUE_YEAR]</span>, at Barangay
-        [BARANGAY_NAME], [MUNICIPALITY], [PROVINCE].
-      </p>
+      <div class="issue-date-block">
+        <div class="issue-date-line">
+          <span class="first-line-indent"></span>Given this
+          <span class="date-underlined day-width">[ISSUE_DAY]</span>
+          day of
+          <span class="date-underlined month-width">[ISSUE_MONTH]</span>,
+          <span class="date-underlined year-width">[ISSUE_YEAR]</span>, at
+          Barangay [BARANGAY_NAME], [MUNICIPALITY], [PROVINCE].
+        </div>
+      </div>
     </div>
 
     <!-- Signature -->
