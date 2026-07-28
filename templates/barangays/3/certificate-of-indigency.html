@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Certificate of Indigency - Barangay Balud</title>
+
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        position: relative;
+        overflow: hidden;
+
+        color: #111;
+        font-family: Times, "Times New Roman", serif;
+      }
+
+      /*
+       * FULL-PAGE BARANGAY BALUD BACKGROUND
+       *
+       * The background should contain:
+       * - Header logos
+       * - Republic/Province/Municipality text
+       * - Barangay Balud heading
+       * - Office of the Punong Barangay
+       * - Horizontal divider
+       * - Barangay Balud watermark
+       */
+      .balud-page-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+
+        display: block;
+        width: 210mm;
+        height: 297mm;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      /*
+       * DOCUMENT TITLE
+       */
+      .document-title {
+        position: absolute;
+        top: 48.9mm;
+        left: 24mm;
+
+        width: 162mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Times, "Times New Roman", serif;
+        font-size: 10.5pt;
+        font-weight: bold;
+        line-height: 1;
+
+        letter-spacing: 2.5pt;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      /*
+       * SALUTATION
+       */
+      .salutation {
+        position: absolute;
+        top: 68.8mm;
+        left: 25mm;
+
+        width: 160mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Times, "Times New Roman", serif;
+        font-size: 8.5pt;
+        font-weight: bold;
+        line-height: 1;
+
+        text-align: left;
+      }
+
+      /*
+       * MAIN CERTIFICATE BODY
+       */
+      .certificate-body {
+        position: absolute;
+        top: 85.5mm;
+        left: 25mm;
+
+        width: 160mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Times, "Times New Roman", serif;
+        font-size: 8.4pt;
+        font-weight: bold;
+        line-height: 11.2pt;
+
+        text-align: justify;
+      }
+
+      .certificate-body p {
+        margin: 0 0 4.1mm;
+        padding: 0;
+
+        text-indent: 12mm;
+      }
+
+      /*
+       * FIRST PARAGRAPH
+       *
+       * Separate from ordinary paragraphs because it contains
+       * the underlined resident name.
+       */
+      .first-paragraph {
+        margin: 0 0 4.1mm;
+        padding: 0;
+
+        text-align: left;
+        text-indent: 12mm;
+      }
+
+      /*
+       * DYNAMIC RESIDENT NAME
+       */
+      .resident-name {
+        display: inline-block;
+
+        width: 72mm;
+        margin: 0 0.8mm;
+        padding: 0 1mm 0.25mm;
+
+        border: 0;
+        border-bottom: 0.6pt solid #111;
+
+        font-size: 8.4pt;
+        font-weight: bold;
+        line-height: 1.05;
+
+        text-align: center;
+        text-transform: uppercase;
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      /*
+       * DATE ISSUED SENTENCE
+       *
+       * The invisible spacer creates indentation only on
+       * the first line. Wrapped lines return to the full
+       * certificate-body left boundary.
+       */
+      .issue-paragraph {
+        width: 160mm;
+        margin: 0;
+        padding: 0;
+
+        line-height: 11.2pt;
+        text-align: left;
+        white-space: normal;
+      }
+
+      .first-line-indent {
+        display: inline-block;
+
+        width: 12mm;
+        height: 1px;
+
+        margin: 0;
+        padding: 0;
+
+        font-size: 0;
+        line-height: 0;
+        vertical-align: baseline;
+      }
+
+      .date-field {
+        display: inline-block;
+
+        margin: 0 0.5mm;
+        padding: 0 0 0.25mm;
+
+        border: 0;
+        border-bottom: 0.6pt solid #111;
+
+        font-weight: bold;
+        line-height: 1.05;
+
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      .day-field {
+        width: 13mm;
+      }
+
+      .month-field {
+        width: 31mm;
+        text-transform: uppercase;
+      }
+
+      .year-field {
+        width: 15mm;
+      }
+
+      /*
+       * SIGNATURE BLOCK
+       */
+      .signature-block {
+        position: absolute;
+        top: 165mm;
+        left: 94mm;
+
+        width: 75mm;
+        margin: 0;
+        padding: 0;
+
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+      }
+
+      .certified-by {
+        margin: 0;
+        padding: 0;
+
+        font-size: 9pt;
+        font-weight: normal;
+        line-height: 1;
+
+        text-align: center;
+      }
+
+      .signature-space {
+        width: 75mm;
+        height: 18mm;
+
+        margin: 1.5mm 0 0;
+        padding: 0;
+
+        text-align: center;
+      }
+
+      .signature-image {
+        display: block;
+
+        width: auto;
+        max-width: 48mm;
+        height: auto;
+        max-height: 18mm;
+
+        margin: 0 auto;
+        padding: 0;
+        border: 0;
+      }
+
+      .captain-name {
+        display: inline-block;
+
+        min-width: 58mm;
+        margin: 0;
+        padding: 0 1mm 0.8mm;
+
+        border: 0;
+        border-bottom: 0.6pt solid #111;
+
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 9.5pt;
+        font-weight: bold;
+        line-height: 1.05;
+
+        text-align: center;
+        text-transform: none;
+        white-space: nowrap;
+      }
+
+      .captain-position {
+        margin: 1.1mm 0 0;
+        padding: 0;
+
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 8.4pt;
+        font-weight: normal;
+        line-height: 1;
+
+        text-align: center;
+      }
+
+      /*
+       * OPTIONAL DEBUGGING GUIDES
+       *
+       * Uncomment while adjusting placement.
+       */
+      /*
+      .document-title,
+      .salutation,
+      .certificate-body,
+      .signature-block {
+        outline: 0.5pt solid red;
+      }
+
+      .resident-name,
+      .date-field {
+        background: rgba(255, 0, 0, 0.12);
+      }
+      */
+    </style>
+  </head>
+
+  <body>
+    <img
+      class="balud-page-background"
+      src="[BALUD_FULL_PAGE_BACKGROUND]"
+      alt=""
+    />
+
+    <div class="salutation">To Whom It May Concern:</div>
+
+    <div class="certificate-body">
+      <div class="first-paragraph">
+        <strong>THIS IS TO CERTIFY</strong> that
+        <span class="resident-name">[FULL_NAME]</span>
+        is a resident of Barangay [BARANGAY_NAME], [MUNICIPALITY], [PROVINCE].
+      </div>
+
+      <p>
+        This is to certify further that the above-mentioned name and his/her
+        family is a classified as <strong>INDIGENT</strong>
+        in this barangay.
+      </p>
+
+      <div class="issue-paragraph">
+        <span class="first-line-indent"></span>Issued this
+        <span class="date-field day-field">[ISSUE_DAY]</span>
+        day of
+        <span class="date-field month-field">[ISSUE_MONTH]</span>
+        <span class="date-field year-field">[ISSUE_YEAR]</span>, in the Barangay
+        Office, Barangay [BARANGAY_NAME], [MUNICIPALITY], [PROVINCE],
+        Philippines.
+      </div>
+    </div>
+
+    <div class="signature-block">
+      <div class="certified-by">Certified By:</div>
+
+      <div class="signature-space">
+        <img class="signature-image" src="[CAPTAIN_SIGNATURE_PATH]" alt="" />
+      </div>
+
+      <div class="captain-name">[CAPTAIN_NAME]</div>
+
+      <div class="captain-position">[CAPTAIN_POSITION]</div>
+    </div>
+  </body>
+</html>
