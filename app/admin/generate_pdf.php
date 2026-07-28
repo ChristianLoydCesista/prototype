@@ -391,12 +391,19 @@ function buildTemplateReplacements(
         $purpose = 'financial assistance';
     }
 
-    // Rawis full-page background is only used for the Rawis Barangay Certificate of Indigency template
+    // Rawis full-page background used by selected Rawis document templates
     $rawisFullPageBackground = '';
+
+    $rawisTemplatesWithFullBackground = [
+        'certificate-of-indigency',
+        'barangay-certificate',
+    ];
+
+    $templateKey = $request['template_key'] ?? '';
 
     if (
         (int) $request['barangay_id'] === 17
-        && ($request['template_key'] ?? '') === 'certificate-of-indigency'
+        && in_array($templateKey, $rawisTemplatesWithFullBackground, true)
     ) {
         $rawisBackgroundPath =
             $projectRoot
@@ -429,8 +436,53 @@ function buildTemplateReplacements(
     }
 
 
+    // Balud full-page background used by selected Balud document templates
+    // Barangay Balud full-page background.
+    // Barangay ID: 3
+    // Used for Balud Certificate of Indigency.
 
 
+    // Barangay Balud full-page background.
+    // Barangay ID: 3
+    // Used for Balud Certificate of Indigency.
+    $baludFullPageBackground = '';
+
+    $templateKey = trim((string) ($request['template_key'] ?? ''));
+    $barangayId = (int) ($request['barangay_id'] ?? 0);
+
+    if (
+        $barangayId === 3
+        && $templateKey === 'certificate-of-indigency'
+    ) {
+        $baludBackgroundPath =
+            $projectRoot
+            . DIRECTORY_SEPARATOR
+            . 'public'
+            . DIRECTORY_SEPARATOR
+            . 'uploads'
+            . DIRECTORY_SEPARATOR
+            . 'barangays'
+            . DIRECTORY_SEPARATOR
+            . '3'
+            . DIRECTORY_SEPARATOR
+            . 'full-page-template.png';
+
+        if (!is_file($baludBackgroundPath)) {
+            throw new RuntimeException(
+                'Balud full-page background was not found at: '
+                    . $baludBackgroundPath
+            );
+        }
+
+        $baludFullPageBackground =
+            localImageToDataUri($baludBackgroundPath);
+
+        if ($baludFullPageBackground === '') {
+            throw new RuntimeException(
+                'Balud full-page background could not be embedded.'
+            );
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | Active Barangay Signatory
@@ -562,8 +614,13 @@ function buildTemplateReplacements(
         '[REQUEST_NUMBER]' =>
         $request['request_number'] ?? 'N/A',
 
+        // Rawis full-page background is used by selected Rawis document templates
         '[RAWIS_FULL_PAGE_BACKGROUND]' =>
         $rawisFullPageBackground,
+
+        // Balud full-page background is used by selected Balud document templates
+        '[BALUD_FULL_PAGE_BACKGROUND]' =>
+        $baludFullPageBackground,
 
         '[ISSUE_DAY]' => htmlspecialchars(
             $issueDay,
@@ -714,8 +771,6 @@ function generateAndSavePdf(
             'Unable to create document output directory.'
         );
     }
-
-
 
     $options = new Options();
 
